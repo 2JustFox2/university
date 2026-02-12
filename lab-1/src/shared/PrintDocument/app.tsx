@@ -4,7 +4,7 @@ export default function PrintDocument() {
     return (
         <>
             <button className={styles.button} onClick={() => print()}>
-                Print
+                <h3>PrintDocument</h3>
             </button>
         </>
     );

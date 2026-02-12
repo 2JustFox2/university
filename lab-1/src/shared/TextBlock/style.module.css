@@ -5,10 +5,3 @@
     overflow: hidden;
     resize: none;
 }
-
-.printOutput {
-    display: none;
-    white-space: pre-wrap;
-    font-size: 16px;
-    padding: 10px;
-}

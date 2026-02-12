@@ -7,10 +7,10 @@ id: 18
 - [X] 16 TextBox
 
 Диалоговые окна
-- [ ] 8 PrintDocument
+- [X] 8 PrintDocument
 
 Контейнеры
-- [ ] 1 Panel
+- [X] 1 Panel
 
 Прочее
 - [ ] 2 TreeView
