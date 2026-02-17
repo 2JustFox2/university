@@ -10,6 +10,6 @@ export default function TextBlock() {
     }
 
     return (
-        <textarea className={styles.input} onInput={resize}/>
+        <textarea className={styles.input} onInput={resize} placeholder='TextArea'/>
     );
 }

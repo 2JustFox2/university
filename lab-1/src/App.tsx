@@ -1,5 +1,5 @@
 import './App.css';
-import { Panel, PrintDocument, TextBlock } from './shared';
+import { Panel, PrintDocument, TextBlock, TreeView } from './shared';
 
 function App() {
     return (
@@ -10,6 +10,7 @@ function App() {
                 <TextBlock />
                 <PrintDocument />
                 <Panel />
+                <TreeView />
             </div>
         </>
     );

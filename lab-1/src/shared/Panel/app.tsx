@@ -7,7 +7,7 @@ export default function Panel() {
     return (
         <>
             <div className={styles.panel}>
-                <h1 className={styles.title}>Panel</h1>
+                <h2 className={styles.title}>Panel</h2>
                 <button
                     className={styles.button}
                     onClick={() =>

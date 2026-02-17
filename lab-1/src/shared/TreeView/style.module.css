@@ -1,0 +1,12 @@
+.children {
+    margin-left: 20px;
+}
+
+.treeView {
+    margin-top: 1rem;
+}
+
+.node {
+    cursor: pointer;
+    user-select: none;
+}
