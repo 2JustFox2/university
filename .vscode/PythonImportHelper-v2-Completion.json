@@ -1,0 +1,173 @@
+[
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "Cp",
+        "kind": 2,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "def Cp(coef, T):\n    \"\"\"\n    Расчет абсолютной теплоемкости Cp\n    Cp = (a1 + a2*T + a3*T^2 + a4*T^3 + a5*T^4) * R\n    \"\"\"\n    cp_terms = (coef[0] + \n            coef[1] * T + \n            coef[2] * T**2 + \n            coef[3] * T**3 + \n            coef[4] * T**4)",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "H",
+        "kind": 2,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "def H(coef, T):\n    \"\"\"\n    Расчет абсолютной энтальпии H в Дж/моль\n    H = R * T * [a1 + (a2/2)T + (a3/3)T^2 + (a4/4)T^3 + (a5/5)T^4] + R * a6\n    \"\"\"\n    h_terms = (coef[0] + \n                (coef[1] / 2) * T + \n                (coef[2] / 3) * T**2 + \n                (coef[3] / 4) * T**3 + \n                (coef[4] / 5) * T**4 + ",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "S",
+        "kind": 2,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "def S(coef, T):\n    \"\"\"\n    Расчет абсолютной энтропии S в Дж/(моль·К)\n    S = R * [a1*ln(T) + a2*T + (a3/2)*T^2 + (a4/3)*T^3 + (a5/4)*T^4] + R * a7\n    \"\"\"\n    s_terms = (coef[0] * np.log(T) +\n                coef[1] * T + \n                (coef[2] / 2) * T**2 + \n                (coef[3] / 3) * T**3 + \n                (coef[4] / 4) * T**4 +",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "PropylThiol",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "PropylThiol = [\n    9.44634005E+00,\n    1.81966887E-02,\n    -6.56090105E-06,\n    1.05822368E-09,\n    -6.32704728E-14,\n    4.61400889E+03,\n    -2.20499216E+01\n]\nO2 = [",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "O2",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "O2 = [\n    3.66096065E+00,\n    6.56365811E-04,\n    -1.41149627E-07,\n    2.05797935E-11,\n    -1.29913436E-15,\n    -1.21597718E+03,\n    3.41536279E+00,\n]\nCO2 = [",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "CO2",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "CO2 = [\n    0.46365111E+01,\n    0.27414569E-02,\n    -0.99589759E-06,\n    0.16038666E-09,\n    -0.91619857E-14,\n    -0.49024904E+05,\n    -0.19348955E+01,\n]\nH2O = [",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "H2O",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "H2O = [\n    4.17228741E+00,\n    1.88117627E-03,\n    -3.46277286E-07,\n    1.94657549E-11,\n    1.76256905E-16,\n    3.10206839E+01,\n    2.95767672E+00,\n]\nSO2 = [",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "SO2",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "SO2 = [\n    5.38423482E+00,\n    1.67930560E-03,\n    -6.32062944E-07,\n    1.08465348E-10,\n    -6.66890336E-15,\n    -3.76067022E+04,\n    -1.83130517E+00\n]\nR = 8.31446261815324  # Универсальная газовая постоянная в Дж/(моль·К)",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "R",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "R = 8.31446261815324  # Универсальная газовая постоянная в Дж/(моль·К)\nT = 340 # Температура в Кельвинах\ndef Cp(coef, T):\n    \"\"\"\n    Расчет абсолютной теплоемкости Cp\n    Cp = (a1 + a2*T + a3*T^2 + a4*T^3 + a5*T^4) * R\n    \"\"\"\n    cp_terms = (coef[0] + \n            coef[1] * T + \n            coef[2] * T**2 + ",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "T = 340 # Температура в Кельвинах\ndef Cp(coef, T):\n    \"\"\"\n    Расчет абсолютной теплоемкости Cp\n    Cp = (a1 + a2*T + a3*T^2 + a4*T^3 + a5*T^4) * R\n    \"\"\"\n    cp_terms = (coef[0] + \n            coef[1] * T + \n            coef[2] * T**2 + \n            coef[3] * T**3 + ",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "delta_H",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "delta_H = (3 * H(CO2, T) + 4 * H(H2O, T) + H(SO2, T)) - (H(PropylThiol, T) + 6 * H(O2, T))\ndelta_S = (3 * S(CO2, T) + 4 * S(H2O, T) + S(SO2, T)) - (S(PropylThiol, T) + 6 * S(O2, T))\nprint(\"Изменение энтальпии реакции ΔH =\", delta_H)\nprint(\"Изменение энтропии реакции ΔS =\", delta_S)\ndelta_G = delta_H - T * delta_S\nprint(\"Изменение свободной энергии Гиббса ΔG =\", delta_G)",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "delta_S",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "delta_S = (3 * S(CO2, T) + 4 * S(H2O, T) + S(SO2, T)) - (S(PropylThiol, T) + 6 * S(O2, T))\nprint(\"Изменение энтальпии реакции ΔH =\", delta_H)\nprint(\"Изменение энтропии реакции ΔS =\", delta_S)\ndelta_G = delta_H - T * delta_S\nprint(\"Изменение свободной энергии Гиббса ΔG =\", delta_G)",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "delta_G",
+        "kind": 5,
+        "importPath": "digital-modeling.lab-2.main",
+        "description": "digital-modeling.lab-2.main",
+        "peekOfCode": "delta_G = delta_H - T * delta_S\nprint(\"Изменение свободной энергии Гиббса ΔG =\", delta_G)",
+        "detail": "digital-modeling.lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "_Known",
+        "kind": 6,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "class _Known:\n    def __init__(self):\n        self.key = []\n        self.value = []\nclass _String:\n    def __init__(self, value):\n        self.value = value\ndef _array_keys(value):\n    keys = []\n    i = 0",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "_String",
+        "kind": 6,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "class _String:\n    def __init__(self, value):\n        self.value = value\ndef _array_keys(value):\n    keys = []\n    i = 0\n    for _ in value:\n        keys.append(i)\n        i += 1\n    return keys",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "parse",
+        "kind": 2,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "def parse(value, *args, **kwargs):\n    json = _json.loads(value, *args, **kwargs)\n    wrapped = []\n    for value in json:\n        wrapped.append(_wrap(value))\n    input = []\n    for value in wrapped:\n        if isinstance(value, _String):\n            input.append(value.value)\n        else:",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "stringify",
+        "kind": 2,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "def stringify(value, *args, **kwargs):\n    known = _Known()\n    input = []\n    output = []\n    i = int(_index(known, input, value))\n    while i < len(input):\n        output.append(_transform(known, input, input[i]))\n        i += 1\n    return _json.dumps(output, *args, **kwargs)",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    }
+]
