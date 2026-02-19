@@ -1,0 +1,21 @@
+﻿<Window x:Class="ButtonSwapper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ButtonSwapper"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Нажимайте на кнопки чтобы поменять местами их надписи" 
+                       FontSize="16" TextAlignment="Center" Margin="0,0,0,20"/>
+            <Button Name="Button1" Click="OnButtonClick" Padding="20,10" FontSize="14" Width="150" Margin="0,0,0,10">
+                Кнопка 1
+            </Button>
+            <Button Name="Button2" Click="OnButtonClick" Padding="20,10" FontSize="14" Width="150">
+                Кнопка 2
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
