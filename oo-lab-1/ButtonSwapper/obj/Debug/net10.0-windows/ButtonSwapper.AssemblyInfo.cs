@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ButtonSwapper")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a883b239a81bc7677ea2b0789665a0fc1eb01742")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31d32296910fa2a1c0c5ceffec92e19211fc42b5")]
 [assembly: System.Reflection.AssemblyProductAttribute("ButtonSwapper")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ButtonSwapper")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

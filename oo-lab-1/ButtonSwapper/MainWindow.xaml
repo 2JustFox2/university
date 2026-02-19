@@ -10,11 +10,11 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="Нажимайте на кнопки чтобы поменять местами их надписи" 
                        FontSize="16" TextAlignment="Center" Margin="0,0,0,20"/>
-            <Button Name="Button1" Click="OnButtonClick" Padding="20,10" FontSize="14" Width="150" Margin="0,0,0,10">
-                Кнопка 1
+            <Button Name="Button1" MouseEnter="OnButtonHover" Click="OnButtonClick" Padding="20,10" FontSize="14" Width="150" Margin="0,0,0,10">
+                Туда
             </Button>
-            <Button Name="Button2" Click="OnButtonClick" Padding="20,10" FontSize="14" Width="150">
-                Кнопка 2
+            <Button Name="Button2" MouseEnter="OnButtonHover" Click="OnButtonClick" Padding="20,10" FontSize="14" Width="150">
+                Сюда
             </Button>
         </StackPanel>
     </Grid>

@@ -21,14 +21,22 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private void OnButtonClick(object sender, RoutedEventArgs e)
+    private void OnButtonHover(object sender, RoutedEventArgs e)
     {
         // Получаем текст с обеих кнопок
-        string button1Text = Button1.Content?.ToString() ?? "Кнопка 1";
-        string button2Text = Button2.Content?.ToString() ?? "Кнопка 2";
+        string button1Text = Button1.Content?.ToString() ?? "Туда";
+        string button2Text = Button2.Content?.ToString() ?? "Сюда";
 
         // Меняем их местами
         Button1.Content = button2Text;
         Button2.Content = button1Text;
+    }
+
+    private void OnButtonClick(object sender, RoutedEventArgs e)
+    {
+        // Открываем новое окно для ввода числа
+        InputWindow inputWindow = new InputWindow();
+        inputWindow.Owner = this;
+        inputWindow.ShowDialog();
     }
 }
