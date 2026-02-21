@@ -35,10 +35,9 @@ public partial class InputWindow : Window
             return;
         }
 
-        double result = number * 2;
-        ResultText.Text = $"{number} × 2 = {result}";
         NumberInput.Clear();
-        NumberInput.Focus();
+        double result = number * 2;
+        NumberInput.Text = result.ToString();
     }
 
     private void OnCancel(object sender, RoutedEventArgs e)

@@ -8,24 +8,19 @@
     "net10.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\alexv\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\anna0\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\oo-lab-1\\ButtonSwapper\\ButtonSwapper.csproj",
+      "projectUniqueName": "C:\\Users\\anna0\\Documents\\GitHub\\university\\oo\\lab 1\\ButtonSwapper.csproj",
       "projectName": "ButtonSwapper",
-      "projectPath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\oo-lab-1\\ButtonSwapper\\ButtonSwapper.csproj",
-      "packagesPath": "C:\\Users\\alexv\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\oo-lab-1\\ButtonSwapper\\obj\\",
+      "projectPath": "C:\\Users\\anna0\\Documents\\GitHub\\university\\oo\\lab 1\\ButtonSwapper.csproj",
+      "packagesPath": "C:\\Users\\anna0\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\anna0\\Documents\\GitHub\\university\\oo\\lab 1\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\alexv\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+        "C:\\Users\\anna0\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0-windows"

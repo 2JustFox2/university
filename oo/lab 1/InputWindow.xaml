@@ -15,13 +15,13 @@
                      Margin="0,0,0,20"
                      Height="40"/>
             
-            <TextBlock Name="ResultText" 
+            <!-- <TextBlock Name="ResultText" 
                        Text="" 
                        FontSize="14" 
                        TextAlignment="Center" 
                        Foreground="#228B22"
                        Margin="0,0,0,20"
-                       FontWeight="Bold"/>
+                       FontWeight="Bold"/> -->
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Name="SubmitButton" 
