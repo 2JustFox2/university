@@ -1,0 +1,102 @@
+#root {
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+}
+
+.left-panel {
+    width: 75%;
+    background-color: black;
+    height: 100%;
+}
+
+.patch {
+    padding: 0.5rem 0 0.5rem 0;
+    width: 100%;
+    background-color: #20202054;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.patch button {
+    background: transparent;
+    width: 24px;
+    margin-right: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.patch input {
+    width: 80%;
+    height: 1rem;
+    border: 0;
+    background-color: transparent;
+}
+
+.explorer {
+    max-height: calc(100% - 24px);
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
+
+.file {
+    width: 60px;
+    margin: 0.3rem;
+    padding: 0.2rem;
+    word-break: break-all;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: min-content;
+}
+
+.file img {
+    margin-top: 0.4rem;
+    width: 80%;
+}
+
+.file p {
+    width: 90%;
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.2rem;
+}
+
+.selected {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.right-panel {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    width: 25%;
+    background-color: rgb(15, 15, 15);
+}
+
+.property {
+    height: 50%;
+    width: 100%;
+}
+
+.property p {
+    width: 80%;
+}
+
+.property input {
+    border: 0;
+    background-color: transparent;
+}
+
+.actions {
+    height: 50%;
+    width: 100%;
+}
