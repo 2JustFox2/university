@@ -22,8 +22,31 @@ export class AppController {
     @Query('fullPath') fullPath: string,
     @Query('newFilePath') newFilePath: string,
   ) {
-    // process.chdir(fullPath);
     await this.appService.rename(fullPath, newFilePath);
     return { message: 'File renamed successfully' };
+  }
+
+  @Post('file/copy')
+  async copyFile(
+    @Query('fullPath') fullPath: string,
+    @Query('newFilePath') newFilePath: string,
+  ) {
+    await this.appService.copy(fullPath, newFilePath);
+    return { message: 'File copied successfully' };
+  }
+
+  @Post('file/move')
+  async moveFile(
+    @Query('fullPath') fullPath: string,
+    @Query('newFilePath') newFilePath: string,
+  ) {
+    await this.appService.move(fullPath, newFilePath);
+    return { message: 'File moved successfully' };
+  }
+
+  @Post('file/remove')
+  async removeFile(@Query('fullPath') fullPath: string) {
+    await this.appService.remove(fullPath);
+    return { message: 'File removed successfully' };
   }
 }

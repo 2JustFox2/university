@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
+import * as fse from 'fs-extra';
 
 @Injectable()
 export class AppService {
@@ -15,6 +16,15 @@ export class AppService {
     }[]
   > {
     try {
+      function formatBits(bits) {
+        if (bits === 0) return '0 Бит';
+        const bytes = bits / 8;
+        const sizes = ['Байт', 'КБ', 'МБ', 'ГБ', 'ТБ'];
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (
+          parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i]
+        );
+      }
       const files = await fs.promises.readdir(FilePath);
       const processedFiles = await Promise.all(
         files.map(async (file) => {
@@ -28,7 +38,7 @@ export class AppService {
           }
           return {
             name: file,
-            weight: `${stats.size} bytes`,
+            weight: formatBits(stats.size),
             extension: file.split('.').pop() || '',
           };
         }),
@@ -40,16 +50,6 @@ export class AppService {
     }
   }
 
-  async getFileStat(filePath: string): Promise<fs.Stats | null> {
-    try {
-      const stats = await fs.promises.stat(filePath);
-      return stats;
-    } catch (err) {
-      console.error(`Error getting stats for file ${filePath}:`, err);
-      return null;
-    }
-  }
-
   async rename(filePath: string, newFilePath: string): Promise<void> {
     try {
       // const newFilePath =
@@ -57,6 +57,30 @@ export class AppService {
       await fs.promises.rename(filePath, newFilePath);
     } catch (err) {
       console.error(`Error renaming file ${filePath}:`, err);
+    }
+  }
+
+  async copy(filePath: string, newFilePath: string): Promise<void> {
+    try {
+      await fse.copy(filePath, newFilePath);
+    } catch (err) {
+      console.error(`Error copying file ${filePath}:`, err);
+    }
+  }
+
+  async move(filePath: string, newFilePath: string): Promise<void> {
+    try {
+      await fse.move(filePath, newFilePath);
+    } catch (err) {
+      console.error(`Error moving file ${filePath}:`, err);
+    }
+  }
+
+  async remove(filePath: string): Promise<void> {
+    try {
+      await fse.remove(filePath);
+    } catch (err) {
+      console.error(`Error removing file ${filePath}:`, err);
     }
   }
 }

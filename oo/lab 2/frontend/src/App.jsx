@@ -11,7 +11,7 @@ function App() {
     });
     const [files, setFiles] = useState([]);
     const [path, setPath] = useState('D:\\');
-    // const [newName, setNewName] = useState('');
+    const [subject, setSubject] = useState(null);
 
     function handleClick(value) {
         if (value.name === select?.name) return;
@@ -22,12 +22,154 @@ function App() {
             extension:
                 value.extension || value.name.split('.').pop() || 'unknown',
         });
-        console.log('Selected:', value);
     }
 
     function handleDoubleClick(value) {
         if (value.extension === 'directory') {
             setPath((prev) => prev + '\\' + value.name);
+        }
+    }
+
+    async function handleKeyDown(e) {
+        if (e.key === 'Delete' && select) {
+            const fullPath = path + '\\' + select.name;
+            try {
+                const res = await fetch(
+                    host + '/file/remove?fullPath=' + fullPath,
+                    { method: 'POST' },
+                );
+                const data = await res.json();
+                if (data.ok || data.message === 'File removed successfully') {
+                    setFiles((prev) =>
+                        prev.filter((file) => file.name !== select.name),
+                    );
+                    setSelect(null);
+                } else {
+                    console.error('Delete failed:', data.message || data);
+                }
+            } catch (err) {
+                console.error('Delete error:', err);
+            }
+        }
+
+        if (e.ctrlKey || (e.metaKey && select !== null)) {
+            switch (e.key) {
+                case 'c':
+                    navigator.clipboard.writeText(path + '\\' + select.name);
+                    setSubject({
+                        type: 'copy',
+                        value: select,
+                        path: path + '\\' + select.name,
+                    });
+                    break;
+                case 'x':
+                    navigator.clipboard.writeText(path + '\\' + select.name);
+                    setSubject({
+                        type: 'cut',
+                        value: select,
+                        path: path + '\\' + select.name,
+                    });
+                    break;
+                case 'v':
+                    if (subject) {
+                        let repetitions = 0;
+                        let newFilePath = path + '\\' + subject.value.name;
+                        let newName = subject.value.name;
+
+                        let existingFile = files.find(
+                            (file) => file.name === subject.value.name,
+                        );
+
+                        while (existingFile) {
+                            newName = subject.value.name;
+                            newFilePath = path + '\\' + newName;
+
+                            const additive = repetitions
+                                ? `_copy (${repetitions})`
+                                : '_copy';
+                            if (subject.value.extension === 'directory') {
+                                newName = newName + additive;
+                                newFilePath = path + '\\' + newName;
+                            } else {
+                                newName =
+                                    newName.split('.').slice(0, -1).join('.') +
+                                    additive +
+                                    '.' +
+                                    subject.value.extension;
+                                newFilePath = path + '\\' + newName;
+                            }
+                            existingFile = files.find(
+                                (file) => file.name === newName,
+                            );
+                            repetitions++;
+                        }
+
+                        if (subject.type === 'copy') {
+                            console.log(
+                                'Copying from',
+                                subject.path,
+                                'to',
+                                newFilePath,
+                            );
+                            const res = await fetch(
+                                host +
+                                    '/file/copy?fullPath=' +
+                                    encodeURIComponent(subject.path) +
+                                    '&newFilePath=' +
+                                    encodeURIComponent(newFilePath),
+                                { method: 'POST' },
+                            );
+                            const data = await res.json();
+                            if (
+                                data.ok ||
+                                data.message === 'File copied successfully'
+                            ) {
+                                setFiles((prev) => [
+                                    ...prev,
+                                    {
+                                        ...subject.value,
+                                        name: newName,
+                                    },
+                                ]);
+                            } else {
+                                console.error(
+                                    'Copy failed:',
+                                    data.message || data,
+                                );
+                            }
+                        } else if (subject.type === 'cut') {
+                            const res = await fetch(
+                                host +
+                                    '/file/move?fullPath=' +
+                                    encodeURIComponent(subject.path) +
+                                    '&newFilePath=' +
+                                    encodeURIComponent(newFilePath),
+                                { method: 'POST' },
+                            );
+                            const data = await res.json();
+                            if (
+                                data.ok ||
+                                data.message === 'File moved successfully'
+                            ) {
+                                setFiles((prev) => [
+                                    ...prev,
+                                    {
+                                        ...subject.value,
+                                        name: newName,
+                                    },
+                                ]);
+                            } else {
+                                console.error(
+                                    'Move failed:',
+                                    data.message || data,
+                                );
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -109,7 +251,11 @@ function App() {
                         onChange={(e) => setPath(e.target.value)}
                     />
                 </header>
-                <div className="explorer">
+                <div
+                    className="explorer"
+                    onKeyDown={handleKeyDown}
+                    tabIndex={0}
+                >
                     {files.map((value) => (
                         <div
                             className={
@@ -170,19 +316,6 @@ function App() {
                             ? property.content.substring(0, 100) + '...'
                             : property.content}
                     </p>
-                </div>
-                <div className="actions">
-                    <h3>FS</h3>
-                    <div className="action">
-                        <button>copy</button>
-                        <button>confirm</button>
-                        <p>filename</p>
-                    </div>
-                    <div className="action">
-                        <button>move</button>
-                        <button>confirm</button>
-                        <p>filename</p>
-                    </div>
                 </div>
             </div>
         </div>
