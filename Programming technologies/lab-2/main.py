@@ -3,8 +3,8 @@ from tkinter import ttk, messagebox
 from datetime import datetime
 
 PROGRAM_NAME = "Расчёт критической температуры смеси газов"
-VERSION = "1.0.0"
-LAST_UPDATE = "23 февраля 2026 г."
+VERSION = "1.0.1"
+LAST_UPDATE = "25 февраля 2026 г."
 AUTHOR = "расчёт по правилу Кея"
 
 CRITICAL_TEMPERATURES = {
@@ -25,21 +25,19 @@ class PseudoCriticalTempCalculator:
     def __init__(self, master):
         self.master = master
         master.title(PROGRAM_NAME)
-        master.geometry("620x480")
+        master.geometry("480x480")
         master.resizable(False, False)
 
         self.create_widgets()
         self.show_header_info()
 
     def create_widgets(self):
-        # ------------------ Заголовок ------------------
         header = ttk.Label(self.master, text=PROGRAM_NAME, font=("Segoe UI", 14, "bold"))
         header.pack(pady=(15, 5))
 
         ver = f"вер. {VERSION} - {LAST_UPDATE}"
         ttk.Label(self.master, text=ver, font=("Segoe UI", 9)).pack()
 
-        # ------------------ Основной фрейм ------------------
         main_frame = ttk.Frame(self.master, padding="15 10")
         main_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -108,22 +106,21 @@ class PseudoCriticalTempCalculator:
 
             Tc_mix = y1 * Tc1 + y2 * Tc2
 
-            # Проверка условия для данной пары
             ratio = max(Tc1, Tc2) / min(Tc1, Tc2)
             condition_ok = 0.5 < ratio < 2.0
 
             result = f"Расчёт псевдокритической температуры смеси\n"
             result += f"Компоненты:        {comp1}  +  {comp2}\n"
-            result += f"Tc({comp1:>3})         = {Tc1:>6.1f} K\n"
-            result += f"Tc({comp2:>3})         = {Tc2:>6.1f} K\n"
-            result += f"y({comp1:>3})          = {y1:>5.3f}\n"
-            result += f"y({comp2:>3})          = {y2:>5.3f}\n"
+            result += f"Tc({comp1:>3}) = {Tc1:>6.1f} K\n"
+            result += f"Tc({comp2:>3}) = {Tc2:>6.1f} K\n"
+            result += f"y({comp1:>3})  = {y1:>5.3f}\n"
+            result += f"y({comp2:>3})  = {y2:>5.3f}\n"
             result += f"Tc смеси (Кей)     = {Tc_mix:>8.2f} K\n\n"
             result += f"Отношение Tc_max / Tc_min = {ratio:6.3f}\n"
             if condition_ok:
-                result += "Условие 0.5 < Tc_i / Tc_j < 2   →  ВЫПОЛНЯЕТСЯ\n"
+                result += "Условие 0.5 < Tc_i / Tc_j < 2 ВЫПОЛНЯЕТСЯ\n"
             else:
-                result += "Условие 0.5 < Tc_i / Tc_j < 2   →  НЕ ВЫПОЛНЯЕТСЯ\n"
+                result += "Условие 0.5 < Tc_i / Tc_j < 2 НЕ ВЫПОЛНЯЕТСЯ\n"
 
             self.result_text.config(state="normal")
             self.result_text.delete("1.0", tk.END)
@@ -138,7 +135,7 @@ class PseudoCriticalTempCalculator:
 
 def main():
     root = tk.Tk()
-    app = PseudoCriticalTempCalculator(root)
+    PseudoCriticalTempCalculator(root)
     root.mainloop()
 
 
