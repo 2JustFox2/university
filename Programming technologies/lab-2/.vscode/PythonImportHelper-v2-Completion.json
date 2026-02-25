@@ -1,0 +1,90 @@
+[
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "PseudoCriticalTempCalculator",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class PseudoCriticalTempCalculator:\n    def __init__(self, master):\n        self.master = master\n        master.title(PROGRAM_NAME)\n        master.geometry(\"480x480\")\n        master.resizable(False, False)\n        self.create_widgets()\n        self.show_header_info()\n    def create_widgets(self):\n        header = ttk.Label(self.master, text=PROGRAM_NAME, font=(\"Segoe UI\", 14, \"bold\"))",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def main():\n    root = tk.Tk()\n    PseudoCriticalTempCalculator(root)\n    root.mainloop()\nif __name__ == \"__main__\":\n    main()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "PROGRAM_NAME",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "PROGRAM_NAME = \"Расчёт критической температуры смеси газов\"\nVERSION = \"1.0.1\"\nLAST_UPDATE = \"25 февраля 2026 г.\"\nCRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "VERSION",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "VERSION = \"1.0.1\"\nLAST_UPDATE = \"25 февраля 2026 г.\"\nCRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "LAST_UPDATE",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "LAST_UPDATE = \"25 февраля 2026 г.\"\nCRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),\n    (\"CO\", \"CH4\"),",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "CRITICAL_TEMPERATURES",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "CRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),\n    (\"CO\", \"CH4\"),\n    (\"CO2\", \"CH4\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "BINARY_PAIRS_TO_CHECK",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "BINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),\n    (\"CO\", \"CH4\"),\n    (\"CO2\", \"CH4\")\n]\nclass PseudoCriticalTempCalculator:\n    def __init__(self, master):\n        self.master = master\n        master.title(PROGRAM_NAME)\n        master.geometry(\"480x480\")",
+        "detail": "main",
+        "documentation": {}
+    }
+]

@@ -1,0 +1,196 @@
+[
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "_Known",
+        "kind": 6,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "class _Known:\n    def __init__(self):\n        self.key = []\n        self.value = []\nclass _String:\n    def __init__(self, value):\n        self.value = value\ndef _array_keys(value):\n    keys = []\n    i = 0",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "_String",
+        "kind": 6,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "class _String:\n    def __init__(self, value):\n        self.value = value\ndef _array_keys(value):\n    keys = []\n    i = 0\n    for _ in value:\n        keys.append(i)\n        i += 1\n    return keys",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "parse",
+        "kind": 2,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "def parse(value, *args, **kwargs):\n    json = _json.loads(value, *args, **kwargs)\n    wrapped = []\n    for value in json:\n        wrapped.append(_wrap(value))\n    input = []\n    for value in wrapped:\n        if isinstance(value, _String):\n            input.append(value.value)\n        else:",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "stringify",
+        "kind": 2,
+        "importPath": "lab-1.node_modules.flatted.python.flatted",
+        "description": "lab-1.node_modules.flatted.python.flatted",
+        "peekOfCode": "def stringify(value, *args, **kwargs):\n    known = _Known()\n    input = []\n    output = []\n    i = int(_index(known, input, value))\n    while i < len(input):\n        output.append(_transform(known, input, input[i]))\n        i += 1\n    return _json.dumps(output, *args, **kwargs)",
+        "detail": "lab-1.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "PseudoCriticalTempCalculator",
+        "kind": 6,
+        "importPath": "lab-2.main",
+        "description": "lab-2.main",
+        "peekOfCode": "class PseudoCriticalTempCalculator:\n    def __init__(self, master):\n        self.master = master\n        master.title(PROGRAM_NAME)\n        master.geometry(\"480x480\")\n        master.resizable(False, False)\n        self.create_widgets()\n        self.show_header_info()\n    def create_widgets(self):\n        header = ttk.Label(self.master, text=PROGRAM_NAME, font=(\"Segoe UI\", 14, \"bold\"))",
+        "detail": "lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "lab-2.main",
+        "description": "lab-2.main",
+        "peekOfCode": "def main():\n    root = tk.Tk()\n    PseudoCriticalTempCalculator(root)\n    root.mainloop()\nif __name__ == \"__main__\":\n    main()",
+        "detail": "lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "PROGRAM_NAME",
+        "kind": 5,
+        "importPath": "lab-2.main",
+        "description": "lab-2.main",
+        "peekOfCode": "PROGRAM_NAME = \"Расчёт критической температуры смеси газов\"\nVERSION = \"1.0.1\"\nLAST_UPDATE = \"25 февраля 2026 г.\"\nCRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [",
+        "detail": "lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "VERSION",
+        "kind": 5,
+        "importPath": "lab-2.main",
+        "description": "lab-2.main",
+        "peekOfCode": "VERSION = \"1.0.1\"\nLAST_UPDATE = \"25 февраля 2026 г.\"\nCRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),",
+        "detail": "lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "LAST_UPDATE",
+        "kind": 5,
+        "importPath": "lab-2.main",
+        "description": "lab-2.main",
+        "peekOfCode": "LAST_UPDATE = \"25 февраля 2026 г.\"\nCRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),\n    (\"CO\", \"CH4\"),",
+        "detail": "lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "CRITICAL_TEMPERATURES",
+        "kind": 5,
+        "importPath": "lab-2.main",
+        "description": "lab-2.main",
+        "peekOfCode": "CRITICAL_TEMPERATURES = {\n    \"CO\":   132.9,\n    \"CO2\":  304.2,\n    \"CH4\":  190.6\n}\n# Пары, для которых требуется проверка условия 0.5 < Tc_i / Tc_j < 2\nBINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),\n    (\"CO\", \"CH4\"),\n    (\"CO2\", \"CH4\")",
+        "detail": "lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "BINARY_PAIRS_TO_CHECK",
+        "kind": 5,
+        "importPath": "lab-2.main",
+        "description": "lab-2.main",
+        "peekOfCode": "BINARY_PAIRS_TO_CHECK = [\n    (\"CO\", \"CO2\"),\n    (\"CO\", \"CH4\"),\n    (\"CO2\", \"CH4\")\n]\nclass PseudoCriticalTempCalculator:\n    def __init__(self, master):\n        self.master = master\n        master.title(PROGRAM_NAME)\n        master.geometry(\"480x480\")",
+        "detail": "lab-2.main",
+        "documentation": {}
+    },
+    {
+        "label": "calculate",
+        "kind": 2,
+        "importPath": "lab-3.main",
+        "description": "lab-3.main",
+        "peekOfCode": "def calculate(x0):\n    if x0 >= 1:\n        raise ValueError(f\"x должен быть < 1, получено x={x0}\")\n    if x0 == 0:\n        raise ValueError(\"x не может быть равен 0\")\n    def f1(x):\n        try:\n            return math.log(1-x)\n        except Exception as e:\n            raise ValueError(f\"Ошибка при вычислении f1: {e}\")",
+        "detail": "lab-3.main",
+        "documentation": {}
+    },
+    {
+        "label": "widget",
+        "kind": 2,
+        "importPath": "lab-3.main",
+        "description": "lab-3.main",
+        "peekOfCode": "def widget(master):\n    master.title('My App')\n    master.geometry('480x360')\n    master.resizable(False, False)\n    header = ttk.Label(master, text=\"Вычисление функции F(x) = F1(x) + F2(x) + F3(x) + F4(x)\", font=(\"Segoe UI\", 10, \"bold\"))\n    header.pack(pady=(15, 5))\n    main_frame = ttk.Frame(master, padding=\"15 10\")\n    main_frame.pack(fill=\"both\", expand=True)\n    ttk.Label(main_frame, text=\"x начальное:\").grid(row=0, column=0, sticky=\"w\", pady=5)\n    x0_var = tk.DoubleVar(value=-1400.5)",
+        "detail": "lab-3.main",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "lab-3.main",
+        "description": "lab-3.main",
+        "peekOfCode": "def main():\n    root = tk.Tk()\n    widget(root)\n    root.mainloop()\nif __name__ == '__main__':\n    main()",
+        "detail": "lab-3.main",
+        "documentation": {}
+    },
+    {
+        "label": "accuracy",
+        "kind": 5,
+        "importPath": "lab-3.main",
+        "description": "lab-3.main",
+        "peekOfCode": "accuracy = 1e-6\ndef calculate(x0):\n    if x0 >= 1:\n        raise ValueError(f\"x должен быть < 1, получено x={x0}\")\n    if x0 == 0:\n        raise ValueError(\"x не может быть равен 0\")\n    def f1(x):\n        try:\n            return math.log(1-x)\n        except Exception as e:",
+        "detail": "lab-3.main",
+        "documentation": {}
+    }
+]
