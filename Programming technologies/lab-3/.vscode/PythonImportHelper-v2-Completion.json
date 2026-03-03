@@ -1,0 +1,122 @@
+[
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "Pool",
+        "importPath": "multiprocessing",
+        "description": "multiprocessing",
+        "isExtraImport": true,
+        "detail": "multiprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "cpu_count",
+        "importPath": "multiprocessing",
+        "description": "multiprocessing",
+        "isExtraImport": true,
+        "detail": "multiprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "ProcessPoolExecutor",
+        "importPath": "concurrent.futures",
+        "description": "concurrent.futures",
+        "isExtraImport": true,
+        "detail": "concurrent.futures",
+        "documentation": {}
+    },
+    {
+        "label": "ThreadPoolExecutor",
+        "importPath": "concurrent.futures",
+        "description": "concurrent.futures",
+        "isExtraImport": true,
+        "detail": "concurrent.futures",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "compute_f4_sequential",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def compute_f4_sequential(x):\n    try:\n        max_i = 1000000\n        total_sum = 0\n        i = 1\n        while i <= max_i:\n            term = 1 / (x + math.sqrt(i))\n            total_sum += term\n            i += 1\n        return total_sum",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_single_x",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def calculate_single_x(x):\n    try:\n        if x >= 1:\n            raise ValueError(f\"x должен быть < 1, получено x={x}\")\n        if x == 0:\n            raise ValueError(\"x не может быть равен 0\")\n        f1_val = math.log(1-x)\n        f2_val = math.sinh(-3/x)\n        f3_val = -f1_val\n        f4_val = compute_f4_sequential(x)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_parallel",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def calculate_parallel(x_values):\n    with Pool(processes=cpu_count()) as pool:\n        results = pool.map(calculate_single_x, x_values)\n    return results\ndef widget(master):\n    master.title('My App')\n    master.geometry('480x360')\n    master.resizable(False, False)\n    header = ttk.Label(master, text=\"Вычисление функции F(x) = F1(x) + F2(x) + F3(x) + F4(x)\", font=(\"Segoe UI\", 10, \"bold\"))\n    header.pack(pady=(15, 5))",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "widget",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def widget(master):\n    master.title('My App')\n    master.geometry('480x360')\n    master.resizable(False, False)\n    header = ttk.Label(master, text=\"Вычисление функции F(x) = F1(x) + F2(x) + F3(x) + F4(x)\", font=(\"Segoe UI\", 10, \"bold\"))\n    header.pack(pady=(15, 5))\n    main_frame = ttk.Frame(master, padding=\"15 10\")\n    main_frame.pack(fill=\"both\", expand=True)\n    ttk.Label(main_frame, text=\"x начальное:\").grid(row=0, column=0, sticky=\"w\", pady=5)\n    x0_var = tk.DoubleVar(value=-1400.5)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def main():\n    root = tk.Tk()\n    widget(root)\n    root.mainloop()\nif __name__ == '__main__':\n    main()",
+        "detail": "main",
+        "documentation": {}
+    }
+]

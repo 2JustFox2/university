@@ -1,50 +1,46 @@
 import math
 import tkinter as tk
 from tkinter import ttk, messagebox
+from multiprocessing import Pool, cpu_count
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+import os
 
 # 4 Вариант
 # ln(1-x)   sh(-3/x)    ln(sin(1/(1-x)))    do...while
 
-accuracy = 1e-6
+def compute_f4_sequential(x):
+    try:
+        max_i = 1000000
+        total_sum = 0
+        i = 1
+        while i <= max_i:
+            term = 1 / (x + math.sqrt(i))
+            total_sum += term
+            i += 1
+        return total_sum
+    except Exception as e:
+        raise ValueError(f"Ошибка при вычислении f4: {e}")
 
-def calculate(x0):
-    if x0 >= 1:
-        raise ValueError(f"x должен быть < 1, получено x={x0}")
-    if x0 == 0:
-        raise ValueError("x не может быть равен 0")
-    
-    def f1(x):
-        try:
-            return math.log(1-x)
-        except Exception as e:
-            raise ValueError(f"Ошибка при вычислении f1: {e}")
+def calculate_single_x(x):
+    try:
+        if x >= 1:
+            raise ValueError(f"x должен быть < 1, получено x={x}")
+        if x == 0:
+            raise ValueError("x не может быть равен 0")
+        
+        f1_val = math.log(1-x)
+        f2_val = math.sinh(-3/x)
+        f3_val = -f1_val
+        f4_val = compute_f4_sequential(x)
+        
+        return f"x={x}: {f1_val + f2_val + f3_val + f4_val}"
+    except Exception as e:
+        return f"x={x}: Ошибка: {e}"
 
-    def f2(x):
-        try:
-            return math.sinh(-3/x)
-        except Exception as e:
-            raise ValueError(f"Ошибка при вычислении f2: {e}")
-
-    def f4(x):
-        try:
-            summ = 0
-            for i in range(1, 1000001):
-                term = 1 / (x + math.sqrt(i))
-                summ += term
-                if abs(term) < accuracy:
-                    break
-            return summ
-        except Exception as e:
-            raise ValueError(f"Ошибка при вычислении f4: {e}")
-
-    # f3(x) = log(1/(1-x)) = -log(1-x) = -f1(x)
-    f1_val = f1(x0)
-    f2_val = f2(x0)
-    f3_val = -f1_val
-    f4_val = f4(x0)
-
-    return f1_val + f2_val + f3_val + f4_val
-
+def calculate_parallel(x_values):
+    with Pool(processes=cpu_count()) as pool:
+        results = pool.map(calculate_single_x, x_values)
+    return results
 
 def widget(master):
     master.title('My App')
@@ -70,51 +66,52 @@ def widget(master):
     scrollbar.config(command=text_widget.yview)
     
     def on_calculate():
+        x0 = x0_var.get()
+        x1 = x1_var.get()
+        
+        x_values = []
+        current_x = x0
+        while current_x <= x1:
+            x_values.append(current_x)
+            current_x += 1.0 
+        
+        num_values = len(x_values)
+        
+        if x0 > x1:
+            messagebox.showerror("Ошибка", "Начальное значение x должно быть меньше или равно конечному.")
+            return
+        elif num_values < 1000:
+            messagebox.showerror("Ошибка", f"Количество значений x должно быть не менее 1000. Получено: {num_values}")
+            return
+        
+        calculate_btn.config(state="disabled")
+        text_widget.delete(1.0, tk.END)
+        text_widget.insert(tk.END, "Вычисление... Пожалуйста, подождите.\n")
+        master.update()
+        
         try:
-            x0 = x0_var.get()
-            x1 = x1_var.get()
-            
-            # Проверка на минимальное количество значений (1000)
-            num_values = len(range(int(x0), int(x1) + 1))
-            
-            if x0 > x1:
-                messagebox.showerror("Ошибка", "Начальное значение x должно быть меньше или равно конечному.")
-                return
-            elif num_values < 1000:
-                messagebox.showerror("Ошибка", f"Количество значений x должно быть не менее 1000. Получено: {num_values}")
-                return
-            
-            result = []
-            errors = []
-            
-            # Оптимизированный перебор значений
-            x = x0
-            while True:
-                try:
-                    value = calculate(x)
-                    result.append({f"x={x}: {value}"})
-                except Exception as e:
-                    result.append({f"x={x}": f"Ошибка: {e}"})
-                    errors.append((x, str(e)))
-                x += 1
-                if x > x1:
-                    break
+            results = calculate_parallel(x_values)
             
             text_widget.delete(1.0, tk.END)
-            for item in result:
+            for item in results:
                 text_widget.insert(tk.END, f"{item}\n")
             
+            errors = [(i, item.split(": Ошибка: ")[1]) for i, item in enumerate(results) if "Ошибка" in item]
             if errors:
                 error_msg = "Обнаружены ошибки при вычислении функции:\n\n"
-                for x, err in errors[:10]:
-                    error_msg += f"x={x}: {err}\n"
+                for idx, err in errors[:10]:
+                    error_msg += f"x={x_values[idx]}: {err}\n"
                 if len(errors) > 10:
                     error_msg += f"\n... и еще {len(errors) - 10} ошибок"
                 messagebox.showwarning("Предупреждение", error_msg)
+                
         except Exception as e:
-            messagebox.showerror("Ошибка", f"Ошибка при вычислении: {e}")
+            messagebox.showerror("Ошибка", f"Произошла ошибка при вычислениях: {e}")
+        finally:
+            calculate_btn.config(state="normal")
     
-    ttk.Button(main_frame, text="Вычислить", command=on_calculate).grid(row=2, column=0, columnspan=2, pady=15)
+    calculate_btn = ttk.Button(main_frame, text="Вычислить", command=on_calculate)
+    calculate_btn.grid(row=2, column=0, columnspan=2, pady=15)
 
 
 def main():
