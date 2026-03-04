@@ -75,11 +75,11 @@
         "documentation": {}
     },
     {
-        "label": "compute_f4_sequential",
+        "label": "f4",
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def compute_f4_sequential(x):\n    try:\n        max_i = 1000000\n        total_sum = 0\n        i = 1\n        while i <= max_i:\n            term = 1 / (x + math.sqrt(i))\n            total_sum += term\n            i += 1\n        return total_sum",
+        "peekOfCode": "def f4(x):\n    try:\n        max_i = 1000000\n        total_sum = 0\n        i = 1\n        while i <= max_i:\n            term = 1 / (x + math.sqrt(i))\n            total_sum += term\n            i += 1\n        return total_sum",
         "detail": "main",
         "documentation": {}
     },
@@ -88,7 +88,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def calculate_single_x(x):\n    try:\n        if x >= 1:\n            raise ValueError(f\"x должен быть < 1, получено x={x}\")\n        if x == 0:\n            raise ValueError(\"x не может быть равен 0\")\n        f1_val = math.log(1-x)\n        f2_val = math.sinh(-3/x)\n        f3_val = -f1_val\n        f4_val = compute_f4_sequential(x)",
+        "peekOfCode": "def calculate_single_x(x):\n    try:\n        if x >= 1:\n            raise ValueError(f\"x должен быть < 1, получено x={x}\")\n        if x == 0:\n            raise ValueError(\"x не может быть равен 0\")\n        f1_val = math.log(1-x)\n        f2_val = math.sinh(-3/x)\n        f3_val = -f1_val\n        f4_val = f4(x)",
         "detail": "main",
         "documentation": {}
     },

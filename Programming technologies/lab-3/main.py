@@ -8,7 +8,7 @@ import os
 # 4 Вариант
 # ln(1-x)   sh(-3/x)    ln(sin(1/(1-x)))    do...while
 
-def compute_f4_sequential(x):
+def f4(x):
     try:
         max_i = 1000000
         total_sum = 0
@@ -31,7 +31,7 @@ def calculate_single_x(x):
         f1_val = math.log(1-x)
         f2_val = math.sinh(-3/x)
         f3_val = -f1_val
-        f4_val = compute_f4_sequential(x)
+        f4_val = f4(x)
         
         return f"x={x}: {f1_val + f2_val + f3_val + f4_val}"
     except Exception as e:
@@ -96,7 +96,7 @@ def widget(master):
             for item in results:
                 text_widget.insert(tk.END, f"{item}\n")
             
-            errors = [(i, item.split(": Ошибка: ")[1]) for i, item in enumerate(results) if "Ошибка" in item]
+            errors = [(i, item.split("Ошибка: ")[1]) for i, item in enumerate(results) if "Ошибка" in item]
             if errors:
                 error_msg = "Обнаружены ошибки при вычислении функции:\n\n"
                 for idx, err in errors[:10]:
