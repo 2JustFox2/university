@@ -1,6 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
-import * as fse from 'fs-extra';
+import * as koffi from 'koffi';
+
+const kernel32 = koffi.load('kernel32.dll');
+const GetDiskFreeSpaceEx = kernel32.func(
+  '__stdcall',
+  'GetDiskFreeSpaceExW',
+  'int',
+  ['str16', 'uint64*', 'uint64*', 'uint64*'],
+);
 
 @Injectable()
 export class AppService {
@@ -52,8 +60,6 @@ export class AppService {
 
   async rename(filePath: string, newFilePath: string): Promise<void> {
     try {
-      // const newFilePath =
-      //   filePath.substring(0, filePath.lastIndexOf('\\') + 1) + newName;
       await fs.promises.rename(filePath, newFilePath);
     } catch (err) {
       console.error(`Error renaming file ${filePath}:`, err);
@@ -81,6 +87,33 @@ export class AppService {
       await fse.remove(filePath);
     } catch (err) {
       console.error(`Error removing file ${filePath}:`, err);
+    }
+  }
+
+  getDisk(): { total: string; free: string; used: string } {
+    try {
+      let free = [0n];
+      let total = [0n];
+      let totalFree = [0n];
+      GetDiskFreeSpaceEx('C:\\', total, free, totalFree);
+      const used = total - free;
+      function formatBits(bits) {
+        if (bits === 0) return '0 Бит';
+        const bytes = bits / 8;
+        const sizes = ['Байт', 'КБ', 'МБ', 'ГБ', 'ТБ'];
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (
+          parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i]
+        );
+      }
+      return {
+        total: formatBits(total * 8),
+        free: formatBits(free * 8),
+        used: formatBits(used * 8),
+      };
+    } catch (err) {
+      console.error('Error getting disk usage:', err);
+      return { total: '0 Бит', free: '0 Бит', used: '0 Бит' };
     }
   }
 }

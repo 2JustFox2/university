@@ -10,6 +10,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('Disk')
+  async getDisk() {
+    const diskInfo = await this.appService.getDisk();
+    return { diskInfo };
+  }
+
   @Get('Directory')
   async getFiles(@Query('fullPath') fullPath: string) {
     process.chdir(fullPath);
