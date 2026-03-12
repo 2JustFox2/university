@@ -58,12 +58,12 @@ class Path:
 
 def main():
     # path = Path(os.path.abspath(__file__))
-    path = Path("C:\\Users\\alexv\\OneDrive\\Pictures\\Camera Roll\\test_1")
+    path = Path("C:\\Users\\alexv\\OneDrive\\Picture1\\Camera Roll\\test_1")
     print(path)
     print(f"Папок, содержащих в своих именах цифры: {len(path.get_directory_with_number())}")
     print(f"Папок, содержащих в своих именах подчеркивания: {len(path.get_directory_with_underscore())}")
     # print(f"Папки изменившее свои цифры на буквы: {path.replace_directory_number()}")
-    print(f"Поменять местами первую и последнюю папки: {path.swap_folders()}")
+    print(f"Поменять местами первую и последнюю папки")
     
     print(path)
 

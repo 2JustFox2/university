@@ -31,7 +31,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def main():\n    # path = Path(os.path.abspath(__file__))\n    path = Path(\"C:\\\\Users\\\\alexv\\\\OneDrive\\\\Pictures\\\\Camera Roll\\\\test_1\")\n    print(path)\n    print(f\"Папок, содержащих в своих именах цифры: {len(path.get_directory_with_number())}\")\n    print(f\"Папок, содержащих в своих именах подчеркивания: {len(path.get_directory_with_underscore())}\")\n    # print(f\"Папки изменившее свои цифры на буквы: {path.replace_directory_number()}\")\n    print(f\"Поменять местами первую и последнюю папки: {path.swap_folders()}\")\n    print(path)\nif __name__ == \"__main__\":",
+        "peekOfCode": "def main():\n    # path = Path(os.path.abspath(__file__))\n    path = Path(\"C:\\\\Users\\\\alexv\\\\OneDrive\\\\Picture1\\\\Camera Roll\\\\test_1\")\n    print(path)\n    print(f\"Папок, содержащих в своих именах цифры: {len(path.get_directory_with_number())}\")\n    print(f\"Папок, содержащих в своих именах подчеркивания: {len(path.get_directory_with_underscore())}\")\n    # print(f\"Папки изменившее свои цифры на буквы: {path.replace_directory_number()}\")\n    print(f\"Поменять местами первую и последнюю папки\")\n    print(path)\nif __name__ == \"__main__\":",
         "detail": "main",
         "documentation": {}
     }
