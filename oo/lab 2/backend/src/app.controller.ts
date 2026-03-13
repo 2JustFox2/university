@@ -11,8 +11,8 @@ export class AppController {
   }
 
   @Get('Disk')
-  async getDisk() {
-    const diskInfo = await this.appService.getDisk();
+  getDisk() {
+    const diskInfo = this.appService.getDisk();
     return { diskInfo };
   }
 

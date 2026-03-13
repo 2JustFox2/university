@@ -11,7 +11,19 @@ function App() {
     });
     const [files, setFiles] = useState([]);
     const [path, setPath] = useState('C:\\Users\\');
-    const [subject, setSubject] = useState(null);
+    const [subject, setSubject] = useState({
+        type: '',
+        value: property,
+        path: '',
+    });
+    const [diskInfo, setDiskInfo] = useState([
+        {
+            name: '',
+            total: '',
+            free: '',
+            used: '',
+        },
+    ]);
 
     function handleClick(value) {
         if (value.name === select?.name) return;
@@ -71,6 +83,7 @@ function App() {
                     });
                     break;
                 case 'v':
+                    console.log('Pasting to', path, 'from', subject?.path);
                     if (subject) {
                         let repetitions = 0;
                         let newFilePath = path + '\\' + subject.value.name;
@@ -138,6 +151,12 @@ function App() {
                                 );
                             }
                         } else if (subject.type === 'cut') {
+                            console.log(
+                                'Cutting from',
+                                subject.path,
+                                'to',
+                                newFilePath,
+                            );
                             const res = await fetch(
                                 host +
                                     '/file/move?fullPath=' +
@@ -227,15 +246,20 @@ function App() {
                 );
                 const data = await response.json();
                 setFiles(data.files || []);
+
+                const diskRes = await fetch(host + '/Disk', {
+                    method: 'GET',
+                });
+                const diskData = await diskRes.json();
+                setDiskInfo(diskData.diskInfo || []);
             } catch (err) {
                 console.error('Fetch error:', err);
             }
         }
         fetchFiles();
     }, [path]);
-
     return (
-        <div className="main">
+        <div className="main" onKeyDown={handleKeyDown} tabIndex={0}>
             <div className="left-panel">
                 <header className="patch">
                     <button
@@ -251,27 +275,23 @@ function App() {
                         onChange={(e) => setPath(e.target.value)}
                     />
                 </header>
-                <div
-                    className="explorer"
-                    onKeyDown={handleKeyDown}
-                    tabIndex={0}
-                >
+                <div className="explorer" tabIndex={0}>
                     {files.map((value) => (
                         <div
                             className={
                                 'file ' +
-                                (value.name === select?.name ? 'selected' : '')
+                                (value.name === select?.name ? 'selected' : '') +
+                                (subject.value?.name === value.name ? ' ' + subject.type : '')
                             }
-                            onClick={() => handleClick(value)}
+                            onClick={() => (handleClick(value))}
                             key={value.name}
                         >
                             <img
                                 className="icon"
                                 src={
-                                    '../public/' +
-                                    (value.extension === 'directory'
-                                        ? 'dir.png'
-                                        : 'file.png')
+                                    value.extension === 'directory'
+                                        ? './src/img/dir.png'
+                                        : './src/img/file.png'
                                 }
                                 alt="icon"
                                 style={{
@@ -312,9 +332,16 @@ function App() {
                     <h4>Weight: {property.weight}</h4>
                     <h4>Extension: {property.extension}</h4>
                     <p>
-                        {property.content && property.content.length > 200
-                            ? property.content.substring(0, 100) + '...'
-                            : property.content}
+                        {diskInfo.map((disk) => (
+                            <button
+                                key={disk.name}
+                                className="disk-info"
+                                onClick={() => setPath(disk.name)}
+                            >
+                                <strong>{disk.name}</strong> {disk.free} free of{' '}
+                                {disk.total}
+                            </button>
+                        ))}
                     </p>
                 </div>
             </div>

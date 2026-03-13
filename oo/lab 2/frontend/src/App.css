@@ -101,9 +101,25 @@
     border: 0;
     background-color: transparent;
     color: white;
+    width: 80%;
 }
 
 .actions {
     height: 50%;
     width: 100%;
+}
+
+.disk-info {
+    width: 80%;
+    margin: 0.5rem;
+}
+
+.cut {
+    background-color: rgba(107, 99, 77, 0.5);
+    border-radius: 5px;
+}
+
+.copy {
+    background-color: rgba(77, 107, 89, 0.5);
+    border-radius: 5px;
 }
