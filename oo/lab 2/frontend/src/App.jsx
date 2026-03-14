@@ -10,7 +10,7 @@ function App() {
         extension: '',
     });
     const [files, setFiles] = useState([]);
-    const [path, setPath] = useState('C:\\Users\\');
+    const [path, setPath] = useState('D:\\');
     const [subject, setSubject] = useState(null);
 
     function handleClick(value) {

@@ -32,7 +32,7 @@ export class AppService {
           if (stats.isDirectory()) {
             return {
               name: `${file}`,
-              weight: formatBits(stats.size),
+              weight: '-',
               extension: 'directory',
             };
           }

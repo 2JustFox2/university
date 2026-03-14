@@ -30,7 +30,6 @@
     width: 24px;
     margin-right: 1rem;
     display: flex;
-    color: white;
     justify-content: center;
 }
 
@@ -39,7 +38,6 @@
     height: 1rem;
     border: 0;
     background-color: transparent;
-    color: white;
 }
 
 .explorer {
@@ -70,7 +68,6 @@
     margin-top: 0.2rem;
     font-size: 0.8rem;
     margin-bottom: 0.2rem;
-    color: white;
 }
 
 .selected {
@@ -89,18 +86,15 @@
 .property {
     height: 50%;
     width: 100%;
-    color: white;
 }
 
 .property p {
     width: 80%;
-    color: white;
 }
 
 .property input {
     border: 0;
     background-color: transparent;
-    color: white;
 }
 
 .actions {
