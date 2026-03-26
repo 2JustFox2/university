@@ -1,0 +1,15 @@
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\bin\Release\net10.0-windows\Lab3WinApiThreads.App.exe
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\bin\Release\net10.0-windows\Lab3WinApiThreads.App.deps.json
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\bin\Release\net10.0-windows\Lab3WinApiThreads.App.runtimeconfig.json
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\bin\Release\net10.0-windows\Lab3WinApiThreads.App.dll
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\bin\Release\net10.0-windows\Lab3WinApiThreads.App.pdb
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.AssemblyInfoInputs.cache
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.AssemblyInfo.cs
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.csproj.CoreCompileInputs.cache
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.sourcelink.json
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.dll
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\refint\Lab3WinApiThreads.App.dll
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.pdb
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\Lab3WinApiThreads.App.genruntimeconfig.cache
+C:\Users\alexv\OneDrive\projects\labs\Operating systems\lab 3\main\Lab3WinApiThreads.App\obj\Release\net10.0-windows\ref\Lab3WinApiThreads.App.dll
