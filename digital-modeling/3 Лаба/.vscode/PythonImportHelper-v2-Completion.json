@@ -1,0 +1,219 @@
+[
+    {
+        "label": "log",
+        "importPath": "math",
+        "description": "math",
+        "isExtraImport": true,
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "exp",
+        "importPath": "math",
+        "description": "math",
+        "isExtraImport": true,
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "mean",
+        "importPath": "numpy",
+        "description": "numpy",
+        "isExtraImport": true,
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "RepeatedKFold",
+        "importPath": "sklearn.model_selection",
+        "description": "sklearn.model_selection",
+        "isExtraImport": true,
+        "detail": "sklearn.model_selection",
+        "documentation": {}
+    },
+    {
+        "label": "Sequential",
+        "importPath": "keras.models",
+        "description": "keras.models",
+        "isExtraImport": true,
+        "detail": "keras.models",
+        "documentation": {}
+    },
+    {
+        "label": "Dense",
+        "importPath": "keras.layers",
+        "description": "keras.layers",
+        "isExtraImport": true,
+        "detail": "keras.layers",
+        "documentation": {}
+    },
+    {
+        "label": "optimizers",
+        "importPath": "keras",
+        "description": "keras",
+        "isExtraImport": true,
+        "detail": "keras",
+        "documentation": {}
+    },
+    {
+        "label": "pyplot",
+        "importPath": "matplotlib",
+        "description": "matplotlib",
+        "isExtraImport": true,
+        "detail": "matplotlib",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "get_dataset",
+        "kind": 2,
+        "importPath": "code_butane_liquid_density",
+        "description": "code_butane_liquid_density",
+        "peekOfCode": "def get_dataset():\n    # X: samples * inputs\n    # y: samples * outputs\n    data = pd.read_csv(\"./data/data_butane_gas_thermal_conductivity.csv\")\n    # data=data[data[\"GL\"]==0]\n    X = data[[\"Temperature\", \"Pressure\"]].to_numpy()\n    y = data[[\"Cp\"]].to_numpy()  # ,\"GL\"\n    return X, y\n# get the model\ndef get_model(n_inputs, n_outputs):",
+        "detail": "code_butane_liquid_density",
+        "documentation": {}
+    },
+    {
+        "label": "get_model",
+        "kind": 2,
+        "importPath": "code_butane_liquid_density",
+        "description": "code_butane_liquid_density",
+        "peekOfCode": "def get_model(n_inputs, n_outputs):\n    model = Sequential()\n    model.add(Dense(2, input_dim=n_inputs, activation='sigmoid'))\n    model.add(Dense(n_outputs, activation='linear'))\n    opt1 = optimizers.Adam(learning_rate=0.005)\n    model.compile(loss='mae', metrics=['mape'], optimizer=opt1)\n    model.summary()\n    return model\n# evaluate a model using repeated k-fold cross-validation\ndef evaluate_model(X, y):",
+        "detail": "code_butane_liquid_density",
+        "documentation": {}
+    },
+    {
+        "label": "evaluate_model",
+        "kind": 2,
+        "importPath": "code_butane_liquid_density",
+        "description": "code_butane_liquid_density",
+        "peekOfCode": "def evaluate_model(X, y):\n    n_inputs, n_outputs = X.shape[1], y.shape[1]\n    print(\"Inputs = \", n_inputs, \" Outputs = \", n_outputs)\n    # define evaluation procedure\n    cv = RepeatedKFold(n_splits=5, n_repeats=1, random_state=22527)\n    # enumerate folds\n    i = 0\n    MAPE = 300\n    ##K-fold\n    for train_ix, test_ix in cv.split(X):",
+        "detail": "code_butane_liquid_density",
+        "documentation": {}
+    },
+    {
+        "label": "normalize_data",
+        "kind": 2,
+        "importPath": "code_butane_liquid_density",
+        "description": "code_butane_liquid_density",
+        "peekOfCode": "def normalize_data(X):\n    nX = X.copy();\n    minsX = []\n    maxsX = []\n    for j in range(0, X.shape[1]):\n        minsX.append(min(X[:, j]))\n        maxsX.append(max(X[:, j]))\n        for i in range(0, X.shape[0]):\n            nX[i, j] = (X[i, j] - minsX[j]) / (maxsX[j] - minsX[j]) * 0.9 + 0.1\n    return nX, minsX, maxsX",
+        "detail": "code_butane_liquid_density",
+        "documentation": {}
+    },
+    {
+        "label": "denormalize_data",
+        "kind": 2,
+        "importPath": "code_butane_liquid_density",
+        "description": "code_butane_liquid_density",
+        "peekOfCode": "def denormalize_data(X, minsX, maxsX):\n    dX = X.copy();\n    for j in range(0, X.shape[1]):\n        for i in range(0, X.shape[0]):\n            dX[i, j] = ((X[i, j] - 0.1) / 0.9) * (maxsX[j] - minsX[j]) + minsX[j]\n    return dX\n# Функция для предсказания и построения графиков\ndef predict_and_plot(model, X, y, minsX, maxsX, minsy, maxsy):\n    # Предсказание для всех точек\n    new_y = model.predict(X)",
+        "detail": "code_butane_liquid_density",
+        "documentation": {}
+    },
+    {
+        "label": "predict_and_plot",
+        "kind": 2,
+        "importPath": "code_butane_liquid_density",
+        "description": "code_butane_liquid_density",
+        "peekOfCode": "def predict_and_plot(model, X, y, minsX, maxsX, minsy, maxsy):\n    # Предсказание для всех точек\n    new_y = model.predict(X)\n    dnX = denormalize_data(X, minsX, maxsX)\n    dny = denormalize_data(y, minsy, maxsy)\n    new_y = denormalize_data(new_y, minsy, maxsy)\n    # Предсказание для T=430K, P=1 бар\n    T_target = 430  # K\n    P_target = 1  # бар\n    # Создание графиков",
+        "detail": "code_butane_liquid_density",
+        "documentation": {}
+    },
+    {
+        "label": "predicted_value",
+        "kind": 5,
+        "importPath": "code_butane_liquid_density",
+        "description": "code_butane_liquid_density",
+        "peekOfCode": "predicted_value = predict_and_plot(model, X, y, minsX, maxsX, minsy, maxsy)\n# Дополнительный вывод результатов\nprint(\"\\n\" + \"=\" * 50)\nprint(\"РЕЗУЛЬТАТЫ ПРЕДСКАЗАНИЯ\")\nprint(\"=\" * 50)\nprint(f\"Температура: 430 K\")\nprint(f\"Давление: 1 бар\")\nprint(f\"Предсказанная теплопроводность: {predicted_value:.3f} мВт/м·K\")\nprint(\"=\" * 50)",
+        "detail": "code_butane_liquid_density",
+        "documentation": {}
+    },
+    {
+        "label": "data_text",
+        "kind": 5,
+        "importPath": "input",
+        "description": "input",
+        "peekOfCode": "data_text = \"\"\"\nState\tTemperature\tPressure\tThermal conductivity\n\t[K]\t[°C]\t[°F]\t[bara]\t[psia]\t[mW/m K]\t[kcal(IT)/(h m K)]\t[Btu(IT)/(h ft °F)]\nLiquid at equilibrium\t134.9\t-138.25\t-216.85\t6.7E-06\t9.7E-05\t176.6\t0.1518\t0.1020\n\t150\t-123\t-190\t8.6E-05\t1.2E-03\t171.2\t0.1472\t0.09892\n\t200\t-73\t-100\t0.0194\t0.281\t149.4\t0.1285\t0.08632\n\t220\t-53\t-64\t0.0781\t1.13\t139.9\t0.1203\t0.08083\n\t240\t-33.2\t-28\t0.241\t3.49\t130.4\t0.1121\t0.07534\n\t260\t-13.2\t8.3\t0.610\t8.84\t121.2\t0.1042\t0.07003\n\t280\t6.9\t44.3\t1.33\t19.3\t112.3\t0.09656\t0.06489",
+        "detail": "input",
+        "documentation": {}
+    },
+    {
+        "label": "lines",
+        "kind": 5,
+        "importPath": "input",
+        "description": "input",
+        "peekOfCode": "lines = data_text.strip().split('\\n')\ndata = []\ncurrent_state = None\nfor line in lines:\n    if 'State' in line or '[K]' in line or '[°C]' in line:\n        continue\n    parts = line.split('\\t')\n    parts = [p.strip() for p in parts if p.strip()]\n    if len(parts) < 6:\n        continue",
+        "detail": "input",
+        "documentation": {}
+    },
+    {
+        "label": "data",
+        "kind": 5,
+        "importPath": "input",
+        "description": "input",
+        "peekOfCode": "data = []\ncurrent_state = None\nfor line in lines:\n    if 'State' in line or '[K]' in line or '[°C]' in line:\n        continue\n    parts = line.split('\\t')\n    parts = [p.strip() for p in parts if p.strip()]\n    if len(parts) < 6:\n        continue\n    if parts[0] in ['Liquid at equilibrium', 'Gas at equilibrium', 'Liquid', 'Gas', 'Supercritical phase']:",
+        "detail": "input",
+        "documentation": {}
+    },
+    {
+        "label": "current_state",
+        "kind": 5,
+        "importPath": "input",
+        "description": "input",
+        "peekOfCode": "current_state = None\nfor line in lines:\n    if 'State' in line or '[K]' in line or '[°C]' in line:\n        continue\n    parts = line.split('\\t')\n    parts = [p.strip() for p in parts if p.strip()]\n    if len(parts) < 6:\n        continue\n    if parts[0] in ['Liquid at equilibrium', 'Gas at equilibrium', 'Liquid', 'Gas', 'Supercritical phase']:\n        current_state = parts[0]",
+        "detail": "input",
+        "documentation": {}
+    },
+    {
+        "label": "df_gas",
+        "kind": 5,
+        "importPath": "input",
+        "description": "input",
+        "peekOfCode": "df_gas = pd.DataFrame(data)\ndf_gas = df_gas.drop_duplicates()\ndf_gas = df_gas.sort_values(['Pressure', 'Temperature'])\nprint(\"Извлеченные данные для газовой фазы:\")\nprint(df_gas)\nprint(f\"\\nВсего точек: {len(df_gas)}\")\ndf_gas.to_csv('data_butane_gas_thermal_conductivity.csv', index=False)\nprint(\"\\nФайл сохранен как 'data_butane_gas_thermal_conductivity.csv'\")\nprint(\"\\nСтатистика по давлениям:\")\nprint(df_gas['Pressure'].value_counts().sort_index())",
+        "detail": "input",
+        "documentation": {}
+    },
+    {
+        "label": "df_gas",
+        "kind": 5,
+        "importPath": "input",
+        "description": "input",
+        "peekOfCode": "df_gas = df_gas.drop_duplicates()\ndf_gas = df_gas.sort_values(['Pressure', 'Temperature'])\nprint(\"Извлеченные данные для газовой фазы:\")\nprint(df_gas)\nprint(f\"\\nВсего точек: {len(df_gas)}\")\ndf_gas.to_csv('data_butane_gas_thermal_conductivity.csv', index=False)\nprint(\"\\nФайл сохранен как 'data_butane_gas_thermal_conductivity.csv'\")\nprint(\"\\nСтатистика по давлениям:\")\nprint(df_gas['Pressure'].value_counts().sort_index())",
+        "detail": "input",
+        "documentation": {}
+    },
+    {
+        "label": "df_gas",
+        "kind": 5,
+        "importPath": "input",
+        "description": "input",
+        "peekOfCode": "df_gas = df_gas.sort_values(['Pressure', 'Temperature'])\nprint(\"Извлеченные данные для газовой фазы:\")\nprint(df_gas)\nprint(f\"\\nВсего точек: {len(df_gas)}\")\ndf_gas.to_csv('data_butane_gas_thermal_conductivity.csv', index=False)\nprint(\"\\nФайл сохранен как 'data_butane_gas_thermal_conductivity.csv'\")\nprint(\"\\nСтатистика по давлениям:\")\nprint(df_gas['Pressure'].value_counts().sort_index())",
+        "detail": "input",
+        "documentation": {}
+    }
+]
