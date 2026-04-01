@@ -122,146 +122,125 @@ A = [
 substances = {'Ca5F(PO4)3', 'HNO3', 'Ca(NO3)2', 'H3PO4', 'HF', 'CaO', 'H2O'};
 [m, n] = size(A);
 rank_A = rank(A);
-num_reactions = m - rank_A;
+num_reactions_expected = m - rank_A;
 fprintf('\n\nРанг матрицы A: %d\n', rank_A);
-fprintf('Количество независимых реакций: %d\n\n', num_reactions);
+fprintf('Количество независимых реакций (m-rank(A)): %d\n\n', num_reactions_expected);
 
-% Нужно выбрать все возможные комбинации из num_reactions базисных строк
-% которые дают линейно независимую матрицу A_basis
-basis_variants = {};
-basis_candidates = nchoosek(1:m, num_reactions);
+% Ищем базис пространства решений v, где v*A = 0, эквивалентно A''*v'' = 0
+K = null(A', 'r');
+num_reactions = size(K, 2);
 
-for i = 1:size(basis_candidates, 1)
-    candidate = basis_candidates(i, :);
-    A_candidate = A(candidate, :);
-    if rank(A_candidate) == num_reactions
-        basis_variants{end+1} = candidate;
-    end
-end
+if num_reactions == 0
+    fprintf('Ненулевых независимых реакций не найдено (null(A'') пусто).\n');
+else
+    fprintf('Найдено независимых реакций через null(A''): %d\n\n', num_reactions);
 
-fprintf('Найдено %d возможных базисных наборов:\n', length(basis_variants));
-for i = 1:min(length(basis_variants), 3) % Показываем первые 3
-    fprintf('Вариант %d: ', i);
-    fprintf('%d ', basis_variants{i});
-    fprintf('\n');
-end
-fprintf('\n');
-
-% Используем первые 3 варианта для вывода
-num_to_show = min(length(basis_variants), 3);
-for variant = 1:num_to_show
-    fprintf('\nВариант %d\n', variant);
-    basis_indices = basis_variants{variant};
-    free_indices = setdiff(1:m, basis_indices);
-    
-    fprintf('Базисные индексы (основные): ');
-    fprintf('%d ', basis_indices);
-    fprintf('\nСвободные индексы (неосновные): ');
-    fprintf('%d ', free_indices);
-    fprintf('\n\n');
-    
-    fprintf('Базисные вещества: ');
-    for i = basis_indices
-        fprintf('%s, ', substances{i});
-    end
-    fprintf('\nСвободные вещества: ');
-    for i = free_indices
-        fprintf('%s, ', substances{i});
-    end
-    fprintf('\n\n');
-    
-    % Создание матрицы для нахождения коэффициентов
-    % Решаем систему A_basis * X = -A_free
-    A_basis = A(basis_indices, :);
-    A_free = A(free_indices, :);
-    
-    % Находим коэффициенты для базисных веществ
-    % Для каждой свободной переменной (num_reactions штук)
-    B = zeros(num_reactions, m);
-    
-    for k = 1:num_reactions
-        % Для k-ой свободной переменной
-        % Решаем A_basis' * basis_coeffs = -A_free(k, :)'
-        % или A_basis * basis_coeffs' = -A_free(k, :)' 
-        
-        % Переносим свободное вещество в правую часть
-        rhs = -A_free(k, :)';
-        
-        % Решаем систему для базисных коэффициентов
-        % Базисные коэффициенты - это коэффициенты при базисных веществах
-        % которые вместе со свободным веществом (коэффициент 1) дают нулевую комбинацию
-        basis_coeffs = A_basis' \ rhs;
-        
-        % Заполняем строку B
-        for j = 1:length(basis_indices)
-            B(k, basis_indices(j)) = basis_coeffs(j);
-        end
-        B(k, free_indices(k)) = 1;
-    end
-    
-    disp(B)
-    
-    % Проверка условия: B * A = 0  
-    residual = B * A;
-    norm_res = norm(residual, 'fro');
-    fprintf('Проверка на условие B*A = 0: %e\n', norm_res);
-    if norm_res < 1e-10
-        fprintf('Условие выполняется\n');
+    % Строим 3 разных базиса пространства решений: K_i = K * T_i,
+    % где T_i - невырожденная матрица размера num_reactions x num_reactions.
+    T_list = cell(1, 3);
+    if num_reactions == 1
+        T_list{1} = 1;
+        T_list{2} = 2;
+        T_list{3} = -1;
     else
-        fprintf('Условие НЕ выполняется (погрешность > 1e-10)\n');
+        T_list{1} = eye(num_reactions);
+
+        T2 = eye(num_reactions);
+        T2(:, 1) = T2(:, 1) + T2(:, 2);
+        T_list{2} = T2;
+
+        T3 = eye(num_reactions);
+        T3(:, 2) = T3(:, 2) - T3(:, 1);
+        T_list{3} = T3;
     end
-    
-    fprintf('\nКоэффициенты (строки - реакции, столбцы - вещества):\n');
-    disp(B);
-    
-    % Вывод химических уравнений
-    fprintf('\nХимические реакции:\n');
-    for r = 1:size(B, 1)
-        left = {};
-        right = {};
-        
-        row = B(r, :);
-        % Нормализуем коэффициенты
-        nonzeros = row(abs(row) > 1e-10);
-        if ~isempty(nonzeros)
-            % Находим минимальный положительный коэффициент для нормализации
-            pos_coeffs = nonzeros(nonzeros > 0);
-            if ~isempty(pos_coeffs)
-                min_coeff = min(pos_coeffs);
-                if min_coeff > 1e-10
-                    row = row / min_coeff;
+
+    valid_var_names = matlab.lang.makeValidName(substances, 'ReplacementStyle', 'delete');
+    valid_var_names = matlab.lang.makeUniqueStrings(valid_var_names);
+
+    fprintf('Соответствие столбцов таблицы веществам:\n');
+    for s = 1:numel(substances)
+        fprintf('%s -> %s\n', valid_var_names{s}, substances{s});
+    end
+
+    for basis_id = 1:3
+        K_basis = K * T_list{basis_id};
+
+        % Преобразуем векторы базиса в целые коэффициенты реакций
+        B = zeros(num_reactions, m);
+        for r = 1:num_reactions
+            v = K_basis(:, r);
+
+            [num_v, den_v] = rat(v, 1e-10);
+            lcm_den = 1;
+            for t = 1:length(den_v)
+                lcm_den = lcm(lcm_den, den_v(t));
+            end
+            coeff_int = num_v .* (lcm_den ./ den_v);
+
+            nz = coeff_int(coeff_int ~= 0);
+            if ~isempty(nz)
+                g = abs(nz(1));
+                for t = 2:length(nz)
+                    g = gcd(g, abs(nz(t)));
+                end
+                if g > 1
+                    coeff_int = coeff_int / g;
                 end
             end
-        end
-        
-        row(abs(row) < 1e-8) = 0;
-        
-        for j = 1:length(row)
-            coeff = row(j);
-            if abs(coeff) < 1e-8
-                continue;
-            elseif coeff < 0
-                left{end+1} = sprintf('%s * (%.2f)', substances{j}, abs(coeff));
-            else
-                right{end+1} = sprintf('%s * (%.2f)', substances{j}, coeff);
+
+            first_nz = find(coeff_int ~= 0, 1);
+            if ~isempty(first_nz) && coeff_int(first_nz) > 0
+                coeff_int = -coeff_int;
             end
+
+            B(r, :) = coeff_int';
         end
-        
-        if isempty(left)
-            left_str = '0';
+
+        fprintf('\n=== Базис %d ===\n', basis_id);
+        reaction_labels = arrayfun(@(r) sprintf('R%d', r), 1:size(B, 1), 'UniformOutput', false);
+        coeff_table = array2table(B, 'VariableNames', valid_var_names, 'RowNames', reaction_labels);
+        disp(coeff_table)
+
+        residual = B * A;
+        norm_res = norm(residual, 'fro');
+        fprintf('Проверка условия B*A = 0: %e\n', norm_res);
+        if norm_res < 1e-10
+            fprintf('Условие выполняется\n');
         else
-            left_str = strjoin(left, ' + ');
+            fprintf('Условие НЕ выполняется (погрешность > 1e-10)\n');
         end
-        
-        if isempty(right)
-            right_str = '0';
-        else
-            right_str = strjoin(right, ' + ');
-        end
-        
-        if ~strcmp(left_str, '0') && ~strcmp(right_str, '0')
-            equation = [left_str, ' -> ', right_str];
-            fprintf('Реакция %d: %s\n', r, equation);
+
+        fprintf('Химические реакции:\n');
+        for r = 1:size(B, 1)
+            left = {};
+            right = {};
+            row = B(r, :);
+
+            for j = 1:length(row)
+                coeff = row(j);
+                if coeff == 0
+                    continue;
+                end
+
+                abs_coeff = abs(coeff);
+                if abs_coeff == 1
+                    term = sprintf('%s', substances{j});
+                else
+                    term = sprintf('%d %s', abs_coeff, substances{j});
+                end
+
+                if coeff < 0
+                    left{end+1} = term;
+                else
+                    right{end+1} = term;
+                end
+            end
+
+            if ~isempty(left) && ~isempty(right)
+                fprintf('Реакция %d: %s -> %s\n', r, strjoin(left, ' + '), strjoin(right, ' + '));
+            else
+                fprintf('Реакция %d: не удалось корректно разделить на левую/правую часть\n', r);
+            end
         end
     end
 end

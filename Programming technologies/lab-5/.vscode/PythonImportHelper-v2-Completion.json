@@ -1,0 +1,112 @@
+[
+    {
+        "label": "date",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "Logger",
+        "importPath": "logger",
+        "description": "logger",
+        "isExtraImport": true,
+        "detail": "logger",
+        "documentation": {}
+    },
+    {
+        "label": "Logger",
+        "importPath": "logger",
+        "description": "logger",
+        "isExtraImport": true,
+        "detail": "logger",
+        "documentation": {}
+    },
+    {
+        "label": "Calculate",
+        "importPath": "method",
+        "description": "method",
+        "isExtraImport": true,
+        "detail": "method",
+        "documentation": {}
+    },
+    {
+        "label": "Calculate",
+        "importPath": "method",
+        "description": "method",
+        "isExtraImport": true,
+        "detail": "method",
+        "documentation": {}
+    },
+    {
+        "label": "Logger",
+        "kind": 6,
+        "importPath": "logger",
+        "description": "logger",
+        "peekOfCode": "class Logger():\n    def __init__(self):\n        self.log_file = \"myProgram.log\"\n        self.error_file = \"myErrors.log\"\n    def init(self):\n        self.clear()\n        self.log(\"Сапунков Александр Андреевич - 18 Вариант\")\n        self.log(f\"Дата запуска: {date.today().isoformat()}\")\n        self.log(\"ln(x)/(y – 2)\")\n        self.error(\"ln(x)/(y – 2)\")",
+        "detail": "logger",
+        "documentation": {}
+    },
+    {
+        "label": "window",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class window:\n    def __init__(self):\n        self.root = tk.Tk()\n        self.root.title(\"Сапунков Александр Андреевич 18\")\n        self.root.geometry(\"350x550\")\n        self.style = ttk.Style()\n        self.style.configure(\"TButton\")\n        self.style.configure(\"Active.TButton\", font=('Arial', 8, 'bold'), foreground='blue')\n        self.logger = Logger()\n        self.logger.init()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "Calculate",
+        "kind": 6,
+        "importPath": "method",
+        "description": "method",
+        "peekOfCode": "class Calculate:\n    def __init__(self):\n        self.logger = Logger()\n    def _is_strictly_increasing(self, values):\n        return all(values[i] < values[i + 1] for i in range(len(values) - 1))\n    def __call__(self, data):\n        all_results = {}  # Словарь для хранения результатов всех форм\n        parsed_forms = {}\n        validation_errors = []\n        # Валидируем все формы до начала вычислений",
+        "detail": "method",
+        "documentation": {}
+    }
+]
