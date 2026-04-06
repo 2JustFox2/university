@@ -1,3 +1,5 @@
+
+
 # -*- coding: utf-8 -*-
 #Lab 5. Peng-Robinson.ipynb
 
@@ -12,14 +14,14 @@
 from thermo import ChemicalConstantsPackage, CEOSGas, CEOSLiquid, PRMIX, FlashVL, FlashVLN, FlashPureVLS
 from thermo.interaction_parameters import IPDB
 # Load constants and properties
-constants, properties = ChemicalConstantsPackage.from_IDs(['acetone', 'water'])
+constants, properties = ChemicalConstantsPackage.from_IDs(['cyclohexane', 'methanol'])
 # Objects are initialized at a particular condition
-T = 333.15 # K
+T = 298.15 # K
 P = 1e5 # 1 bar
 zs = [.5, .5]
 
 # Use Peng-Robinson for both the vapor and the liquid phases
-k12 = -0.2477
+k12 = -0.304759306015339
 kijs = [[0, k12],
         [k12, 0]]
 print(k12)
@@ -45,14 +47,14 @@ _ = flasher.plot_xy(T=T, pts=100)
 liquid2 = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)
 flasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)
 
-x1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];
-y1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];
+x1_exp=[0.0100, 0.0300, 0.0600, 0.1000, 0.2000];
+y1_exp=[0.0290, 0.0830, 0.1540, 0.2340, 0.3800];
 
-myT=[365.699, 355.741, 342.005, 332.748, 330.14];
+myT=[336.866, 335.940, 334.678, 333.211, 330.435];
 
 #initial mole fractions of component 1 to start flash from
 #take this between x and y at plot. At first glance, between x1_exp and y1_exp
-zs=[0.1, 0.2, 0.7, 0.9, 0.97]
+zs=[0.02, 0.05, 0.10, 0.20, 0.30]
 
 for i in range(5):
 	res = flasher2.flash(T=myT[i], P=P, zs=[zs[i], 1-zs[i]])
