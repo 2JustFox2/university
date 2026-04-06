@@ -1,0 +1,886 @@
+[
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "ChemicalConstantsPackage",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "CEOSGas",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "CEOSLiquid",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "PRMIX",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "FlashVL",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "FlashVLN",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "FlashPureVLS",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "thermo",
+        "description": "thermo",
+        "isExtraImport": true,
+        "detail": "thermo",
+        "documentation": {}
+    },
+    {
+        "label": "DOUFSG",
+        "importPath": "thermo.unifac",
+        "description": "thermo.unifac",
+        "isExtraImport": true,
+        "detail": "thermo.unifac",
+        "documentation": {}
+    },
+    {
+        "label": "DOUFIP2016",
+        "importPath": "thermo.unifac",
+        "description": "thermo.unifac",
+        "isExtraImport": true,
+        "detail": "thermo.unifac",
+        "documentation": {}
+    },
+    {
+        "label": "DOUFSG",
+        "importPath": "thermo.unifac",
+        "description": "thermo.unifac",
+        "isExtraImport": true,
+        "detail": "thermo.unifac",
+        "documentation": {}
+    },
+    {
+        "label": "DOUFIP2016",
+        "importPath": "thermo.unifac",
+        "description": "thermo.unifac",
+        "isExtraImport": true,
+        "detail": "thermo.unifac",
+        "documentation": {}
+    },
+    {
+        "label": "interp1d",
+        "importPath": "scipy.interpolate",
+        "description": "scipy.interpolate",
+        "isExtraImport": true,
+        "detail": "scipy.interpolate",
+        "documentation": {}
+    },
+    {
+        "label": "IPDB",
+        "importPath": "thermo.interaction_parameters",
+        "description": "thermo.interaction_parameters",
+        "isExtraImport": true,
+        "detail": "thermo.interaction_parameters",
+        "documentation": {}
+    },
+    {
+        "label": "ideal_T",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def ideal_T(x1, Psat1_func, Psat2_func, P):\n    \"\"\"Решение уравнения P = x1*Psat1(T) + (1-x1)*Psat2(T) относительно T\"\"\"\n    from scipy.optimize import fsolve\n    def obj(T):\n        return x1*Psat1_func(T) + (1-x1)*Psat2_func(T) - P\n    T0 = 0.5*(constants.Tcs[0] + constants.Tcs[1]) * 0.7  # начальное приближение\n    return fsolve(obj, T0)[0]\n# Получим функции давления насыщенных паров (используем Antoine)\nPsat1 = lambda T: properties.VaporPressures[0].T_to_P(T)\nPsat2 = lambda T: properties.VaporPressures[1].T_to_P(T)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "bubble_temp",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def bubble_temp(z1, P, flasher):\n    # Решаем уравнение sum_i z_i * gamma_i * Psat_i(T) = P\n    from scipy.optimize import fsolve\n    def obj(T):\n        # Временно меняем температуру во флэшере\n        flasher.T = T\n        # Получаем коэффициенты активности при T и составе z\n        flasher.liquid.GibbsExcessModel.T = T\n        flasher.liquid.GibbsExcessModel.xs = [z1, 1-z1]\n        gamma = flasher.liquid.GibbsExcessModel.gammas()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "bubble_temp",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def bubble_temp(z1, P, flasher):\n    # Решаем уравнение sum_i z_i * gamma_i * Psat_i(T) = P\n    from scipy.optimize import fsolve\n    def obj(T):\n        # Временно меняем температуру во флэшере\n        flasher.T = T\n        # Получаем коэффициенты активности при T и составе z\n        flasher.liquid.GibbsExcessModel.T = T\n        flasher.liquid.GibbsExcessModel.xs = [z1, 1-z1]\n        gamma = flasher.liquid.GibbsExcessModel.gammas()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "dew_temp",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def dew_temp(y1, P, flasher):\n    from scipy.optimize import fsolve\n    def obj(T):\n        flasher.T = T\n        # Для заданного y1 находим x из условия равновесия: y1 = x1*gamma1*Psat1/P\n        # Приходится решать систему нелинейных уравнений, упростим: итерационно\n        # Используем flash с начальным приближением\n        # Более простой способ: подбираем z такой, чтобы при flash давал y1=0.5\n        # Но здесь мы решаем уравнение относительно T при фиксированном y1 = 0.5\n        # Воспользуемся тем, что при dew точке общий состав равен составу пара",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "components",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "components = ['cyclohexane', 'methanol']\nconstants, properties = ChemicalConstantsPackage.from_IDs(components)\n# ----------------------------------------------------------------------\n# 2. Параметры модели\n# ----------------------------------------------------------------------\nT = 298.15          # K\nP = 1e5             # Pa (1 бар)\nk12 = 0.0           # бинарный параметр PR (можно подобрать, но для учебных целей 0)\nkijs = [[0.0, k12],\n        [k12, 0.0]]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T = 298.15          # K\nP = 1e5             # Pa (1 бар)\nk12 = 0.0           # бинарный параметр PR (можно подобрать, но для учебных целей 0)\nkijs = [[0.0, k12],\n        [k12, 0.0]]\n# Газ: Пенг–Робинсон\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Жидкость: UNIFAC (Dortmund)\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "P",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "P = 1e5             # Pa (1 бар)\nk12 = 0.0           # бинарный параметр PR (можно подобрать, но для учебных целей 0)\nkijs = [[0.0, k12],\n        [k12, 0.0]]\n# Газ: Пенг–Робинсон\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Жидкость: UNIFAC (Dortmund)\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1,\n                            T=T, xs=[0.5, 0.5],",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "k12",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "k12 = 0.0           # бинарный параметр PR (можно подобрать, но для учебных целей 0)\nkijs = [[0.0, k12],\n        [k12, 0.0]]\n# Газ: Пенг–Робинсон\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Жидкость: UNIFAC (Dortmund)\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1,\n                            T=T, xs=[0.5, 0.5],\n                            interaction_data=DOUFIP2016, subgroups=DOUFSG)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "kijs",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "kijs = [[0.0, k12],\n        [k12, 0.0]]\n# Газ: Пенг–Робинсон\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Жидкость: UNIFAC (Dortmund)\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1,\n                            T=T, xs=[0.5, 0.5],\n                            interaction_data=DOUFIP2016, subgroups=DOUFSG)\nliquid = GibbsExcessLiquid(",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "eos_kwargs",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "eos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Жидкость: UNIFAC (Dortmund)\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1,\n                            T=T, xs=[0.5, 0.5],\n                            interaction_data=DOUFIP2016, subgroups=DOUFSG)\nliquid = GibbsExcessLiquid(\n    VaporPressures=properties.VaporPressures,\n    HeatCapacityGases=properties.HeatCapacityGases,\n    VolumeLiquids=properties.VolumeLiquids,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "gas",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "gas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Жидкость: UNIFAC (Dortmund)\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1,\n                            T=T, xs=[0.5, 0.5],\n                            interaction_data=DOUFIP2016, subgroups=DOUFSG)\nliquid = GibbsExcessLiquid(\n    VaporPressures=properties.VaporPressures,\n    HeatCapacityGases=properties.HeatCapacityGases,\n    VolumeLiquids=properties.VolumeLiquids,\n    GibbsExcessModel=GE,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "GE",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "GE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1,\n                            T=T, xs=[0.5, 0.5],\n                            interaction_data=DOUFIP2016, subgroups=DOUFSG)\nliquid = GibbsExcessLiquid(\n    VaporPressures=properties.VaporPressures,\n    HeatCapacityGases=properties.HeatCapacityGases,\n    VolumeLiquids=properties.VolumeLiquids,\n    GibbsExcessModel=GE,\n    equilibrium_basis='Psat', caloric_basis='Psat',\n    T=T, P=P, zs=[0.5, 0.5]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "liquid",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "liquid = GibbsExcessLiquid(\n    VaporPressures=properties.VaporPressures,\n    HeatCapacityGases=properties.HeatCapacityGases,\n    VolumeLiquids=properties.VolumeLiquids,\n    GibbsExcessModel=GE,\n    equilibrium_basis='Psat', caloric_basis='Psat',\n    T=T, P=P, zs=[0.5, 0.5]\n)\n# Флэш-объект для обычного VLE (предполагаем полную смешиваемость жидкости)\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "flasher",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "flasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# ----------------------------------------------------------------------\n# 3. Построение y‑x диаграммы при T = 298.15 K\n# ----------------------------------------------------------------------\nplt.figure(figsize=(5,5))\nflasher.plot_xy(T=T, pts=100)\nplt.title(f'y‑x диаграмма для {components[0]}–{components[1]} при T = {T} K')\nplt.xlabel(f'x₁ ({components[0]})')\nplt.ylabel(f'y₁ ({components[0]})')\nplt.grid(True)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "Psat1",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "Psat1 = lambda T: properties.VaporPressures[0].T_to_P(T)\nPsat2 = lambda T: properties.VaporPressures[1].T_to_P(T)\n# Найдём температуру начала кипения (bubble point).\ndef bubble_temp(z1, P, flasher):\n    # Решаем уравнение sum_i z_i * gamma_i * Psat_i(T) = P\n    from scipy.optimize import fsolve\n    def obj(T):\n        # Временно меняем температуру во флэшере\n        flasher.T = T\n        # Получаем коэффициенты активности при T и составе z",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "Psat2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "Psat2 = lambda T: properties.VaporPressures[1].T_to_P(T)\n# Найдём температуру начала кипения (bubble point).\ndef bubble_temp(z1, P, flasher):\n    # Решаем уравнение sum_i z_i * gamma_i * Psat_i(T) = P\n    from scipy.optimize import fsolve\n    def obj(T):\n        # Временно меняем температуру во флэшере\n        flasher.T = T\n        # Получаем коэффициенты активности при T и составе z\n        flasher.liquid.GibbsExcessModel.T = T",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "x_vals",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "x_vals = np.linspace(0.01, 0.99, 50)\nT_ideal = [ideal_T(x, Psat1, Psat2, P) for x in x_vals]\nplt.figure()\nplt.plot(x_vals, T_ideal, 'r--', label='Идеальная кривая кипения (Рауль)')\n# Получим реальную кривую кипения через расчет bubble-point для набора составов\nx_real = np.linspace(0.01, 0.99, 50)\nT_real = []\ny_real = []\nfor x1 in x_real:\n    T_i = bubble_temp(x1, P, flasher)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_ideal",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_ideal = [ideal_T(x, Psat1, Psat2, P) for x in x_vals]\nplt.figure()\nplt.plot(x_vals, T_ideal, 'r--', label='Идеальная кривая кипения (Рауль)')\n# Получим реальную кривую кипения через расчет bubble-point для набора составов\nx_real = np.linspace(0.01, 0.99, 50)\nT_real = []\ny_real = []\nfor x1 in x_real:\n    T_i = bubble_temp(x1, P, flasher)\n    flasher.liquid.GibbsExcessModel.T = T_i",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "x_real",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "x_real = np.linspace(0.01, 0.99, 50)\nT_real = []\ny_real = []\nfor x1 in x_real:\n    T_i = bubble_temp(x1, P, flasher)\n    flasher.liquid.GibbsExcessModel.T = T_i\n    flasher.liquid.GibbsExcessModel.xs = [x1, 1 - x1]\n    gamma = flasher.liquid.GibbsExcessModel.gammas()\n    Psats = [prop.T_to_P(T_i) for prop in flasher.liquid.VaporPressures]\n    y1 = x1 * gamma[0] * Psats[0] / P",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_real",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_real = []\ny_real = []\nfor x1 in x_real:\n    T_i = bubble_temp(x1, P, flasher)\n    flasher.liquid.GibbsExcessModel.T = T_i\n    flasher.liquid.GibbsExcessModel.xs = [x1, 1 - x1]\n    gamma = flasher.liquid.GibbsExcessModel.gammas()\n    Psats = [prop.T_to_P(T_i) for prop in flasher.liquid.VaporPressures]\n    y1 = x1 * gamma[0] * Psats[0] / P\n    T_real.append(T_i)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "y_real",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "y_real = []\nfor x1 in x_real:\n    T_i = bubble_temp(x1, P, flasher)\n    flasher.liquid.GibbsExcessModel.T = T_i\n    flasher.liquid.GibbsExcessModel.xs = [x1, 1 - x1]\n    gamma = flasher.liquid.GibbsExcessModel.gammas()\n    Psats = [prop.T_to_P(T_i) for prop in flasher.liquid.VaporPressures]\n    y1 = x1 * gamma[0] * Psats[0] / P\n    T_real.append(T_i)\n    y_real.append(y1)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_real",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_real = np.array(T_real)\ny_real = np.array(y_real)\nplt.plot(x_real, T_real, 'b-', label='Реальная кривая кипения')\nplt.xlabel(f'x₁ ({components[0]})')\nplt.ylabel('Температура, K')\nplt.title('Сравнение реальной и идеальной кривых кипения')\nplt.legend()\nplt.grid(True)\nplt.show()\n# Определяем наличие азеотропа (пересечение кривых x и y)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "y_real",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "y_real = np.array(y_real)\nplt.plot(x_real, T_real, 'b-', label='Реальная кривая кипения')\nplt.xlabel(f'x₁ ({components[0]})')\nplt.ylabel('Температура, K')\nplt.title('Сравнение реальной и идеальной кривых кипения')\nplt.legend()\nplt.grid(True)\nplt.show()\n# Определяем наличие азеотропа (пересечение кривых x и y)\n# Если при каком-то составе x == y, то азеотроп",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "diff",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "diff = np.abs(np.array(x_real) - np.array(y_real))\nidx_min = np.argmin(diff)\nif diff[idx_min] < 0.01:\n    azeo_x = x_real[idx_min]\n    azeo_T = T_real[idx_min]\n    print(f\"Обнаружен азеотроп: x₁ = {azeo_x:.3f}, T = {azeo_T:.2f} K\")\n    # Определяем отклонение: если азеотропная температура ниже идеальной для того же состава -> положительное отклонение\n    T_ideal_azeo = ideal_T(azeo_x, Psat1, Psat2, P)\n    if azeo_T < T_ideal_azeo:\n        print(\"Тип диаграммы: азеотропная с положительным отклонением от закона Рауля\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "idx_min",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "idx_min = np.argmin(diff)\nif diff[idx_min] < 0.01:\n    azeo_x = x_real[idx_min]\n    azeo_T = T_real[idx_min]\n    print(f\"Обнаружен азеотроп: x₁ = {azeo_x:.3f}, T = {azeo_T:.2f} K\")\n    # Определяем отклонение: если азеотропная температура ниже идеальной для того же состава -> положительное отклонение\n    T_ideal_azeo = ideal_T(azeo_x, Psat1, Psat2, P)\n    if azeo_T < T_ideal_azeo:\n        print(\"Тип диаграммы: азеотропная с положительным отклонением от закона Рауля\")\n    else:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_bubble_interp",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_bubble_interp = interp1d(x_real, T_real, kind='linear', fill_value='extrapolate')\nT_D = T_bubble_interp(0.3) + 5.0   # немного выше температуры начала кипения\n# Выполним flash при T_D и P = 1 бар, начальный состав z = 0.3\nres = flasher.flash(T=T_D, P=P, zs=[0.3, 0.7])\nif res.phase_count == 2:\n    x_liq = res.liquid0.zs[0]\n    y_vap = res.gas.zs[0]\n    VF = res.VF   # доля пара\n    # Доля жидкости = 1 - VF\n    print(f\"\\nФигуративная точка D: T = {T_D:.2f} K, общий состав z₁ = 0.3\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_D",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_D = T_bubble_interp(0.3) + 5.0   # немного выше температуры начала кипения\n# Выполним flash при T_D и P = 1 бар, начальный состав z = 0.3\nres = flasher.flash(T=T_D, P=P, zs=[0.3, 0.7])\nif res.phase_count == 2:\n    x_liq = res.liquid0.zs[0]\n    y_vap = res.gas.zs[0]\n    VF = res.VF   # доля пара\n    # Доля жидкости = 1 - VF\n    print(f\"\\nФигуративная точка D: T = {T_D:.2f} K, общий состав z₁ = 0.3\")\n    print(f\"Равновесные составы: жидкость x₁ = {x_liq:.4f}, пар y₁ = {y_vap:.4f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "res",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "res = flasher.flash(T=T_D, P=P, zs=[0.3, 0.7])\nif res.phase_count == 2:\n    x_liq = res.liquid0.zs[0]\n    y_vap = res.gas.zs[0]\n    VF = res.VF   # доля пара\n    # Доля жидкости = 1 - VF\n    print(f\"\\nФигуративная точка D: T = {T_D:.2f} K, общий состав z₁ = 0.3\")\n    print(f\"Равновесные составы: жидкость x₁ = {x_liq:.4f}, пар y₁ = {y_vap:.4f}\")\n    print(f\"Доля пара по правилу рычага: VF = {VF:.3f} (расчётная), доля жидкости = {1-VF:.3f}\")\n    # Проверка правила рычага: (z - x)/(y - x) = VF",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "z",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "z = 0.5\n# Найдём температуру начала кипения (bubble point)\ndef bubble_temp(z1, P, flasher):\n    # Решаем уравнение sum_i z_i * gamma_i * Psat_i(T) = P\n    from scipy.optimize import fsolve\n    def obj(T):\n        # Временно меняем температуру во флэшере\n        flasher.T = T\n        # Получаем коэффициенты активности при T и составе z\n        flasher.liquid.GibbsExcessModel.T = T",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_bubble",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_bubble = bubble_temp(z, P, flasher)\nprint(f\"\\nТемпература начала кипения эквимолярной смеси: {T_bubble:.2f} K\")\n# Найдём температуру конца кипения (dew point): y₁ = 0.5\ndef dew_temp(y1, P, flasher):\n    from scipy.optimize import fsolve\n    def obj(T):\n        flasher.T = T\n        # Для заданного y1 находим x из условия равновесия: y1 = x1*gamma1*Psat1/P\n        # Приходится решать систему нелинейных уравнений, упростим: итерационно\n        # Используем flash с начальным приближением",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_dew",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_dew = dew_temp(z, P, flasher)\nprint(f\"Температура конца кипения (образование эквимолярного пара): {T_dew:.2f} K\")\nprint(  \"Таким образом, при нагревании эквимолярной жидкой смеси от комнатной температуры\\n\"\n        \"первый пузырёк появляется при T_bubble, а при T_dew последняя капля жидкости испаряется,\\n\"\n        \"давая пар состава y₁ = 0.5.\")\n# ----------------------------------------------------------------------\n# 7. Расчёт средней абсолютной ошибки по данным vle-calc.com\n# ----------------------------------------------------------------------\n# Данные с vle-calc.com для смеси циклогексан–метанол при 1 бар (условные, взяты из типичной диаграммы)\n# Для демонстрации используем следующие приблизительные значения:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T_site",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T_site = [337.0, 340.0, 343.0, 346.0, 349.0]   # температуры в двухфазной области\nx_site = [0.85,   0.70,   0.55,   0.40,   0.25]\ny_site = [0.45,   0.50,   0.55,   0.60,   0.65]\nerrors_x = []\nerrors_y = []\nfor T_i, x_i, y_i in zip(T_site, x_site, y_site):\n    z_i = (x_i + y_i) / 2.0   # начальная концентрация для flash\n    res = flasher.flash(T=T_i, P=P, zs=[z_i, 1-z_i])\n    if res.phase_count == 2:\n        x_calc = res.liquid0.zs[0]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "x_site",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "x_site = [0.85,   0.70,   0.55,   0.40,   0.25]\ny_site = [0.45,   0.50,   0.55,   0.60,   0.65]\nerrors_x = []\nerrors_y = []\nfor T_i, x_i, y_i in zip(T_site, x_site, y_site):\n    z_i = (x_i + y_i) / 2.0   # начальная концентрация для flash\n    res = flasher.flash(T=T_i, P=P, zs=[z_i, 1-z_i])\n    if res.phase_count == 2:\n        x_calc = res.liquid0.zs[0]\n        y_calc = res.gas.zs[0]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "y_site",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "y_site = [0.45,   0.50,   0.55,   0.60,   0.65]\nerrors_x = []\nerrors_y = []\nfor T_i, x_i, y_i in zip(T_site, x_site, y_site):\n    z_i = (x_i + y_i) / 2.0   # начальная концентрация для flash\n    res = flasher.flash(T=T_i, P=P, zs=[z_i, 1-z_i])\n    if res.phase_count == 2:\n        x_calc = res.liquid0.zs[0]\n        y_calc = res.gas.zs[0]\n    elif res.phase_count == 1 and res.VF == 0:   # только жидкость",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "errors_x",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "errors_x = []\nerrors_y = []\nfor T_i, x_i, y_i in zip(T_site, x_site, y_site):\n    z_i = (x_i + y_i) / 2.0   # начальная концентрация для flash\n    res = flasher.flash(T=T_i, P=P, zs=[z_i, 1-z_i])\n    if res.phase_count == 2:\n        x_calc = res.liquid0.zs[0]\n        y_calc = res.gas.zs[0]\n    elif res.phase_count == 1 and res.VF == 0:   # только жидкость\n        x_calc = res.liquid0.zs[0]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "errors_y",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "errors_y = []\nfor T_i, x_i, y_i in zip(T_site, x_site, y_site):\n    z_i = (x_i + y_i) / 2.0   # начальная концентрация для flash\n    res = flasher.flash(T=T_i, P=P, zs=[z_i, 1-z_i])\n    if res.phase_count == 2:\n        x_calc = res.liquid0.zs[0]\n        y_calc = res.gas.zs[0]\n    elif res.phase_count == 1 and res.VF == 0:   # только жидкость\n        x_calc = res.liquid0.zs[0]\n        y_calc = 0.0",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "MAE_x",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "MAE_x = np.mean(errors_x)\nMAE_y = np.mean(errors_y)\nprint(f\"\\nСредняя абсолютная ошибка по x: {MAE_x:.4f}\")\nprint(f\"Средняя абсолютная ошибка по y: {MAE_y:.4f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "MAE_y",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "MAE_y = np.mean(errors_y)\nprint(f\"\\nСредняя абсолютная ошибка по x: {MAE_x:.4f}\")\nprint(f\"Средняя абсолютная ошибка по y: {MAE_y:.4f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "T = 333.15 # K\nP = 1e5 # 1 bar\nzs = [.5, .5]\n# Use Peng-Robinson for both the vapor and the liquid phases\nk12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "P",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "P = 1e5 # 1 bar\nzs = [.5, .5]\n# Use Peng-Robinson for both the vapor and the liquid phases\nk12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nliquid = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "zs",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "zs = [.5, .5]\n# Use Peng-Robinson for both the vapor and the liquid phases\nk12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nliquid = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\n#gas = CEOSGas(PRMIX, eos_kwargs=eos_kwargs)",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "k12",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "k12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nliquid = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\n#gas = CEOSGas(PRMIX, eos_kwargs=eos_kwargs)\n#liquid = CEOSLiquid(PRMIX, eos_kwargs=eos_kwargs)\n# Create a flasher instance, assuming only vapor-liquid behavior",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "kijs",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "kijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nliquid = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\n#gas = CEOSGas(PRMIX, eos_kwargs=eos_kwargs)\n#liquid = CEOSLiquid(PRMIX, eos_kwargs=eos_kwargs)\n# Create a flasher instance, assuming only vapor-liquid behavior\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "eos_kwargs",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "eos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nliquid = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\n#gas = CEOSGas(PRMIX, eos_kwargs=eos_kwargs)\n#liquid = CEOSLiquid(PRMIX, eos_kwargs=eos_kwargs)\n# Create a flasher instance, assuming only vapor-liquid behavior\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar\n_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "gas",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "gas = CEOSGas(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nliquid = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\n#gas = CEOSGas(PRMIX, eos_kwargs=eos_kwargs)\n#liquid = CEOSLiquid(PRMIX, eos_kwargs=eos_kwargs)\n# Create a flasher instance, assuming only vapor-liquid behavior\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar\n_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "liquid",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "liquid = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\n#gas = CEOSGas(PRMIX, eos_kwargs=eos_kwargs)\n#liquid = CEOSLiquid(PRMIX, eos_kwargs=eos_kwargs)\n# Create a flasher instance, assuming only vapor-liquid behavior\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar\n_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "#gas",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "#gas = CEOSGas(PRMIX, eos_kwargs=eos_kwargs)\n#liquid = CEOSLiquid(PRMIX, eos_kwargs=eos_kwargs)\n# Create a flasher instance, assuming only vapor-liquid behavior\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar\n_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "#liquid",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "#liquid = CEOSLiquid(PRMIX, eos_kwargs=eos_kwargs)\n# Create a flasher instance, assuming only vapor-liquid behavior\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar\n_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "flasher",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "flasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar\n_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nflasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "_",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nflasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)\nx1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];\ny1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "_",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nflasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)\nx1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];\ny1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];\nmyT=[365.699, 355.741, 342.005, 332.748, 330.14];\n#initial mole fractions of component 1 to start flash from",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "_",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nflasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)\nx1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];\ny1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];\nmyT=[365.699, 355.741, 342.005, 332.748, 330.14];\n#initial mole fractions of component 1 to start flash from\n#take this between x and y at plot. At first glance, between x1_exp and y1_exp\nzs=[0.1, 0.2, 0.7, 0.9, 0.97]",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "liquid2",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "liquid2 = CEOSLiquid(PRMIX, eos_kwargs, HeatCapacityGases=properties.HeatCapacityGases, T=T, P=P, zs=zs)\nflasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)\nx1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];\ny1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];\nmyT=[365.699, 355.741, 342.005, 332.748, 330.14];\n#initial mole fractions of component 1 to start flash from\n#take this between x and y at plot. At first glance, between x1_exp and y1_exp\nzs=[0.1, 0.2, 0.7, 0.9, 0.97]\nfor i in range(5):\n\tres = flasher2.flash(T=myT[i], P=P, zs=[zs[i], 1-zs[i]])",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "flasher2",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "flasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)\nx1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];\ny1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];\nmyT=[365.699, 355.741, 342.005, 332.748, 330.14];\n#initial mole fractions of component 1 to start flash from\n#take this between x and y at plot. At first glance, between x1_exp and y1_exp\nzs=[0.1, 0.2, 0.7, 0.9, 0.97]\nfor i in range(5):\n\tres = flasher2.flash(T=myT[i], P=P, zs=[zs[i], 1-zs[i]])\n\tprint('There are %s phases present at %f K and %f bar' %(res.phase_count,myT[i],P/1e5))",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "\tres",
+        "kind": 5,
+        "importPath": "peng_robinson",
+        "description": "peng_robinson",
+        "peekOfCode": "\tres = flasher2.flash(T=myT[i], P=P, zs=[zs[i], 1-zs[i]])\n\tprint('There are %s phases present at %f K and %f bar' %(res.phase_count,myT[i],P/1e5))\n\tif res.VF == 0:\n\t\tprint(\"Only liquid\")\n\tif res.VF > 0:\n\t\tprint(\"x: \")\n\t\tprint(res.gas.zs)\n\tif res.VF == 1:  # Есть только пар\n\t\tprint(\"Only vapour\")\n\telse:",
+        "detail": "peng_robinson",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "T = 333.15\nP = 1e5\nzs = [.5, .5]\n#print(constants)\n# Use Peng-Robinson for the vapor phase\nk12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas) #, kijs=kijs",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "P",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "P = 1e5\nzs = [.5, .5]\n#print(constants)\n# Use Peng-Robinson for the vapor phase\nk12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas) #, kijs=kijs\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "zs",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "zs = [.5, .5]\n#print(constants)\n# Use Peng-Robinson for the vapor phase\nk12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas) #, kijs=kijs\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Configure the activity model",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "k12",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "k12 = -0.2477\nkijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas) #, kijs=kijs\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Configure the activity model\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1, T=T, xs=zs, interaction_data=DOUFIP2016, subgroups=DOUFSG)\n# Configure the liquid model with activity coefficients\nliquid = GibbsExcessLiquid(",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "kijs",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "kijs = [[0, k12],\n        [k12, 0]]\nprint(k12)\neos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas) #, kijs=kijs\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Configure the activity model\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1, T=T, xs=zs, interaction_data=DOUFIP2016, subgroups=DOUFSG)\n# Configure the liquid model with activity coefficients\nliquid = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "eos_kwargs",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "eos_kwargs = dict(Tcs=constants.Tcs, Pcs=constants.Pcs, omegas=constants.omegas) #, kijs=kijs\ngas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Configure the activity model\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1, T=T, xs=zs, interaction_data=DOUFIP2016, subgroups=DOUFSG)\n# Configure the liquid model with activity coefficients\nliquid = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,\n\tGibbsExcessModel=GE,",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "gas",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "gas = CEOSGas(PRMIX, HeatCapacityGases=properties.HeatCapacityGases, eos_kwargs=eos_kwargs)\n# Configure the activity model\nGE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1, T=T, xs=zs, interaction_data=DOUFIP2016, subgroups=DOUFSG)\n# Configure the liquid model with activity coefficients\nliquid = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,\n\tGibbsExcessModel=GE,\n\tequilibrium_basis='Psat', caloric_basis='Psat',",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "GE",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "GE = UNIFAC.from_subgroups(chemgroups=constants.UNIFAC_Dortmund_groups, version=1, T=T, xs=zs, interaction_data=DOUFIP2016, subgroups=DOUFSG)\n# Configure the liquid model with activity coefficients\nliquid = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,\n\tGibbsExcessModel=GE,\n\tequilibrium_basis='Psat', caloric_basis='Psat',\n\tT=T, P=P, zs=zs)\n# Create a flasher instance, assuming only vapor-liquid behavior",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "liquid",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "liquid = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,\n\tGibbsExcessModel=GE,\n\tequilibrium_basis='Psat', caloric_basis='Psat',\n\tT=T, P=P, zs=zs)\n# Create a flasher instance, assuming only vapor-liquid behavior\nflasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "flasher",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "flasher = FlashVL(constants, properties, liquid=liquid, gas=gas)\n# Create a T-xy plot at P bar\n_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "_",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "_ = flasher.plot_Txy(P=P, pts=100)\n# Create a P-xy plot at T Kelvin\n_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "_",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "_ = flasher.plot_Pxy(T=T, pts=100)\n# Create a xy diagram at T Kelvin\n_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,\n\tGibbsExcessModel=GE,\n\tequilibrium_basis='Psat', caloric_basis='Psat',",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "_",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "_ = flasher.plot_xy(T=T, pts=100)\n# VLLE flash\nliquid2 = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,\n\tGibbsExcessModel=GE,\n\tequilibrium_basis='Psat', caloric_basis='Psat',\n\tT=T, P=P, zs=zs)\nflasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "liquid2",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "liquid2 = GibbsExcessLiquid(\n\tVaporPressures=properties.VaporPressures,\n\tHeatCapacityGases=properties.HeatCapacityGases,\n\tVolumeLiquids=properties.VolumeLiquids,\n\tGibbsExcessModel=GE,\n\tequilibrium_basis='Psat', caloric_basis='Psat',\n\tT=T, P=P, zs=zs)\nflasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)\nx1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];\ny1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "flasher2",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "flasher2 = FlashVLN(constants, properties, liquids=[liquid, liquid2], gas=gas)\nx1_exp=[0.01, 0.03, 0.1, 0.5, 0.85];\ny1_exp=[0.250369, 0.494505, 0.725424, 0.839958, 0.908808];\nmyT=[365.699, 355.741, 342.005, 332.748, 330.14];\n#initial mole fractions of component 1 to start flash from\n#take this between x and y at plot. At first glance, between x1_exp and y1_exp\nzs=[0.1, 0.2, 0.7, 0.8, 0.87]\nfor i in range(5):\n\tres = flasher2.flash(T=myT[i], P=P, zs=[zs[i], 1-zs[i]])\n\tprint('There are %s phases present at %f K and %f bar' %(res.phase_count,myT[i],P/1e5))",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "\tres",
+        "kind": 5,
+        "importPath": "pr_unifac",
+        "description": "pr_unifac",
+        "peekOfCode": "\tres = flasher2.flash(T=myT[i], P=P, zs=[zs[i], 1-zs[i]])\n\tprint('There are %s phases present at %f K and %f bar' %(res.phase_count,myT[i],P/1e5))\n\tif res.VF == 0:\n\t\tprint(\"Only liquid\")\n\tif res.VF > 0:\n\t\tprint(\"x: \")\n\t\tprint(res.gas.zs)\n\tif res.VF == 1:  # Есть только пар\n\t\tprint(\"Only vapour\")\n\telse:",
+        "detail": "pr_unifac",
+        "documentation": {}
+    },
+    {
+        "label": "P",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "P = 100000\nk12 = -0.304759306015339 #0.086\nkijs = [[0, k12], [k12, 0]]\neos_conf = dict(Tcs=comps.Tcs, Pcs=comps.Pcs, omegas=comps.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nliq = CEOSLiquid(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nflasher = FlashVL(comps, props, liquid=liq, gas=gas)\nz1 = 0.5\nz_D = [z1, 1 - z1]\ntry:",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "k12",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "k12 = -0.304759306015339 #0.086\nkijs = [[0, k12], [k12, 0]]\neos_conf = dict(Tcs=comps.Tcs, Pcs=comps.Pcs, omegas=comps.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nliq = CEOSLiquid(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nflasher = FlashVL(comps, props, liquid=liq, gas=gas)\nz1 = 0.5\nz_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "kijs",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "kijs = [[0, k12], [k12, 0]]\neos_conf = dict(Tcs=comps.Tcs, Pcs=comps.Pcs, omegas=comps.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nliq = CEOSLiquid(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nflasher = FlashVL(comps, props, liquid=liq, gas=gas)\nz1 = 0.5\nz_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T\n    T_dew = flasher.flash(P=P, zs=z_D, VF=1).T",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "eos_conf",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "eos_conf = dict(Tcs=comps.Tcs, Pcs=comps.Pcs, omegas=comps.omegas, kijs=kijs)\ngas = CEOSGas(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nliq = CEOSLiquid(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nflasher = FlashVL(comps, props, liquid=liq, gas=gas)\nz1 = 0.5\nz_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T\n    T_dew = flasher.flash(P=P, zs=z_D, VF=1).T\n    T_mid = (T_bubble + T_dew) / 2",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "gas",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "gas = CEOSGas(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nliq = CEOSLiquid(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nflasher = FlashVL(comps, props, liquid=liq, gas=gas)\nz1 = 0.5\nz_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T\n    T_dew = flasher.flash(P=P, zs=z_D, VF=1).T\n    T_mid = (T_bubble + T_dew) / 2\n    res_D = flasher.flash(T=T_mid, P=P, zs=z_D)",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "liq",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "liq = CEOSLiquid(PRMIX, eos_kwargs=eos_conf, HeatCapacityGases=props.HeatCapacityGases)\nflasher = FlashVL(comps, props, liquid=liq, gas=gas)\nz1 = 0.5\nz_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T\n    T_dew = flasher.flash(P=P, zs=z_D, VF=1).T\n    T_mid = (T_bubble + T_dew) / 2\n    res_D = flasher.flash(T=T_mid, P=P, zs=z_D)\n    print(f\"Границы кипения: {T_bubble:.2f} K ... {T_dew:.2f} K\")",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "flasher",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "flasher = FlashVL(comps, props, liquid=liq, gas=gas)\nz1 = 0.5\nz_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T\n    T_dew = flasher.flash(P=P, zs=z_D, VF=1).T\n    T_mid = (T_bubble + T_dew) / 2\n    res_D = flasher.flash(T=T_mid, P=P, zs=z_D)\n    print(f\"Границы кипения: {T_bubble:.2f} K ... {T_dew:.2f} K\")\n    print(f\"Выбранная точка D: T = {T_mid:.2f} K\")",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "z1",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "z1 = 0.5\nz_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T\n    T_dew = flasher.flash(P=P, zs=z_D, VF=1).T\n    T_mid = (T_bubble + T_dew) / 2\n    res_D = flasher.flash(T=T_mid, P=P, zs=z_D)\n    print(f\"Границы кипения: {T_bubble:.2f} K ... {T_dew:.2f} K\")\n    print(f\"Выбранная точка D: T = {T_mid:.2f} K\")\n    if res_D.phase_count > 1:",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "z_D",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "z_D = [z1, 1 - z1]\ntry:\n    T_bubble = flasher.flash(P=P, zs=z_D, VF=0).T\n    T_dew = flasher.flash(P=P, zs=z_D, VF=1).T\n    T_mid = (T_bubble + T_dew) / 2\n    res_D = flasher.flash(T=T_mid, P=P, zs=z_D)\n    print(f\"Границы кипения: {T_bubble:.2f} K ... {T_dew:.2f} K\")\n    print(f\"Выбранная точка D: T = {T_mid:.2f} K\")\n    if res_D.phase_count > 1:\n        l_phase = res_D.liquid0 if hasattr(res_D, 'liquid0') else res_D.liquid",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "exp_points_11",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "exp_points_11 = [\n    [337.355, 0.0001, 0.001],\n    [337.306, 0.001, 0.003],\n    [336.866, 0.01, 0.029],\n    [335.94, 0.03, 0.083],\n    [334.678, 0.06, 0.154],\n    [333.211, 0.1, 0.234],\n    [330.435, 0.2, 0.38],\n    [328.002, 0.35, 0.514],\n    [327.31, 0.45, 0.54],",
+        "detail": "tests",
+        "documentation": {}
+    },
+    {
+        "label": "exp_points",
+        "kind": 5,
+        "importPath": "tests",
+        "description": "tests",
+        "peekOfCode": "exp_points = exp_points_11[2:7]\nex, ey = [], []\nfor T_e, x_e, y_e in exp_points:\n    z = (x_e + y_e) / 2\n    f = flasher.flash(T=T_e, P=P, zs=[z, 1-z])\n    calc_x = f.liquid0.zs[0] if f.phase_count > 1 else 0.0\n    calc_y = f.gas.zs[0] if f.phase_count > 1 else 0.0\n    ex.append(abs(calc_x - x_e))\n    ey.append(abs(calc_y - y_e))\nprint(f\"\\n Ошибка\")",
+        "detail": "tests",
+        "documentation": {}
+    }
+]

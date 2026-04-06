@@ -1,0 +1,404 @@
+[
+    {
+        "label": "minimize",
+        "importPath": "scipy.optimize",
+        "description": "scipy.optimize",
+        "isExtraImport": true,
+        "detail": "scipy.optimize",
+        "documentation": {}
+    },
+    {
+        "label": "fsolve",
+        "importPath": "scipy.optimize",
+        "description": "scipy.optimize",
+        "isExtraImport": true,
+        "detail": "scipy.optimize",
+        "documentation": {}
+    },
+    {
+        "label": "differential_evolution",
+        "importPath": "scipy.optimize",
+        "description": "scipy.optimize",
+        "isExtraImport": true,
+        "detail": "scipy.optimize",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "antoine",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def antoine(T_K, A, B, C):\n    \"\"\"\n    Расчет давления насыщения по уравнению Антуана\n    Возвращает давление в МПа\n    ln(P[мм.рт.ст]) = A - B/(T + C)\n    1 мм.рт.ст = 133.322 Па = 0.000133322 МПа\n    \"\"\"\n    ln_P_mmHg = A - B / (T_K + C)\n    P_mmHg = np.exp(ln_P_mmHg)\n    P_Pa = P_mmHg * 133.322",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "wilson_activity_coefficients",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def wilson_activity_coefficients(x1, Lambda12, Lambda21):\n    \"\"\"\n    Расчет коэффициентов активности по модели Вильсона\n    x1 - мольная доля компонента 1\n    Lambda12, Lambda21 - параметры модели Вильсона\n    \"\"\"\n    x2 = 1 - x1\n    # Защита от деления на ноль и логарифма отрицательного числа\n    if x1 == 0:\n        return 1.0, np.exp(-Lambda21)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "objective_function",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def objective_function(params, x1, gam1_exp, gam2_exp):\n    \"\"\"\n    Целевая функция для минимизации (взвешенная среднеквадратичная ошибка)\n    params = [Lambda12, Lambda21]\n    \"\"\"\n    Lambda12, Lambda21 = params\n    error = 0.0\n    for i in range(len(x1)):\n        try:\n            gam1, gam2 = wilson_activity_coefficients(x1[i], Lambda12, Lambda21)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "T = 298.15  # Температура (K)\nR = 8.314   # Газовая постоянная (Дж/(моль·К))\n# Экспериментальные данные\nx1_exp = np.array([0.100, 0.300, 0.500, 0.700, 0.900])\ny1_exp = np.array([0.903, 0.875, 0.923, 0.873, 0.923])\nP_exp_bar = np.array([0.2630, 0.2796, 0.2833, 0.2874, 0.2937])  # (бар)\n# В расчете используем МПа, чтобы согласовать единицы с P_sat из Антуана\nP_exp = P_exp_bar * 0.1  # 1 бар = 0.1 МПа\n# Константы Антуана для расчета давления насыщения (ММ РТ СТ)\n# Компонент 1: Метилацетат",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "R",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "R = 8.314   # Газовая постоянная (Дж/(моль·К))\n# Экспериментальные данные\nx1_exp = np.array([0.100, 0.300, 0.500, 0.700, 0.900])\ny1_exp = np.array([0.903, 0.875, 0.923, 0.873, 0.923])\nP_exp_bar = np.array([0.2630, 0.2796, 0.2833, 0.2874, 0.2937])  # (бар)\n# В расчете используем МПа, чтобы согласовать единицы с P_sat из Антуана\nP_exp = P_exp_bar * 0.1  # 1 бар = 0.1 МПа\n# Константы Антуана для расчета давления насыщения (ММ РТ СТ)\n# Компонент 1: Метилацетат\n# Компонент 2: Вода",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "x1_exp",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "x1_exp = np.array([0.100, 0.300, 0.500, 0.700, 0.900])\ny1_exp = np.array([0.903, 0.875, 0.923, 0.873, 0.923])\nP_exp_bar = np.array([0.2630, 0.2796, 0.2833, 0.2874, 0.2937])  # (бар)\n# В расчете используем МПа, чтобы согласовать единицы с P_sat из Антуана\nP_exp = P_exp_bar * 0.1  # 1 бар = 0.1 МПа\n# Константы Антуана для расчета давления насыщения (ММ РТ СТ)\n# Компонент 1: Метилацетат\n# Компонент 2: Вода\nA = np.array([16.13, 18.30])\nB = np.array([2601.92, 3816.44])",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "y1_exp",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "y1_exp = np.array([0.903, 0.875, 0.923, 0.873, 0.923])\nP_exp_bar = np.array([0.2630, 0.2796, 0.2833, 0.2874, 0.2937])  # (бар)\n# В расчете используем МПа, чтобы согласовать единицы с P_sat из Антуана\nP_exp = P_exp_bar * 0.1  # 1 бар = 0.1 МПа\n# Константы Антуана для расчета давления насыщения (ММ РТ СТ)\n# Компонент 1: Метилацетат\n# Компонент 2: Вода\nA = np.array([16.13, 18.30])\nB = np.array([2601.92, 3816.44])\nC = np.array([-56.15, -46.13])",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "P_exp_bar",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "P_exp_bar = np.array([0.2630, 0.2796, 0.2833, 0.2874, 0.2937])  # (бар)\n# В расчете используем МПа, чтобы согласовать единицы с P_sat из Антуана\nP_exp = P_exp_bar * 0.1  # 1 бар = 0.1 МПа\n# Константы Антуана для расчета давления насыщения (ММ РТ СТ)\n# Компонент 1: Метилацетат\n# Компонент 2: Вода\nA = np.array([16.13, 18.30])\nB = np.array([2601.92, 3816.44])\nC = np.array([-56.15, -46.13])\nTc = np.array([506.80, 647.30])  # Критическая температура (K)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "P_exp",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "P_exp = P_exp_bar * 0.1  # 1 бар = 0.1 МПа\n# Константы Антуана для расчета давления насыщения (ММ РТ СТ)\n# Компонент 1: Метилацетат\n# Компонент 2: Вода\nA = np.array([16.13, 18.30])\nB = np.array([2601.92, 3816.44])\nC = np.array([-56.15, -46.13])\nTc = np.array([506.80, 647.30])  # Критическая температура (K)\nPc = np.array([46.91, 220.48])    # Критическое давление (бар)\nomega = np.array([0.32, 0.34])   # Ацентрическая фактор",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "A",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "A = np.array([16.13, 18.30])\nB = np.array([2601.92, 3816.44])\nC = np.array([-56.15, -46.13])\nTc = np.array([506.80, 647.30])  # Критическая температура (K)\nPc = np.array([46.91, 220.48])    # Критическое давление (бар)\nomega = np.array([0.32, 0.34])   # Ацентрическая фактор\n# ФУНКЦИЯ РАСЧЕТА ДАВЛЕНИЯ НАСЫЩЕНИЯ \ndef antoine(T_K, A, B, C):\n    \"\"\"\n    Расчет давления насыщения по уравнению Антуана",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "B",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "B = np.array([2601.92, 3816.44])\nC = np.array([-56.15, -46.13])\nTc = np.array([506.80, 647.30])  # Критическая температура (K)\nPc = np.array([46.91, 220.48])    # Критическое давление (бар)\nomega = np.array([0.32, 0.34])   # Ацентрическая фактор\n# ФУНКЦИЯ РАСЧЕТА ДАВЛЕНИЯ НАСЫЩЕНИЯ \ndef antoine(T_K, A, B, C):\n    \"\"\"\n    Расчет давления насыщения по уравнению Антуана\n    Возвращает давление в МПа",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "C",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "C = np.array([-56.15, -46.13])\nTc = np.array([506.80, 647.30])  # Критическая температура (K)\nPc = np.array([46.91, 220.48])    # Критическое давление (бар)\nomega = np.array([0.32, 0.34])   # Ацентрическая фактор\n# ФУНКЦИЯ РАСЧЕТА ДАВЛЕНИЯ НАСЫЩЕНИЯ \ndef antoine(T_K, A, B, C):\n    \"\"\"\n    Расчет давления насыщения по уравнению Антуана\n    Возвращает давление в МПа\n    ln(P[мм.рт.ст]) = A - B/(T + C)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "Tc",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "Tc = np.array([506.80, 647.30])  # Критическая температура (K)\nPc = np.array([46.91, 220.48])    # Критическое давление (бар)\nomega = np.array([0.32, 0.34])   # Ацентрическая фактор\n# ФУНКЦИЯ РАСЧЕТА ДАВЛЕНИЯ НАСЫЩЕНИЯ \ndef antoine(T_K, A, B, C):\n    \"\"\"\n    Расчет давления насыщения по уравнению Антуана\n    Возвращает давление в МПа\n    ln(P[мм.рт.ст]) = A - B/(T + C)\n    1 мм.рт.ст = 133.322 Па = 0.000133322 МПа",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "Pc",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "Pc = np.array([46.91, 220.48])    # Критическое давление (бар)\nomega = np.array([0.32, 0.34])   # Ацентрическая фактор\n# ФУНКЦИЯ РАСЧЕТА ДАВЛЕНИЯ НАСЫЩЕНИЯ \ndef antoine(T_K, A, B, C):\n    \"\"\"\n    Расчет давления насыщения по уравнению Антуана\n    Возвращает давление в МПа\n    ln(P[мм.рт.ст]) = A - B/(T + C)\n    1 мм.рт.ст = 133.322 Па = 0.000133322 МПа\n    \"\"\"",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "omega",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "omega = np.array([0.32, 0.34])   # Ацентрическая фактор\n# ФУНКЦИЯ РАСЧЕТА ДАВЛЕНИЯ НАСЫЩЕНИЯ \ndef antoine(T_K, A, B, C):\n    \"\"\"\n    Расчет давления насыщения по уравнению Антуана\n    Возвращает давление в МПа\n    ln(P[мм.рт.ст]) = A - B/(T + C)\n    1 мм.рт.ст = 133.322 Па = 0.000133322 МПа\n    \"\"\"\n    ln_P_mmHg = A - B / (T_K + C)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "P1_sat",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "P1_sat = antoine(T, A[0], B[0], C[0])  # Метилацетат\nP2_sat = antoine(T, A[1], B[1], C[1])  # Вода\nprint(f\"P1_sat (Метилацетат) = {P1_sat:.6f} МПа = {P1_sat*1e6/133.322:.2f} мм.рт.ст\")\nprint(f\"P2_sat (Вода) = {P2_sat:.6f} МПа = {P2_sat*1e6/133.322:.2f} мм.рт.ст\")\nprint()\n# РАСЧЕТ КОЭФФИЦИЕНТОВ АКТИВНОСТИ ИЗ ЭКСПЕРИМЕНТАЛЬНЫХ ДАННЫХ\ngam1_exp = np.zeros(5)\ngam2_exp = np.zeros(5)\nfor i in range(5):\n    # Из уравнения VLE: y1*P = x1*gam1*P1_sat",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "P2_sat",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "P2_sat = antoine(T, A[1], B[1], C[1])  # Вода\nprint(f\"P1_sat (Метилацетат) = {P1_sat:.6f} МПа = {P1_sat*1e6/133.322:.2f} мм.рт.ст\")\nprint(f\"P2_sat (Вода) = {P2_sat:.6f} МПа = {P2_sat*1e6/133.322:.2f} мм.рт.ст\")\nprint()\n# РАСЧЕТ КОЭФФИЦИЕНТОВ АКТИВНОСТИ ИЗ ЭКСПЕРИМЕНТАЛЬНЫХ ДАННЫХ\ngam1_exp = np.zeros(5)\ngam2_exp = np.zeros(5)\nfor i in range(5):\n    # Из уравнения VLE: y1*P = x1*gam1*P1_sat\n    gam1_exp[i] = y1_exp[i] * P_exp[i] / (x1_exp[i] * P1_sat)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "gam1_exp",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "gam1_exp = np.zeros(5)\ngam2_exp = np.zeros(5)\nfor i in range(5):\n    # Из уравнения VLE: y1*P = x1*gam1*P1_sat\n    gam1_exp[i] = y1_exp[i] * P_exp[i] / (x1_exp[i] * P1_sat)\n    # (1-y1)*P = (1-x1)*gam2*P2_sat\n    gam2_exp[i] = (1 - y1_exp[i]) * P_exp[i] / ((1 - x1_exp[i]) * P2_sat)\nprint(\"Экспериментальные коэффициенты активности:\")\nprint(\"x1\\t\\tγ1\\t\\tγ2\")\nfor i in range(5):",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "gam2_exp",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "gam2_exp = np.zeros(5)\nfor i in range(5):\n    # Из уравнения VLE: y1*P = x1*gam1*P1_sat\n    gam1_exp[i] = y1_exp[i] * P_exp[i] / (x1_exp[i] * P1_sat)\n    # (1-y1)*P = (1-x1)*gam2*P2_sat\n    gam2_exp[i] = (1 - y1_exp[i]) * P_exp[i] / ((1 - x1_exp[i]) * P2_sat)\nprint(\"Экспериментальные коэффициенты активности:\")\nprint(\"x1\\t\\tγ1\\t\\tγ2\")\nfor i in range(5):\n    print(f\"{x1_exp[i]:.3f}\\t\\t{gam1_exp[i]:.6f}\\t{gam2_exp[i]:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "best_result",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "best_result = None\nbest_error = float('inf')\ninitial_guesses = [\n    [0.2, 0.3],\n    [0.5, 0.5],\n    [1.0, 1.0],\n    [0.8, 0.6],\n    [1.5, 0.4],\n    [0.4, 1.5],\n]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "best_error",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "best_error = float('inf')\ninitial_guesses = [\n    [0.2, 0.3],\n    [0.5, 0.5],\n    [1.0, 1.0],\n    [0.8, 0.6],\n    [1.5, 0.4],\n    [0.4, 1.5],\n]\n# Используем региональное ограничение (региональное ограничение находит глобальный минимум)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "initial_guesses",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "initial_guesses = [\n    [0.2, 0.3],\n    [0.5, 0.5],\n    [1.0, 1.0],\n    [0.8, 0.6],\n    [1.5, 0.4],\n    [0.4, 1.5],\n]\n# Используем региональное ограничение (региональное ограничение находит глобальный минимум)\nfrom scipy.optimize import differential_evolution",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "bounds_de",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "bounds_de = [(0.01, 3.0), (0.01, 3.0)]  # Lambda > 0.01\ntry:\n    result = differential_evolution(objective_function, bounds_de, \n                                args=(x1_exp, gam1_exp, gam2_exp),\n                                seed=42, maxiter=1000, atol=1e-8, tol=1e-8) # pyright: ignore[reportCallIssue]\n    Lambda12_fit = result.x[0]\n    Lambda21_fit = result.x[1]\n    best_error = result.fun\n    print(f\"Подобранные параметры модели Вильсона (дифференциальная эволюция):\")\nexcept:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "print(f\"Λ12",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "print(f\"Λ12 = {Lambda12_fit:.6f}\")\nprint(f\"Λ21 = {Lambda21_fit:.6f}\")\nprint(f\"Взвешенная ошибка оптимизации = {best_error:.6f}\")\nprint()\n# Проверка качества подбора\nprint(\"Проверка качества подбора параметров:\")\nprint(\"x1\\t\\tγ1(exp)\\t\\tγ1(Wilson)\\tγ2(exp)\\t\\tγ2(Wilson)\")\nfor i in range(5):\n    gam1_w, gam2_w = wilson_activity_coefficients(x1_exp[i], Lambda12_fit, Lambda21_fit)\n    print(f\"{x1_exp[i]:.3f}\\t\\t{gam1_exp[i]:.6f}\\t{gam1_w:.6f}\\t{gam2_exp[i]:.6f}\\t{gam2_w:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "print(f\"Λ21",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "print(f\"Λ21 = {Lambda21_fit:.6f}\")\nprint(f\"Взвешенная ошибка оптимизации = {best_error:.6f}\")\nprint()\n# Проверка качества подбора\nprint(\"Проверка качества подбора параметров:\")\nprint(\"x1\\t\\tγ1(exp)\\t\\tγ1(Wilson)\\tγ2(exp)\\t\\tγ2(Wilson)\")\nfor i in range(5):\n    gam1_w, gam2_w = wilson_activity_coefficients(x1_exp[i], Lambda12_fit, Lambda21_fit)\n    print(f\"{x1_exp[i]:.3f}\\t\\t{gam1_exp[i]:.6f}\\t{gam1_w:.6f}\\t{gam2_exp[i]:.6f}\\t{gam2_w:.6f}\")\nprint()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "x1_plot",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "x1_plot = np.linspace(0, 1, 100)\n# Расчет y1 и P для всего диапазона x1\ny1_plot = np.zeros(100)\nP_plot = np.zeros(100)\nfor i in range(100):\n    if x1_plot[i] == 0 or x1_plot[i] == 1:\n        # На границах чистые компоненты\n        if x1_plot[i] == 0:\n            y1_plot[i] = 0\n            P_plot[i] = P2_sat",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "y1_plot",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "y1_plot = np.zeros(100)\nP_plot = np.zeros(100)\nfor i in range(100):\n    if x1_plot[i] == 0 or x1_plot[i] == 1:\n        # На границах чистые компоненты\n        if x1_plot[i] == 0:\n            y1_plot[i] = 0\n            P_plot[i] = P2_sat\n        else:\n            y1_plot[i] = 1",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "P_plot",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "P_plot = np.zeros(100)\nfor i in range(100):\n    if x1_plot[i] == 0 or x1_plot[i] == 1:\n        # На границах чистые компоненты\n        if x1_plot[i] == 0:\n            y1_plot[i] = 0\n            P_plot[i] = P2_sat\n        else:\n            y1_plot[i] = 1\n            P_plot[i] = P1_sat",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "ax1",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "ax1 = axes[0]\nax1.plot(x1_plot, y1_plot, 'b-', linewidth=2, label='Модель Вильсона')\nax1.plot(x1_plot, x1_plot, 'k--', linewidth=1, alpha=0.5, label='y=x (идеальный раствор)')\nax1.scatter(x1_exp, y1_exp, color='red', s=100, zorder=5, label='Экспериментальные данные')\nax1.set_xlabel('x₁ (мольная доля метилацетата)', fontsize=12)\nax1.set_ylabel('y₁ (мольная доля метилацетата в паре)', fontsize=12)\nax1.set_title('y-x диаграмма (Т = 298.15 К)', fontsize=13, fontweight='bold')\nax1.grid(True, alpha=0.3)\nax1.legend(fontsize=10)\nax1.set_xlim(0, 1)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "ax2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "ax2 = axes[1]\nax2.plot(x1_plot, P_plot * 1e3, 'b-', linewidth=2.5, label='закипание (boiling)', marker='')\nax2.scatter(x1_exp, P_exp * 1e3, color='red', s=100, zorder=5, label='Экспериментальные данные')\n# Дополнительно: верхняя кривая (роса)\ny1_dew = np.zeros(100)\nfor i in range(100):\n    if y1_plot[i] == 0 or y1_plot[i] == 1:\n        if y1_plot[i] == 0:\n            y1_dew[i] = 0\n        else:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "y1_dew",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "y1_dew = np.zeros(100)\nfor i in range(100):\n    if y1_plot[i] == 0 or y1_plot[i] == 1:\n        if y1_plot[i] == 0:\n            y1_dew[i] = 0\n        else:\n            y1_dew[i] = 1\n    else:\n        # Найти x1 для данного y1\n        gam1, gam2 = wilson_activity_coefficients(x1_plot[i], Lambda12_fit, Lambda21_fit)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "rmse_gam1",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "rmse_gam1 = 0\nrmse_gam2 = 0\nmae_gam1 = 0\nmae_gam2 = 0\nprint(\"\\nИндивидуальные ошибки:\")\nprint(\"x1\\tγ1(exp)\\t\\tγ1(calc)\\tОшибка γ1\\tγ2(exp)\\t\\tγ2(calc)\\tОшибка γ2\")\nfor i in range(5):\n    gam1_w, gam2_w = wilson_activity_coefficients(x1_exp[i], Lambda12_fit, Lambda21_fit)\n    err_gam1 = abs(gam1_exp[i] - gam1_w) / gam1_exp[i] * 100\n    err_gam2 = abs(gam2_exp[i] - gam2_w) / gam2_exp[i] * 100",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "rmse_gam2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "rmse_gam2 = 0\nmae_gam1 = 0\nmae_gam2 = 0\nprint(\"\\nИндивидуальные ошибки:\")\nprint(\"x1\\tγ1(exp)\\t\\tγ1(calc)\\tОшибка γ1\\tγ2(exp)\\t\\tγ2(calc)\\tОшибка γ2\")\nfor i in range(5):\n    gam1_w, gam2_w = wilson_activity_coefficients(x1_exp[i], Lambda12_fit, Lambda21_fit)\n    err_gam1 = abs(gam1_exp[i] - gam1_w) / gam1_exp[i] * 100\n    err_gam2 = abs(gam2_exp[i] - gam2_w) / gam2_exp[i] * 100\n    rmse_gam1 += (gam1_exp[i] - gam1_w)**2",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "mae_gam1",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "mae_gam1 = 0\nmae_gam2 = 0\nprint(\"\\nИндивидуальные ошибки:\")\nprint(\"x1\\tγ1(exp)\\t\\tγ1(calc)\\tОшибка γ1\\tγ2(exp)\\t\\tγ2(calc)\\tОшибка γ2\")\nfor i in range(5):\n    gam1_w, gam2_w = wilson_activity_coefficients(x1_exp[i], Lambda12_fit, Lambda21_fit)\n    err_gam1 = abs(gam1_exp[i] - gam1_w) / gam1_exp[i] * 100\n    err_gam2 = abs(gam2_exp[i] - gam2_w) / gam2_exp[i] * 100\n    rmse_gam1 += (gam1_exp[i] - gam1_w)**2\n    rmse_gam2 += (gam2_exp[i] - gam2_w)**2",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "mae_gam2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "mae_gam2 = 0\nprint(\"\\nИндивидуальные ошибки:\")\nprint(\"x1\\tγ1(exp)\\t\\tγ1(calc)\\tОшибка γ1\\tγ2(exp)\\t\\tγ2(calc)\\tОшибка γ2\")\nfor i in range(5):\n    gam1_w, gam2_w = wilson_activity_coefficients(x1_exp[i], Lambda12_fit, Lambda21_fit)\n    err_gam1 = abs(gam1_exp[i] - gam1_w) / gam1_exp[i] * 100\n    err_gam2 = abs(gam2_exp[i] - gam2_w) / gam2_exp[i] * 100\n    rmse_gam1 += (gam1_exp[i] - gam1_w)**2\n    rmse_gam2 += (gam2_exp[i] - gam2_w)**2\n    mae_gam1 += abs(gam1_exp[i] - gam1_w)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "rmse_gam1",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "rmse_gam1 = np.sqrt(rmse_gam1 / 5)\nrmse_gam2 = np.sqrt(rmse_gam2 / 5)\nmae_gam1 = mae_gam1 / 5\nmae_gam2 = mae_gam2 / 5\nprint(f\"\\nСредняя квадратичная ошибка (RMSE):\")\nprint(f\"  RMSE(γ₁) = {rmse_gam1:.6f}\")\nprint(f\"  RMSE(γ₂) = {rmse_gam2:.6f}\")\nprint(f\"\\nСредняя абсолютная ошибка (MAE):\")\nprint(f\"  MAE(γ₁) = {mae_gam1:.6f}\")\nprint(f\"  MAE(γ₂) = {mae_gam2:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "rmse_gam2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "rmse_gam2 = np.sqrt(rmse_gam2 / 5)\nmae_gam1 = mae_gam1 / 5\nmae_gam2 = mae_gam2 / 5\nprint(f\"\\nСредняя квадратичная ошибка (RMSE):\")\nprint(f\"  RMSE(γ₁) = {rmse_gam1:.6f}\")\nprint(f\"  RMSE(γ₂) = {rmse_gam2:.6f}\")\nprint(f\"\\nСредняя абсолютная ошибка (MAE):\")\nprint(f\"  MAE(γ₁) = {mae_gam1:.6f}\")\nprint(f\"  MAE(γ₂) = {mae_gam2:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "mae_gam1",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "mae_gam1 = mae_gam1 / 5\nmae_gam2 = mae_gam2 / 5\nprint(f\"\\nСредняя квадратичная ошибка (RMSE):\")\nprint(f\"  RMSE(γ₁) = {rmse_gam1:.6f}\")\nprint(f\"  RMSE(γ₂) = {rmse_gam2:.6f}\")\nprint(f\"\\nСредняя абсолютная ошибка (MAE):\")\nprint(f\"  MAE(γ₁) = {mae_gam1:.6f}\")\nprint(f\"  MAE(γ₂) = {mae_gam2:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "mae_gam2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "mae_gam2 = mae_gam2 / 5\nprint(f\"\\nСредняя квадратичная ошибка (RMSE):\")\nprint(f\"  RMSE(γ₁) = {rmse_gam1:.6f}\")\nprint(f\"  RMSE(γ₂) = {rmse_gam2:.6f}\")\nprint(f\"\\nСредняя абсолютная ошибка (MAE):\")\nprint(f\"  MAE(γ₁) = {mae_gam1:.6f}\")\nprint(f\"  MAE(γ₂) = {mae_gam2:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    }
+]
