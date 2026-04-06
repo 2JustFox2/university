@@ -12,6 +12,7 @@ fprintf('1. АНАЛИЗ МАТРИЦЫ СИСТЕМЫ\n');
 fprintf('Детерминант:                 det(A) = %.0f\n', det(A));
 fprintf('Ранг:                       rank(A) = %d\n', rank(A));
 fprintf('1-норма:                     ||A||  = %.2f\n', norm(A,1));
+fprintf('1-норма:                     ||b||  = %.2f\n', norm(b,1));
 fprintf('Число обусловленности:      cond(A) = %.2f\n', cond(A,1));
 fprintf('\n');
 
@@ -116,13 +117,17 @@ fprintf('\n');
 %% 5. Метод Якоби
 fprintf('5. МЕТОД ЯКОБИ\n');
 
-D = diag(diag(A_iter));
-L = tril(A_iter,-1);
-U = triu(A_iter,1);
+A = A' * A;
+b = A' * b;
 
-B_J = -inv(D)*(L+U);
-rho_J = max(abs(eig(B_J)));
-fprintf('Спектральный радиус матрицы Якоби: (B_J) = %.6f ', rho_J);
+D = diag(diag(A));
+L = tril(A) - D;
+U = triu(A) - D;
+
+Bj = -inv(D) \ (L + U);          
+rho_J = D \ b;
+fprintf('Спектральный радиус матрицы Якоби: (B_J) = %.6f', rho_J);
+b_norma = norm(Bj)
 
 if rho_J < 1
     fprintf('условие выполнено\n');
@@ -131,7 +136,7 @@ if rho_J < 1
     D_inv = diag(1./diag(D));
     iter = 0;
     
-    for k = 1:1000
+    for k = 1:5000
         y_new = -D_inv*(L+U)*y + D_inv*b_iter;
         if norm(y_new - y, inf) < epsilon
             y = y_new;
@@ -158,6 +163,9 @@ fprintf('\n');
 %% 6. Метод Зейделя
 fprintf('6. МЕТОД ЗЕЙДЕЛЯ\n');
 
+D = diag(diag(A_iter));
+L = tril(A_iter,-1);
+U = triu(A_iter,1);
 B_S = -inv(L+D)*U;
 rho_S = max(abs(eig(B_S)));
 fprintf('Спектральный радиус матрицы Зейделя:(B_S) = %.6f ', rho_S);

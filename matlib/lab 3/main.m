@@ -8,6 +8,10 @@ B = [0; 1; -1];
 cond_A = cond(A);
 fprintf('Число обусловленности матрицы: %e\n', cond_A);
 
+if det(A) == 0
+    fprintf('Вырожденная матрица - не имеет решения или имеет бесконечное множество решение');
+end
+
 if cond_A < 10
     fprintf('Матрица хорошо обусловленна\n');
 elseif cond_A < 100
@@ -40,6 +44,22 @@ B = [9.8; 6.7; 5.8];
 
 Ab = [A, B];
 R = rref(Ab);
+
+is_dominant = all(2*abs(diag(A)) >= sum(abs(A), 2));
+fprintf('Диогональное преоблодание: %d\n', is_dominant);
+
+if is_dominant == 0
+    [n, m] = size(A);
+    for i = 1:n
+        [~, max_row] = max(abs(A(i:n, i))); % Ищем max в текущем столбце
+        max_row = max_row + i - 1;
+        % Переставляем строки
+        A([i, max_row], :) = A([max_row, i], :);
+    end
+end
+
+is_dominant = all(2*abs(diag(A)) >= sum(abs(A), 2));
+fprintf('Диогональное преоблодание: %d\n', is_dominant);
 
 cond_A = cond(A);
 fprintf('Число обусловленности матрицы: %e\n', cond_A);
@@ -84,6 +104,27 @@ disp(P);
 
 cond_A = cond(A);
 fprintf('Число обусловленности матрицы: %e\n', cond_A);
+
+is_dominant = all(2*abs(diag(A)) >= sum(abs(A), 2));
+fprintf('Диогональное преоблодание: %d\n', is_dominant);
+
+if is_dominant == 0
+    [n, m] = size(A);
+    for i = 1:n
+        [~, max_row] = max(abs(A(i:n, i))); % Ищем max в текущем столбце
+        max_row = max_row + i - 1;
+        % Переставляем строки
+        A([i, max_row], :) = A([max_row, i], :);
+    end
+end
+
+is_dominant = all(2*abs(diag(A)) >= sum(abs(A), 2));
+fprintf('Диогональное преоблодание: %d\n', is_dominant);
+
+
+if det(A) == 0
+    fprintf('Вырожденная матрица - не имеет решения или имеет бесконечное множество решение');
+end
 
 if cond_A < 10
     fprintf('Матрица хорошо обусловленна\n');
@@ -153,15 +194,9 @@ else
         T3(:, 2) = T3(:, 2) - T3(:, 1);
         T_list{3} = T3;
     end
-
+    
     valid_var_names = matlab.lang.makeValidName(substances, 'ReplacementStyle', 'delete');
     valid_var_names = matlab.lang.makeUniqueStrings(valid_var_names);
-
-    fprintf('Соответствие столбцов таблицы веществам:\n');
-    for s = 1:numel(substances)
-        fprintf('%s -> %s\n', valid_var_names{s}, substances{s});
-    end
-
     for basis_id = 1:3
         K_basis = K * T_list{basis_id};
 
