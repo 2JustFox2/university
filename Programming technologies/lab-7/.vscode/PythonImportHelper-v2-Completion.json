@@ -1,0 +1,104 @@
+[
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "Variable",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "AppWindow",
+        "importPath": "window",
+        "description": "window",
+        "isExtraImport": true,
+        "detail": "window",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "check",
+        "importPath": "method",
+        "description": "method",
+        "isExtraImport": true,
+        "detail": "method",
+        "documentation": {}
+    },
+    {
+        "label": "MainApp",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class MainApp:\n    def __init__(self, root):\n        self.root = root\n        self.window = AppWindow(self.root, data=[\"H2\", \"O2\", \"H2O\", \"Ca(OH)2\", \"SO3\", \"CaSO4\"])\nif __name__ == \"__main__\":\n    root = tk.Tk()\n    app = MainApp(root)\n    root.mainloop()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "check",
+        "kind": 2,
+        "importPath": "method",
+        "description": "method",
+        "peekOfCode": "def check(starting_materials, result_materials):\n    starting_materials = _normalize_side(starting_materials)\n    result_materials = _normalize_side(result_materials)\n    compounds = []\n    for item in starting_materials:\n        coef, composition = _parse_substance(item)\n        compounds.append({\"side\": 1, \"coef\": coef, \"composition\": composition, \"name\": item})\n    for item in result_materials:\n        coef, composition = _parse_substance(item)\n        compounds.append({\"side\": -1, \"coef\": coef, \"composition\": composition, \"name\": item})",
+        "detail": "method",
+        "documentation": {}
+    },
+    {
+        "label": "AppWindow",
+        "kind": 6,
+        "importPath": "window",
+        "description": "window",
+        "peekOfCode": "class AppWindow:\n    def __init__(self, root, data):\n        self.root = root\n        self.root.title(\"Лабораторная работа №7 - Сапунков Александр Андреевич 20\")\n        self.root.geometry(\"500x220\")\n        # Список и выбор всех веществ\n        data_var = tk.StringVar(value=data)\n        self.substences_frame = ttk.Frame(self.root)\n        self.substences_frame.grid(row=0, column=0, padx=10, pady=10)\n        self.substences_label = ttk.Label(self.substences_frame, text=\"Вещества:\")",
+        "detail": "window",
+        "documentation": {}
+    }
+]
