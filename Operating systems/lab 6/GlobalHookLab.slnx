@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="GlobalHook/GlobalHook.csproj" />
+  <Project Path="HookController/HookController.csproj" />
+</Solution>
