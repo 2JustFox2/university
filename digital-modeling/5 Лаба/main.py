@@ -1,6 +1,6 @@
 import runpy
 from pathlib import Path
-
+# циклогексан (н-гексан) – метанол
 
 BASE_DIR = Path(__file__).resolve().parent
 LAB_UNIFAC_PATH = BASE_DIR / "lab_5_PR_UNIFAC.py"
