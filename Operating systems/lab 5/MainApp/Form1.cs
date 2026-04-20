@@ -2,8 +2,6 @@ namespace MainApp;
 
 public partial class Form1 : Form
 {
-    private const double InputValue = 5;
-
     public Form1()
     {
         InitializeComponent();
@@ -11,8 +9,16 @@ public partial class Form1 : Form
 
     private void calculateButton_Click(object sender, EventArgs e)
     {
-        double result = DynamicLibrary.FormulaCalculator.Calculate(InputValue);
-        resultLabel.Text = $"Результат формулы для x = {InputValue}: {result}";
+        if (!double.TryParse(input_a.Text, out double a) ||
+            !double.TryParse(input_b.Text, out double b))
+        {
+            resultLabel.Text = "Введите корректные числа.";
+            return;
+        }
+
+
+        double result = DynamicLibrary.FormulaCalculator.Calculate(a, b);
+        resultLabel.Text = $"Результат формулы {a} * {b}: {result}";
     }
 
     private void showDllFormButton_Click(object sender, EventArgs e)

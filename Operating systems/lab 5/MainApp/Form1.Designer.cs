@@ -2,15 +2,8 @@
 
 partial class Form1
 {
-    /// <summary>
-    ///  Required designer variable.
-    /// </summary>
     private System.ComponentModel.IContainer components = null;
 
-    /// <summary>
-    ///  Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
     protected override void Dispose(bool disposing)
     {
         if (disposing && (components != null))
@@ -22,23 +15,31 @@ partial class Form1
 
     #region Windows Form Designer generated code
 
-    /// <summary>
-    ///  Required method for Designer support - do not modify
-    ///  the contents of this method with the code editor.
-    /// </summary>
     private void InitializeComponent()
     {
         calculateButton = new Button();
         showDllFormButton = new Button();
         resultLabel = new Label();
+        input_a = new TextBox();
+        input_b = new TextBox();
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(520, 240);
         Controls.Add(resultLabel);
         Controls.Add(showDllFormButton);
         Controls.Add(calculateButton);
+        Controls.Add(input_a);
+        Controls.Add(input_b);
         Name = "Form1";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Программа с DLL";
+        input_a.Location = new Point(36, 200);
+        input_a.Name = "a";
+        input_a.Size = new Size(100, 20);
+        input_a.TabIndex = 1;
+        input_b.Location = new Point(200+36, 200);
+        input_b.Name = "b";
+        input_b.Size = new Size(100, 20);
+        input_b.TabIndex = 2;
         calculateButton.Location = new Point(36, 34);
         calculateButton.Name = "calculateButton";
         calculateButton.Size = new Size(212, 50);
@@ -67,4 +68,6 @@ partial class Form1
     private Button calculateButton;
     private Button showDllFormButton;
     private Label resultLabel;
+    private TextBox input_a;
+    private TextBox input_b;
 }

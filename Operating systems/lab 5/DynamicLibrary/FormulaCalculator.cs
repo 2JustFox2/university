@@ -2,9 +2,8 @@ namespace DynamicLibrary;
 
 public static class FormulaCalculator
 {
-    // Example formula: f(x) = x^2 + 2x + 1.
-    public static double Calculate(double x)
+    public static double Calculate(double a, double b)
     {
-        return (x * x) + (2 * x) + 1;
+        return (a * b);
     }
 }
