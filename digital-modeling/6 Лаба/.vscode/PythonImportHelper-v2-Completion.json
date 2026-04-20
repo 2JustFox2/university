@@ -1,0 +1,1001 @@
+[
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "ka_from_dg0",
+        "kind": 2,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "def ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\t\"\"\"Return moles from extents xi1 (reaction 1), xi2 (reaction 2).\"\"\"\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "composition_from_extents",
+        "kind": 2,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "def composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\t\"\"\"Return moles from extents xi1 (reaction 1), xi2 (reaction 2).\"\"\"\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,\n\t\t\"H2O\": N0[\"H2O\"] - xi2,\n\t\t\"CO\": xi2,\n\t}",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "ln_equations",
+        "kind": 2,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "def ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\t\"\"\"Log-form equations F1=0, F2=0 for robust Newton solving.\"\"\"\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])\n\t\t- math.log(y[\"N2\"])",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "solve_extents",
+        "kind": 2,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:\n\t\"\"\"Solve for equilibrium extents using damped Newton method.\"\"\"\n\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "def main() -> None:\n\tka1 = ka_from_dg0(DG0_R1, T)\n\tka2 = ka_from_dg0(DG0_R2, T)\n\txi1, xi2 = solve_extents(ka1, ka2)\n\tn = composition_from_extents(xi1, xi2)\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "R",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "R = 8.31446261815324  # J/(mol*K)\nT = 700.0  # K\nP = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "T = 700.0  # K\nP = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "P",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "P = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "P0",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "P0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "DG0_R1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "DG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "DG0_R2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "DG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "N0",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "N0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}\ndef ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tn",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,\n\t\t\"H2O\": N0[\"H2O\"] - xi2,\n\t\t\"CO\": xi2,\n\t}\n\tn[\"NT\"] = sum(n.values())\n\treturn n",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tn[\"NT\"]",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tn[\"NT\"] = sum(n.values())\n\treturn n\ndef ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\t\"\"\"Log-form equations F1=0, F2=0 for robust Newton solving.\"\"\"\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tn",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])\n\t\t- math.log(y[\"N2\"])\n\t\t- 3.0 * math.log(y[\"H2\"])\n\t\t- 2.0 * math.log(p_ratio)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\ty",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])\n\t\t- math.log(y[\"N2\"])\n\t\t- 3.0 * math.log(y[\"H2\"])\n\t\t- 2.0 * math.log(p_ratio)\n\t\t- math.log(ka1)\n\t)\n\tf2 = (",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_ratio",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])\n\t\t- math.log(y[\"N2\"])\n\t\t- 3.0 * math.log(y[\"H2\"])\n\t\t- 2.0 * math.log(p_ratio)\n\t\t- math.log(ka1)\n\t)\n\tf2 = (\n\t\tmath.log(y[\"CO\"])",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tf1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])\n\t\t- math.log(y[\"N2\"])\n\t\t- 3.0 * math.log(y[\"H2\"])\n\t\t- 2.0 * math.log(p_ratio)\n\t\t- math.log(ka1)\n\t)\n\tf2 = (\n\t\tmath.log(y[\"CO\"])\n\t\t+ 3.0 * math.log(y[\"H2\"])",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tf2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tf2 = (\n\t\tmath.log(y[\"CO\"])\n\t\t+ 3.0 * math.log(y[\"H2\"])\n\t\t- math.log(y[\"CH4\"])\n\t\t- math.log(y[\"H2O\"])\n\t\t+ 2.0 * math.log(p_ratio)\n\t\t- math.log(ka2)\n\t)\n\treturn f1, f2\ndef solve_extents(ka1: float, ka2: float) -> tuple[float, float]:",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\txi1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\txi2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2\n\t\th = 1e-8",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tcurrent",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2\n\t\th = 1e-8\n\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tnorm",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2\n\t\th = 1e-8\n\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\th",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\th = 1e-8\n\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tp1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tm1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tp2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tm2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\th",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tp1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tm1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tp2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tm2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tdf1_dxi1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tdf2_dxi1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tdf1_dxi2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tdf2_dxi2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tdet",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tdxi1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tdxi2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tlam",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\timproved",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcand_xi1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcand_xi2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")\n\traise ValueError(\"Solver did not converge\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tcand",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")\n\traise ValueError(\"Solver did not converge\")\ndef main() -> None:",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\t\timproved",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")\n\traise ValueError(\"Solver did not converge\")\ndef main() -> None:\n\tka1 = ka_from_dg0(DG0_R1, T)\n\tka2 = ka_from_dg0(DG0_R2, T)\n\txi1, xi2 = solve_extents(ka1, ka2)",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tka1",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tka1 = ka_from_dg0(DG0_R1, T)\n\tka2 = ka_from_dg0(DG0_R2, T)\n\txi1, xi2 = solve_extents(ka1, ka2)\n\tn = composition_from_extents(xi1, xi2)\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tka2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tka2 = ka_from_dg0(DG0_R2, T)\n\txi1, xi2 = solve_extents(ka1, ka2)\n\tn = composition_from_extents(xi1, xi2)\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tn",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tn = composition_from_extents(xi1, xi2)\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\ty",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tp",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tc",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\talpha_n2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(\"T",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tprint(f\"n_{name}",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tprint(f\"c_{name}",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"alpha_N2",
+        "kind": 5,
+        "importPath": "exercise",
+        "description": "exercise",
+        "peekOfCode": "\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "detail": "exercise",
+        "documentation": {}
+    },
+    {
+        "label": "nasa_g_rt",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def nasa_g_rt(coeffs: list[float], temperature: float) -> float:\n\t\"\"\"Return G/(R*T) from NASA-7 coefficients.\"\"\"\n\ta1, a2, a3, a4, a5, a6, a7 = coeffs\n\th_rt = (\n\t\ta1\n\t\t+ a2 * temperature / 2.0\n\t\t+ a3 * temperature**2 / 3.0\n\t\t+ a4 * temperature**3 / 4.0\n\t\t+ a5 * temperature**4 / 5.0\n\t\t+ a6 / temperature",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "reaction_delta_g0",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def reaction_delta_g0(temperature: float) -> float:\n\t\"\"\"Delta G0(T) for SO2 + 1/2 O2 = SO3, J/mol.\"\"\"\n\tg_so3_rt = nasa_g_rt(NASA_200_1000[\"SO3\"], temperature)\n\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "equilibrium_constant",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,\n) -> tuple[float, float, float, float]:\n\t\"\"\"Solve equilibrium using extent x in pressure units at constant T,V.\"\"\"",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "solve_equilibrium_pressures",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,\n) -> tuple[float, float, float, float]:\n\t\"\"\"Solve equilibrium using extent x in pressure units at constant T,V.\"\"\"\n\tdef ln_q(x: float) -> float:\n\t\tp_so2 = p_so2_0 - x\n\t\tp_o2 = p_o2_0 - 0.5 * x",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def main() -> None:\n\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "R",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "R = 8.31446261815324  # J/(mol*K)\nP0 = 1.0e5  # Pa\nNASA_200_1000 = {\n\t\"O2\": [\n\t\t3.78245636,\n\t\t-2.99673416e-3,\n\t\t9.84730201e-6,\n\t\t-9.68129509e-9,\n\t\t3.24372837e-12,\n\t\t-1.06394356e3,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "P0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "P0 = 1.0e5  # Pa\nNASA_200_1000 = {\n\t\"O2\": [\n\t\t3.78245636,\n\t\t-2.99673416e-3,\n\t\t9.84730201e-6,\n\t\t-9.68129509e-9,\n\t\t3.24372837e-12,\n\t\t-1.06394356e3,\n\t\t3.65767573,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "NASA_200_1000",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "NASA_200_1000 = {\n\t\"O2\": [\n\t\t3.78245636,\n\t\t-2.99673416e-3,\n\t\t9.84730201e-6,\n\t\t-9.68129509e-9,\n\t\t3.24372837e-12,\n\t\t-1.06394356e3,\n\t\t3.65767573,\n\t],",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\th_rt",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\th_rt = (\n\t\ta1\n\t\t+ a2 * temperature / 2.0\n\t\t+ a3 * temperature**2 / 3.0\n\t\t+ a4 * temperature**3 / 4.0\n\t\t+ a5 * temperature**4 / 5.0\n\t\t+ a6 / temperature\n\t)\n\ts_r = (\n\t\ta1 * math.log(temperature)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\ts_r",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\ts_r = (\n\t\ta1 * math.log(temperature)\n\t\t+ a2 * temperature\n\t\t+ a3 * temperature**2 / 2.0\n\t\t+ a4 * temperature**3 / 3.0\n\t\t+ a5 * temperature**4 / 4.0\n\t\t+ a7\n\t)\n\treturn h_rt - s_r\ndef reaction_delta_g0(temperature: float) -> float:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tg_so3_rt",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tg_so3_rt = nasa_g_rt(NASA_200_1000[\"SO3\"], temperature)\n\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tg_so2_rt",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tg_o2_rt",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tdelta_g_rt",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tp_so2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\tp_so2 = p_so2_0 - x\n\t\tp_o2 = p_o2_0 - 0.5 * x\n\t\tp_so3 = p_so3_0 + x\n\t\treturn (\n\t\t\tmath.log(p_so3 / P0)\n\t\t\t- math.log(p_so2 / P0)\n\t\t\t- 0.5 * math.log(p_o2 / P0)\n\t\t)\n\tln_ka = math.log(ka)\n\tlo = -p_so3_0 + 1e-12",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tp_o2",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\tp_o2 = p_o2_0 - 0.5 * x\n\t\tp_so3 = p_so3_0 + x\n\t\treturn (\n\t\t\tmath.log(p_so3 / P0)\n\t\t\t- math.log(p_so2 / P0)\n\t\t\t- 0.5 * math.log(p_o2 / P0)\n\t\t)\n\tln_ka = math.log(ka)\n\tlo = -p_so3_0 + 1e-12\n\thi = min(p_so2_0, 2.0 * p_o2_0) - 1e-12",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tp_so3",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\tp_so3 = p_so3_0 + x\n\t\treturn (\n\t\t\tmath.log(p_so3 / P0)\n\t\t\t- math.log(p_so2 / P0)\n\t\t\t- 0.5 * math.log(p_o2 / P0)\n\t\t)\n\tln_ka = math.log(ka)\n\tlo = -p_so3_0 + 1e-12\n\thi = min(p_so2_0, 2.0 * p_o2_0) - 1e-12\n\tf_lo = ln_q(lo) - ln_ka",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tln_ka",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tln_ka = math.log(ka)\n\tlo = -p_so3_0 + 1e-12\n\thi = min(p_so2_0, 2.0 * p_o2_0) - 1e-12\n\tf_lo = ln_q(lo) - ln_ka\n\tfor _ in range(200):\n\t\tmid = 0.5 * (lo + hi)\n\t\tf_mid = ln_q(mid) - ln_ka\n\t\tif f_lo * f_mid <= 0.0:\n\t\t\thi = mid\n\t\telse:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tlo",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tlo = -p_so3_0 + 1e-12\n\thi = min(p_so2_0, 2.0 * p_o2_0) - 1e-12\n\tf_lo = ln_q(lo) - ln_ka\n\tfor _ in range(200):\n\t\tmid = 0.5 * (lo + hi)\n\t\tf_mid = ln_q(mid) - ln_ka\n\t\tif f_lo * f_mid <= 0.0:\n\t\t\thi = mid\n\t\telse:\n\t\t\tlo = mid",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\thi",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\thi = min(p_so2_0, 2.0 * p_o2_0) - 1e-12\n\tf_lo = ln_q(lo) - ln_ka\n\tfor _ in range(200):\n\t\tmid = 0.5 * (lo + hi)\n\t\tf_mid = ln_q(mid) - ln_ka\n\t\tif f_lo * f_mid <= 0.0:\n\t\t\thi = mid\n\t\telse:\n\t\t\tlo = mid\n\t\t\tf_lo = f_mid",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tf_lo",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tf_lo = ln_q(lo) - ln_ka\n\tfor _ in range(200):\n\t\tmid = 0.5 * (lo + hi)\n\t\tf_mid = ln_q(mid) - ln_ka\n\t\tif f_lo * f_mid <= 0.0:\n\t\t\thi = mid\n\t\telse:\n\t\t\tlo = mid\n\t\t\tf_lo = f_mid\n\tx_eq = 0.5 * (lo + hi)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tmid",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\tmid = 0.5 * (lo + hi)\n\t\tf_mid = ln_q(mid) - ln_ka\n\t\tif f_lo * f_mid <= 0.0:\n\t\t\thi = mid\n\t\telse:\n\t\t\tlo = mid\n\t\t\tf_lo = f_mid\n\tx_eq = 0.5 * (lo + hi)\n\tp_so2_eq = p_so2_0 - x_eq\n\tp_o2_eq = p_o2_0 - 0.5 * x_eq",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\tf_mid",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\tf_mid = ln_q(mid) - ln_ka\n\t\tif f_lo * f_mid <= 0.0:\n\t\t\thi = mid\n\t\telse:\n\t\t\tlo = mid\n\t\t\tf_lo = f_mid\n\tx_eq = 0.5 * (lo + hi)\n\tp_so2_eq = p_so2_0 - x_eq\n\tp_o2_eq = p_o2_0 - 0.5 * x_eq\n\tp_so3_eq = p_so3_0 + x_eq",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\thi",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\t\thi = mid\n\t\telse:\n\t\t\tlo = mid\n\t\t\tf_lo = f_mid\n\tx_eq = 0.5 * (lo + hi)\n\tp_so2_eq = p_so2_0 - x_eq\n\tp_o2_eq = p_o2_0 - 0.5 * x_eq\n\tp_so3_eq = p_so3_0 + x_eq\n\treturn x_eq, p_so2_eq, p_o2_eq, p_so3_eq\ndef main() -> None:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tlo",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\t\tlo = mid\n\t\t\tf_lo = f_mid\n\tx_eq = 0.5 * (lo + hi)\n\tp_so2_eq = p_so2_0 - x_eq\n\tp_o2_eq = p_o2_0 - 0.5 * x_eq\n\tp_so3_eq = p_so3_0 + x_eq\n\treturn x_eq, p_so2_eq, p_o2_eq, p_so3_eq\ndef main() -> None:\n\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\t\t\tf_lo",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\t\t\tf_lo = f_mid\n\tx_eq = 0.5 * (lo + hi)\n\tp_so2_eq = p_so2_0 - x_eq\n\tp_o2_eq = p_o2_0 - 0.5 * x_eq\n\tp_so3_eq = p_so3_0 + x_eq\n\treturn x_eq, p_so2_eq, p_o2_eq, p_so3_eq\ndef main() -> None:\n\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tx_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tx_eq = 0.5 * (lo + hi)\n\tp_so2_eq = p_so2_0 - x_eq\n\tp_o2_eq = p_o2_0 - 0.5 * x_eq\n\tp_so3_eq = p_so3_0 + x_eq\n\treturn x_eq, p_so2_eq, p_o2_eq, p_so3_eq\ndef main() -> None:\n\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_so2_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tp_so2_eq = p_so2_0 - x_eq\n\tp_o2_eq = p_o2_0 - 0.5 * x_eq\n\tp_so3_eq = p_so3_0 + x_eq\n\treturn x_eq, p_so2_eq, p_o2_eq, p_so3_eq\ndef main() -> None:\n\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_o2_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tp_o2_eq = p_o2_0 - 0.5 * x_eq\n\tp_so3_eq = p_so3_0 + x_eq\n\treturn x_eq, p_so2_eq, p_o2_eq, p_so3_eq\ndef main() -> None:\n\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_so3_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tp_so3_eq = p_so3_0 + x_eq\n\treturn x_eq, p_so2_eq, p_o2_eq, p_so3_eq\ndef main() -> None:\n\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\ttemperature",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\ttemperature = 900.0  # K\n\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_so2_0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tp_so2_0 = 3.0e-4  # Pa\n\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_o2_0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tp_o2_0 = 1.0e-4  # Pa\n\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_so3_0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tp_so3_0 = 1.5e-4  # Pa\n\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka\n\t)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tp_total_0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tp_total_0 = p_so2_0 + p_o2_0 + p_so3_0\n\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka\n\t)\n\tc_so2_eq = p_so2_eq / (R * temperature)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\ty_so2_0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\ty_so2_0 = p_so2_0 / p_total_0\n\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka\n\t)\n\tc_so2_eq = p_so2_eq / (R * temperature)\n\tc_o2_eq = p_o2_eq / (R * temperature)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\ty_o2_0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\ty_o2_0 = p_o2_0 / p_total_0\n\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka\n\t)\n\tc_so2_eq = p_so2_eq / (R * temperature)\n\tc_o2_eq = p_o2_eq / (R * temperature)\n\tc_so3_eq = p_so3_eq / (R * temperature)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\ty_so3_0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\ty_so3_0 = p_so3_0 / p_total_0\n\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka\n\t)\n\tc_so2_eq = p_so2_eq / (R * temperature)\n\tc_o2_eq = p_o2_eq / (R * temperature)\n\tc_so3_eq = p_so3_eq / (R * temperature)\n\talpha_a_eq = x_eq / p_so2_0",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tdelta_g0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tdelta_g0 = reaction_delta_g0(temperature)\n\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka\n\t)\n\tc_so2_eq = p_so2_eq / (R * temperature)\n\tc_o2_eq = p_o2_eq / (R * temperature)\n\tc_so3_eq = p_so3_eq / (R * temperature)\n\talpha_a_eq = x_eq / p_so2_0\n\tprint(\"Реакция: SO2 + 1/2 O2 = SO3\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tka",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tka = equilibrium_constant(delta_g0, temperature)\n\tx_eq, p_so2_eq, p_o2_eq, p_so3_eq = solve_equilibrium_pressures(\n\t\tp_so2_0, p_o2_0, p_so3_0, ka\n\t)\n\tc_so2_eq = p_so2_eq / (R * temperature)\n\tc_o2_eq = p_o2_eq / (R * temperature)\n\tc_so3_eq = p_so3_eq / (R * temperature)\n\talpha_a_eq = x_eq / p_so2_0\n\tprint(\"Реакция: SO2 + 1/2 O2 = SO3\")\n\tprint(f\"T = {temperature:.1f} K\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tc_so2_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tc_so2_eq = p_so2_eq / (R * temperature)\n\tc_o2_eq = p_o2_eq / (R * temperature)\n\tc_so3_eq = p_so3_eq / (R * temperature)\n\talpha_a_eq = x_eq / p_so2_0\n\tprint(\"Реакция: SO2 + 1/2 O2 = SO3\")\n\tprint(f\"T = {temperature:.1f} K\")\n\tprint(f\"Delta G0(T) = {delta_g0:.3f} J/mol ({delta_g0/1000.0:.3f} kJ/mol)\")\n\tprint(f\"Ka = {ka:.6g}\")\n\tprint(\"\\nНачальные мольные доли:\")\n\tprint(f\"y_SO2,0 = {y_so2_0:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tc_o2_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tc_o2_eq = p_o2_eq / (R * temperature)\n\tc_so3_eq = p_so3_eq / (R * temperature)\n\talpha_a_eq = x_eq / p_so2_0\n\tprint(\"Реакция: SO2 + 1/2 O2 = SO3\")\n\tprint(f\"T = {temperature:.1f} K\")\n\tprint(f\"Delta G0(T) = {delta_g0:.3f} J/mol ({delta_g0/1000.0:.3f} kJ/mol)\")\n\tprint(f\"Ka = {ka:.6g}\")\n\tprint(\"\\nНачальные мольные доли:\")\n\tprint(f\"y_SO2,0 = {y_so2_0:.6f}\")\n\tprint(f\"y_O2,0  = {y_o2_0:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tc_so3_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tc_so3_eq = p_so3_eq / (R * temperature)\n\talpha_a_eq = x_eq / p_so2_0\n\tprint(\"Реакция: SO2 + 1/2 O2 = SO3\")\n\tprint(f\"T = {temperature:.1f} K\")\n\tprint(f\"Delta G0(T) = {delta_g0:.3f} J/mol ({delta_g0/1000.0:.3f} kJ/mol)\")\n\tprint(f\"Ka = {ka:.6g}\")\n\tprint(\"\\nНачальные мольные доли:\")\n\tprint(f\"y_SO2,0 = {y_so2_0:.6f}\")\n\tprint(f\"y_O2,0  = {y_o2_0:.6f}\")\n\tprint(f\"y_SO3,0 = {y_so3_0:.6f}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\talpha_a_eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\talpha_a_eq = x_eq / p_so2_0\n\tprint(\"Реакция: SO2 + 1/2 O2 = SO3\")\n\tprint(f\"T = {temperature:.1f} K\")\n\tprint(f\"Delta G0(T) = {delta_g0:.3f} J/mol ({delta_g0/1000.0:.3f} kJ/mol)\")\n\tprint(f\"Ka = {ka:.6g}\")\n\tprint(\"\\nНачальные мольные доли:\")\n\tprint(f\"y_SO2,0 = {y_so2_0:.6f}\")\n\tprint(f\"y_O2,0  = {y_o2_0:.6f}\")\n\tprint(f\"y_SO3,0 = {y_so3_0:.6f}\")\n\tprint(\"\\nРавновесные парциальные давления (Па):\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"T",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"T = {temperature:.1f} K\")\n\tprint(f\"Delta G0(T) = {delta_g0:.3f} J/mol ({delta_g0/1000.0:.3f} kJ/mol)\")\n\tprint(f\"Ka = {ka:.6g}\")\n\tprint(\"\\nНачальные мольные доли:\")\n\tprint(f\"y_SO2,0 = {y_so2_0:.6f}\")\n\tprint(f\"y_O2,0  = {y_o2_0:.6f}\")\n\tprint(f\"y_SO3,0 = {y_so3_0:.6f}\")\n\tprint(\"\\nРавновесные парциальные давления (Па):\")\n\tprint(f\"p_SO2,eq = {p_so2_eq:.9e}\")\n\tprint(f\"p_O2,eq  = {p_o2_eq:.9e}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"Ka",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"Ka = {ka:.6g}\")\n\tprint(\"\\nНачальные мольные доли:\")\n\tprint(f\"y_SO2,0 = {y_so2_0:.6f}\")\n\tprint(f\"y_O2,0  = {y_o2_0:.6f}\")\n\tprint(f\"y_SO3,0 = {y_so3_0:.6f}\")\n\tprint(\"\\nРавновесные парциальные давления (Па):\")\n\tprint(f\"p_SO2,eq = {p_so2_eq:.9e}\")\n\tprint(f\"p_O2,eq  = {p_o2_eq:.9e}\")\n\tprint(f\"p_SO3,eq = {p_so3_eq:.9e}\")\n\tprint(\"\\nРавновесные концентрации (моль/м^3):\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"y_SO2,0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"y_SO2,0 = {y_so2_0:.6f}\")\n\tprint(f\"y_O2,0  = {y_o2_0:.6f}\")\n\tprint(f\"y_SO3,0 = {y_so3_0:.6f}\")\n\tprint(\"\\nРавновесные парциальные давления (Па):\")\n\tprint(f\"p_SO2,eq = {p_so2_eq:.9e}\")\n\tprint(f\"p_O2,eq  = {p_o2_eq:.9e}\")\n\tprint(f\"p_SO3,eq = {p_so3_eq:.9e}\")\n\tprint(\"\\nРавновесные концентрации (моль/м^3):\")\n\tprint(f\"c_SO2,eq = {c_so2_eq:.9e}\")\n\tprint(f\"c_O2,eq  = {c_o2_eq:.9e}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"y_SO3,0",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"y_SO3,0 = {y_so3_0:.6f}\")\n\tprint(\"\\nРавновесные парциальные давления (Па):\")\n\tprint(f\"p_SO2,eq = {p_so2_eq:.9e}\")\n\tprint(f\"p_O2,eq  = {p_o2_eq:.9e}\")\n\tprint(f\"p_SO3,eq = {p_so3_eq:.9e}\")\n\tprint(\"\\nРавновесные концентрации (моль/м^3):\")\n\tprint(f\"c_SO2,eq = {c_so2_eq:.9e}\")\n\tprint(f\"c_O2,eq  = {c_o2_eq:.9e}\")\n\tprint(f\"c_SO3,eq = {c_so3_eq:.9e}\")\n\tprint(\"\\nСтепень равновесного превращения A (SO2):\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"p_SO2,eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"p_SO2,eq = {p_so2_eq:.9e}\")\n\tprint(f\"p_O2,eq  = {p_o2_eq:.9e}\")\n\tprint(f\"p_SO3,eq = {p_so3_eq:.9e}\")\n\tprint(\"\\nРавновесные концентрации (моль/м^3):\")\n\tprint(f\"c_SO2,eq = {c_so2_eq:.9e}\")\n\tprint(f\"c_O2,eq  = {c_o2_eq:.9e}\")\n\tprint(f\"c_SO3,eq = {c_so3_eq:.9e}\")\n\tprint(\"\\nСтепень равновесного превращения A (SO2):\")\n\tprint(f\"alpha_A,eq = {alpha_a_eq:.6f}\")\nif __name__ == \"__main__\":",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"p_SO3,eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"p_SO3,eq = {p_so3_eq:.9e}\")\n\tprint(\"\\nРавновесные концентрации (моль/м^3):\")\n\tprint(f\"c_SO2,eq = {c_so2_eq:.9e}\")\n\tprint(f\"c_O2,eq  = {c_o2_eq:.9e}\")\n\tprint(f\"c_SO3,eq = {c_so3_eq:.9e}\")\n\tprint(\"\\nСтепень равновесного превращения A (SO2):\")\n\tprint(f\"alpha_A,eq = {alpha_a_eq:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"c_SO2,eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"c_SO2,eq = {c_so2_eq:.9e}\")\n\tprint(f\"c_O2,eq  = {c_o2_eq:.9e}\")\n\tprint(f\"c_SO3,eq = {c_so3_eq:.9e}\")\n\tprint(\"\\nСтепень равновесного превращения A (SO2):\")\n\tprint(f\"alpha_A,eq = {alpha_a_eq:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"c_SO3,eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"c_SO3,eq = {c_so3_eq:.9e}\")\n\tprint(\"\\nСтепень равновесного превращения A (SO2):\")\n\tprint(f\"alpha_A,eq = {alpha_a_eq:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "\tprint(f\"alpha_A,eq",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "\tprint(f\"alpha_A,eq = {alpha_a_eq:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "detail": "main",
+        "documentation": {}
+    }
+]
