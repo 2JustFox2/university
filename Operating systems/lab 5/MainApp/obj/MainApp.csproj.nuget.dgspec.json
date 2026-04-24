@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\MainApp\\MainApp.csproj": {}
+    "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\MainApp\\MainApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj": {
+    "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj",
         "projectName": "DynamicLibrary",
-        "projectPath": "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj",
-        "packagesPath": "C:\\Users\\anna0\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\DynamicLibrary\\obj\\",
+        "projectPath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj",
+        "packagesPath": "C:\\Users\\alexv\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\DynamicLibrary\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\anna0\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\alexv\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -356,30 +362,36 @@
         }
       }
     },
-    "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\MainApp\\MainApp.csproj": {
+    "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\MainApp\\MainApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\MainApp\\MainApp.csproj",
+        "projectUniqueName": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\MainApp\\MainApp.csproj",
         "projectName": "MainApp",
-        "projectPath": "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\MainApp\\MainApp.csproj",
-        "packagesPath": "C:\\Users\\anna0\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\MainApp\\obj\\",
+        "projectPath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\MainApp\\MainApp.csproj",
+        "packagesPath": "C:\\Users\\alexv\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\MainApp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\anna0\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\alexv\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0-windows7.0": {
             "targetAlias": "net10.0-windows",
             "projectReferences": {
-              "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj": {
-                "projectPath": "C:\\Users\\anna0\\Documents\\GitHub\\university\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj"
+              "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj": {
+                "projectPath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 5\\DynamicLibrary\\DynamicLibrary.csproj"
               }
             }
           }
