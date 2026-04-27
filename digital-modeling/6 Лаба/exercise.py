@@ -22,12 +22,10 @@ N0 = {
 
 
 def ka_from_dg0(delta_g0: float, temperature: float) -> float:
-	"""Dimensionless activity equilibrium constant Ka = exp(-dG0/RT)."""
 	return math.exp(-delta_g0 / (R * temperature))
 
 
 def composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:
-	"""Return moles from extents xi1 (reaction 1), xi2 (reaction 2)."""
 	n = {
 		"N2": N0["N2"] - xi1,
 		"H2": N0["H2"] - 3.0 * xi1 + 3.0 * xi2,
@@ -41,7 +39,6 @@ def composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:
 
 
 def ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:
-	"""Log-form equations F1=0, F2=0 for robust Newton solving."""
 	n = composition_from_extents(xi1, xi2)
 	if min(n.values()) <= 0.0:
 		return None
@@ -68,7 +65,6 @@ def ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float,
 
 
 def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:
-	"""Solve for equilibrium extents using damped Newton method."""
 	xi1 = 0.10
 	xi2 = 1e-4
 
@@ -107,7 +103,6 @@ def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:
 		dxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det
 		dxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det
 
-		# Damping keeps the update inside physical bounds and improves stability.
 		lam = 1.0
 		improved = False
 		for _ in range(30):
@@ -152,6 +147,4 @@ def main() -> None:
 	print("\nEquilibrium conversion degree of first reactant in reaction 1 (N2):")
 	print(f"alpha_N2 = {alpha_n2:.6f}")
 
-
-if __name__ == "__main__":
-	main()
+main()

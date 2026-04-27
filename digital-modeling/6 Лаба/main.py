@@ -34,9 +34,8 @@ NASA_200_1000 = {
 	],
 }
 
-
+# Наса 7-коэффициентные полиномы для расчета термодинамических свойств 
 def nasa_g_rt(coeffs: list[float], temperature: float) -> float:
-	"""Return G/(R*T) from NASA-7 coefficients."""
 	a1, a2, a3, a4, a5, a6, a7 = coeffs
 	h_rt = (
 		a1
@@ -58,7 +57,6 @@ def nasa_g_rt(coeffs: list[float], temperature: float) -> float:
 
 
 def reaction_delta_g0(temperature: float) -> float:
-	"""Delta G0(T) for SO2 + 1/2 O2 = SO3, J/mol."""
 	g_so3_rt = nasa_g_rt(NASA_200_1000["SO3"], temperature)
 	g_so2_rt = nasa_g_rt(NASA_200_1000["SO2"], temperature)
 	g_o2_rt = nasa_g_rt(NASA_200_1000["O2"], temperature)
@@ -67,7 +65,6 @@ def reaction_delta_g0(temperature: float) -> float:
 
 
 def equilibrium_constant(delta_g0: float, temperature: float) -> float:
-	"""Dimensionless activity equilibrium constant Ka = exp(-dG0/RT)."""
 	return math.exp(-delta_g0 / (R * temperature))
 
 
@@ -77,7 +74,6 @@ def solve_equilibrium_pressures(
 	p_so3_0: float,
 	ka: float,
 ) -> tuple[float, float, float, float]:
-	"""Solve equilibrium using extent x in pressure units at constant T,V."""
 
 	def ln_q(x: float) -> float:
 		p_so2 = p_so2_0 - x

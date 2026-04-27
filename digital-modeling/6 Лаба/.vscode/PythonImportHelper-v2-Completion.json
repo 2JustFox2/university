@@ -13,7 +13,7 @@
         "kind": 2,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "def ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\t\"\"\"Return moles from extents xi1 (reaction 1), xi2 (reaction 2).\"\"\"\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,",
+        "peekOfCode": "def ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,\n\t\t\"H2O\": N0[\"H2O\"] - xi2,\n\t\t\"CO\": xi2,",
         "detail": "exercise",
         "documentation": {}
     },
@@ -22,7 +22,7 @@
         "kind": 2,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "def composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\t\"\"\"Return moles from extents xi1 (reaction 1), xi2 (reaction 2).\"\"\"\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,\n\t\t\"H2O\": N0[\"H2O\"] - xi2,\n\t\t\"CO\": xi2,\n\t}",
+        "peekOfCode": "def composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,\n\t\t\"H2O\": N0[\"H2O\"] - xi2,\n\t\t\"CO\": xi2,\n\t}\n\tn[\"NT\"] = sum(n.values())",
         "detail": "exercise",
         "documentation": {}
     },
@@ -31,7 +31,7 @@
         "kind": 2,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "def ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\t\"\"\"Log-form equations F1=0, F2=0 for robust Newton solving.\"\"\"\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])\n\t\t- math.log(y[\"N2\"])",
+        "peekOfCode": "def ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])\n\t\t- math.log(y[\"N2\"])\n\t\t- 3.0 * math.log(y[\"H2\"])",
         "detail": "exercise",
         "documentation": {}
     },
@@ -40,7 +40,7 @@
         "kind": 2,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:\n\t\"\"\"Solve for equilibrium extents using damped Newton method.\"\"\"\n\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)",
+        "peekOfCode": "def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:\n\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:",
         "detail": "exercise",
         "documentation": {}
     },
@@ -112,7 +112,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "N0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}\ndef ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"",
+        "peekOfCode": "N0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}\ndef ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))",
         "detail": "exercise",
         "documentation": {}
     },
@@ -130,7 +130,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\tn[\"NT\"] = sum(n.values())\n\treturn n\ndef ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\t\"\"\"Log-form equations F1=0, F2=0 for robust Newton solving.\"\"\"\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (",
+        "peekOfCode": "\tn[\"NT\"] = sum(n.values())\n\treturn n\ndef ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])",
         "detail": "exercise",
         "documentation": {}
     },
@@ -310,7 +310,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.",
+        "peekOfCode": "\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0",
         "detail": "exercise",
         "documentation": {}
     },
@@ -319,7 +319,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0",
+        "peekOfCode": "\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False",
         "detail": "exercise",
         "documentation": {}
     },
@@ -328,7 +328,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False",
+        "peekOfCode": "\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):",
         "detail": "exercise",
         "documentation": {}
     },
@@ -337,7 +337,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):",
+        "peekOfCode": "\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1",
         "detail": "exercise",
         "documentation": {}
     },
@@ -346,7 +346,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1",
+        "peekOfCode": "\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2",
         "detail": "exercise",
         "documentation": {}
     },
@@ -355,7 +355,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:",
+        "peekOfCode": "\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2",
         "detail": "exercise",
         "documentation": {}
     },
@@ -364,7 +364,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\t# Damping keeps the update inside physical bounds and improves stability.\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2",
+        "peekOfCode": "\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True",
         "detail": "exercise",
         "documentation": {}
     },
@@ -499,7 +499,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "peekOfCode": "\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nmain()",
         "detail": "exercise",
         "documentation": {}
     },
@@ -508,7 +508,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "peekOfCode": "\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nmain()",
         "detail": "exercise",
         "documentation": {}
     },
@@ -517,7 +517,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nif __name__ == \"__main__\":\n\tmain()",
+        "peekOfCode": "\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nmain()",
         "detail": "exercise",
         "documentation": {}
     },
@@ -526,7 +526,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def nasa_g_rt(coeffs: list[float], temperature: float) -> float:\n\t\"\"\"Return G/(R*T) from NASA-7 coefficients.\"\"\"\n\ta1, a2, a3, a4, a5, a6, a7 = coeffs\n\th_rt = (\n\t\ta1\n\t\t+ a2 * temperature / 2.0\n\t\t+ a3 * temperature**2 / 3.0\n\t\t+ a4 * temperature**3 / 4.0\n\t\t+ a5 * temperature**4 / 5.0\n\t\t+ a6 / temperature",
+        "peekOfCode": "def nasa_g_rt(coeffs: list[float], temperature: float) -> float:\n\ta1, a2, a3, a4, a5, a6, a7 = coeffs\n\th_rt = (\n\t\ta1\n\t\t+ a2 * temperature / 2.0\n\t\t+ a3 * temperature**2 / 3.0\n\t\t+ a4 * temperature**3 / 4.0\n\t\t+ a5 * temperature**4 / 5.0\n\t\t+ a6 / temperature\n\t)",
         "detail": "main",
         "documentation": {}
     },
@@ -535,7 +535,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def reaction_delta_g0(temperature: float) -> float:\n\t\"\"\"Delta G0(T) for SO2 + 1/2 O2 = SO3, J/mol.\"\"\"\n\tg_so3_rt = nasa_g_rt(NASA_200_1000[\"SO3\"], temperature)\n\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))",
+        "peekOfCode": "def reaction_delta_g0(temperature: float) -> float:\n\tg_so3_rt = nasa_g_rt(NASA_200_1000[\"SO3\"], temperature)\n\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,",
         "detail": "main",
         "documentation": {}
     },
@@ -544,7 +544,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,\n) -> tuple[float, float, float, float]:\n\t\"\"\"Solve equilibrium using extent x in pressure units at constant T,V.\"\"\"",
+        "peekOfCode": "def equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,\n) -> tuple[float, float, float, float]:\n\tdef ln_q(x: float) -> float:\n\t\tp_so2 = p_so2_0 - x",
         "detail": "main",
         "documentation": {}
     },
@@ -553,7 +553,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,\n) -> tuple[float, float, float, float]:\n\t\"\"\"Solve equilibrium using extent x in pressure units at constant T,V.\"\"\"\n\tdef ln_q(x: float) -> float:\n\t\tp_so2 = p_so2_0 - x\n\t\tp_o2 = p_o2_0 - 0.5 * x",
+        "peekOfCode": "def solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,\n) -> tuple[float, float, float, float]:\n\tdef ln_q(x: float) -> float:\n\t\tp_so2 = p_so2_0 - x\n\t\tp_o2 = p_o2_0 - 0.5 * x\n\t\tp_so3 = p_so3_0 + x",
         "detail": "main",
         "documentation": {}
     },
@@ -616,7 +616,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "\tg_so3_rt = nasa_g_rt(NASA_200_1000[\"SO3\"], temperature)\n\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,",
+        "peekOfCode": "\tg_so3_rt = nasa_g_rt(NASA_200_1000[\"SO3\"], temperature)\n\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,",
         "detail": "main",
         "documentation": {}
     },
@@ -625,7 +625,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,",
+        "peekOfCode": "\tg_so2_rt = nasa_g_rt(NASA_200_1000[\"SO2\"], temperature)\n\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,",
         "detail": "main",
         "documentation": {}
     },
@@ -634,7 +634,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,",
+        "peekOfCode": "\tg_o2_rt = nasa_g_rt(NASA_200_1000[\"O2\"], temperature)\n\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,",
         "detail": "main",
         "documentation": {}
     },
@@ -643,7 +643,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\t\"\"\"Dimensionless activity equilibrium constant Ka = exp(-dG0/RT).\"\"\"\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,",
+        "peekOfCode": "\tdelta_g_rt = g_so3_rt - g_so2_rt - 0.5 * g_o2_rt\n\treturn delta_g_rt * R * temperature\ndef equilibrium_constant(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef solve_equilibrium_pressures(\n\tp_so2_0: float,\n\tp_o2_0: float,\n\tp_so3_0: float,\n\tka: float,\n) -> tuple[float, float, float, float]:",
         "detail": "main",
         "documentation": {}
     },

@@ -120,7 +120,7 @@ for i in range(5):
 
         if (
             res_try.phase_count > 1
-            and hasattr(res_try, 'liquid') and res_try.liquid
+            and hasattr(res_try, 'liquid0') and res_try.liquid0
             and hasattr(res_try, 'gas') and res_try.gas
         ):
             res = res_try
@@ -137,8 +137,8 @@ for i in range(5):
         )
         continue
 
-    if hasattr(res, 'liquid') and res.liquid:
-        x_calc = res.liquid.zs[0]
+    if hasattr(res, 'liquid0') and res.liquid0:
+        x_calc = res.liquid0.zs[0]
     else:
         skipped_points.append(i)
         print(f"Точка {i+1}: нет жидкой фазы, пропуск в MAE")
