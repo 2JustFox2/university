@@ -1,0 +1,107 @@
+[
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "AppWindow",
+        "importPath": "window",
+        "description": "window",
+        "isExtraImport": true,
+        "detail": "window",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "messagebox",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "arr",
+        "kind": 5,
+        "importPath": "generator",
+        "description": "generator",
+        "peekOfCode": "arr = [['Tr\\\\Pr']]\nfor i in range(7, 12):\n    arr[0].append(str(i/10))\nfor i in range(5, 10):\n    arr.append([str(i/10)])\n    for j in range(len(arr[0]) - 1):\n        arr[-1].append(str(random.randint(7, 18) / 10))\nwith open('data.csv', 'w') as f:\n    template = ' '.join(['{:<5}'] * len(arr[0])) + '\\n'\n    for row in arr:",
+        "detail": "generator",
+        "documentation": {}
+    },
+    {
+        "label": "parse_data",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def parse_data(file_path):\n    try: \n        with open(file_path, 'r') as file:\n            data = file.readlines()\n            return [re.sub(r'\\s+', ' ', line).strip().split(' ') for line in data]\n    except FileNotFoundError:\n        print(f\"Файл {file_path} не найден\")\n        return []\n    except Exception as e:\n        print(f\"Ошибка при чтении файла: {e}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def main():\n    print(\"Программа запущена\")\n    data = parse_data('data.csv')\n    print(data)\n    if not data:\n        print(\"Нет данных для отображения. \")\n        return\n    root = tk.Tk()\n    AppWindow(root, data)\n    root.mainloop()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "AppWindow",
+        "kind": 6,
+        "importPath": "window",
+        "description": "window",
+        "peekOfCode": "class AppWindow:\n    def __init__(self, root, data):\n        self.root = root\n        self.root.title(\"8 Лабораторная работа\")\n        self.root.geometry(\"900x900\")\n        # Исходная матрица Z0 (5x5)\n        # Заголовки: Tr = [0.5, 0.6, 0.7, 0.8, 0.9], Pr = [0.7, 0.8, 0.9, 1.0, 1.1]\n        self.tr_values = [float(x) for x in data[0][1:]]\n        self.pr_values = [float(data[i][0]) for i in range(1, len(data))]\n        print(\"Tr values:\", self.tr_values)",
+        "detail": "window",
+        "documentation": {}
+    }
+]
