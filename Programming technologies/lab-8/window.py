@@ -9,17 +9,12 @@ class AppWindow:
         self.root.title("8 Лабораторная работа")
         self.root.geometry("900x900")
 
-        # Исходная матрица Z0 (5x5)
-        # Заголовки: Tr = [0.5, 0.6, 0.7, 0.8, 0.9], Pr = [0.7, 0.8, 0.9, 1.0, 1.1]
         self.tr_values = [float(x) for x in data[0][1:]]
         self.pr_values = [float(data[i][0]) for i in range(1, len(data))]
         print("Tr values:", self.tr_values)
         print("Pr values:", self.pr_values)
         
-        # Заполним Z0 произвольными числами от 0.7 до 1.2
-        np.random.seed(42)  # для воспроизводимости
-        self.z0_matrix = np.random.uniform(0.7, 1.2, size=(5, 5)).round(3)
-        # Для разнообразия немного подправим некоторые значения
+        self.z0_matrix = np.zeros((len(self.tr_values), len(self.pr_values)))
         for i in range(len(data) - 1):
             self.z0_matrix[i] = [float(x) for x in data[i+1][1:]]
 
@@ -46,7 +41,6 @@ class AppWindow:
         self.create_settings_tab()
 
     def create_main_tab(self):
-        # Переменные для отображения меток (инициализируем в начале)
         self.row_label_var = tk.StringVar(value="Tr = 0.5")
         self.col_label_var = tk.StringVar(value="Pr = 0.7")
 
@@ -246,19 +240,16 @@ class AppWindow:
 
         if z is not None:
             ttk.Label(result_frame, text=f"Z1 = Z0 - 1 = {z1:.4f}", font=('Arial', 10)).pack(anchor='w')
-            ttk.Label(result_frame, text=f"Z = Z0 + w·Z1 = {z:.4f}", font=('Arial', 12, 'bold'), foreground='green').pack(anchor='w', pady=5)
+            ttk.Label(result_frame, text=f"Z = Z0 + w·Z1 = {z:.4f}", font=('Arial', 12, 'bold')).pack(anchor='w', pady=5)
         else:
             ttk.Label(result_frame, text=status_message, font=('Arial', 10, 'bold'), foreground='red').pack(anchor='w', pady=5)
 
-        # Вывод рассчитанных значений в DataGrid (Treeview)
         calc_frame = ttk.LabelFrame(frame, text="Матрица рассчитанных значений Z (для всех комбинаций)", padding=10)
         calc_frame.pack(fill='both', expand=True, pady=10)
 
-        # Создаём Treeview
         columns = ['Tr/Pr'] + [str(pr) for pr in self.pr_values]
         tree = ttk.Treeview(calc_frame, columns=columns, show='headings', height=8)
 
-        # Настройка столбцов
         tree.heading('Tr/Pr', text='Tr \\ Pr')
         tree.column('Tr/Pr', width=80, anchor='center')
 
@@ -283,7 +274,6 @@ class AppWindow:
                     row_data.append(f"Null")
             tree.insert('', 'end', values=row_data)
 
-        # Добавляем скролл
         scrollbar_y = ttk.Scrollbar(calc_frame, orient='vertical', command=tree.yview)
         scrollbar_x = ttk.Scrollbar(calc_frame, orient='horizontal', command=tree.xview)
         tree.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)

@@ -100,7 +100,7 @@
         "kind": 6,
         "importPath": "window",
         "description": "window",
-        "peekOfCode": "class AppWindow:\n    def __init__(self, root, data):\n        self.root = root\n        self.root.title(\"8 Лабораторная работа\")\n        self.root.geometry(\"900x900\")\n        # Исходная матрица Z0 (5x5)\n        # Заголовки: Tr = [0.5, 0.6, 0.7, 0.8, 0.9], Pr = [0.7, 0.8, 0.9, 1.0, 1.1]\n        self.tr_values = [float(x) for x in data[0][1:]]\n        self.pr_values = [float(data[i][0]) for i in range(1, len(data))]\n        print(\"Tr values:\", self.tr_values)",
+        "peekOfCode": "class AppWindow:\n    def __init__(self, root, data):\n        self.root = root\n        self.root.title(\"8 Лабораторная работа\")\n        self.root.geometry(\"900x900\")\n        self.tr_values = [float(x) for x in data[0][1:]]\n        self.pr_values = [float(data[i][0]) for i in range(1, len(data))]\n        print(\"Tr values:\", self.tr_values)\n        print(\"Pr values:\", self.pr_values)\n        self.z0_matrix = np.zeros((len(self.tr_values), len(self.pr_values)))",
         "detail": "window",
         "documentation": {}
     }
