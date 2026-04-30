@@ -51,7 +51,7 @@ plot(x_exact, 0, 'mp', 'MarkerSize', 15, 'MarkerFaceColor', 'm', ...
     'DisplayName', 'Точный корень (fzero)');
 
 %% 5. Уточнение корня методами
-max_iter = 100;
+max_iter = 1000;
 eps = 1e-8; % заданная точность
 
 % Вторая производная для проверки сходимости

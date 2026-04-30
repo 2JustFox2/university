@@ -9,6 +9,7 @@ class AppWindow:
         self.root.title("8 Лабораторная работа")
         self.root.geometry("900x900")
 
+
         self.tr_values = [float(x) for x in data[0][1:]]
         self.pr_values = [float(data[i][0]) for i in range(1, len(data))]
         print("Tr values:", self.tr_values)
@@ -17,6 +18,7 @@ class AppWindow:
         self.z0_matrix = np.zeros((len(self.tr_values), len(self.pr_values)))
         for i in range(len(data) - 1):
             self.z0_matrix[i] = [float(x) for x in data[i+1][1:]]
+
 
         # Создаём вкладки
         self.notebook = ttk.Notebook(root)
@@ -45,7 +47,7 @@ class AppWindow:
         self.col_label_var = tk.StringVar(value="Pr = 0.7")
 
         # Фрейм для матрицы
-        matrix_frame = ttk.LabelFrame(self.main_tab, text="Матрица Z0 (5×5)", padding=10)
+        matrix_frame = ttk.LabelFrame(self.main_tab, text="Матрица Z0", padding=10)
         matrix_frame.pack(fill='x', padx=10, pady=10)
 
         # Заголовок строк

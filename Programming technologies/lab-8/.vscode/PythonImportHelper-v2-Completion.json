@@ -51,6 +51,15 @@
         "documentation": {}
     },
     {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
         "label": "pandas",
         "kind": 6,
         "isExtraImport": true,
@@ -87,11 +96,20 @@
         "documentation": {}
     },
     {
+        "label": "validate_data",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def validate_data(data):\n    if not data:\n        return False, \"Файл пустой\"\n    if len(data) < 2:\n        return False, \"В файле должна быть строка заголовков и хотя бы одна строка данных\"\n    expected_len = len(data[0])\n    if expected_len < 2:\n        return False, \"В заголовке должно быть минимум два столбца\"\n    for row_index, row in enumerate(data):\n        if len(row) != expected_len:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
         "label": "main",
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def main():\n    print(\"Программа запущена\")\n    data = parse_data('data.csv')\n    print(data)\n    if not data:\n        print(\"Нет данных для отображения. \")\n        return\n    root = tk.Tk()\n    AppWindow(root, data)\n    root.mainloop()",
+        "peekOfCode": "def main():\n    print(\"Программа запущена\")\n    data = parse_data('data.csv')\n    print(data)\n    is_valid, error_message = validate_data(data)\n    if not is_valid:\n        print(f\"Ошибка данных: {error_message}\", file=sys.stderr)\n        sys.exit(1)\n    root = tk.Tk()\n    AppWindow(root, data)",
         "detail": "main",
         "documentation": {}
     },
