@@ -13,7 +13,7 @@
         "kind": 2,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "def ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\ndef composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,\n\t\t\"H2O\": N0[\"H2O\"] - xi2,\n\t\t\"CO\": xi2,",
+        "peekOfCode": "def ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))\n# Функция для вычисления состава смеси на основе степеней конверсии xi1 и xi2\ndef composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:\n\tn = {\n\t\t\"N2\": N0[\"N2\"] - xi1,\n\t\t\"H2\": N0[\"H2\"] - 3.0 * xi1 + 3.0 * xi2,\n\t\t\"NH3\": 2.0 * xi1,\n\t\t\"CH4\": N0[\"CH4\"] - xi2,\n\t\t\"H2O\": N0[\"H2O\"] - xi2,",
         "detail": "exercise",
         "documentation": {}
     },
@@ -40,7 +40,7 @@
         "kind": 2,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:\n\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:",
+        "peekOfCode": "def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:\n\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Неверные начальные приближения для степеней конверсии\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:",
         "detail": "exercise",
         "documentation": {}
     },
@@ -58,7 +58,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "R = 8.31446261815324  # J/(mol*K)\nT = 700.0  # K\nP = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,",
+        "peekOfCode": "R = 8.31446261815324  # J/(mol*K)\nT = 700.0  # K\nP = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Стандартные энергии Гибbsа реакций, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol\nN0 = {\n\t\"N2\": 0.30,",
         "detail": "exercise",
         "documentation": {}
     },
@@ -67,7 +67,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "T = 700.0  # K\nP = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,",
+        "peekOfCode": "T = 700.0  # K\nP = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Стандартные энергии Гибbsа реакций, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,",
         "detail": "exercise",
         "documentation": {}
     },
@@ -76,7 +76,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "P = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,",
+        "peekOfCode": "P = 300000.0  # Pa\nP0 = 100000.0  # Pa\n# Стандартные энергии Гибbsа реакций, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,",
         "detail": "exercise",
         "documentation": {}
     },
@@ -85,7 +85,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "P0 = 100000.0  # Pa\n# Standard Gibbs energies of reactions, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,",
+        "peekOfCode": "P0 = 100000.0  # Pa\n# Стандартные энергии Гибbsа реакций, J/mol\nDG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,",
         "detail": "exercise",
         "documentation": {}
     },
@@ -94,7 +94,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "DG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,",
+        "peekOfCode": "DG0_R1 = -30000.0\nDG0_R2 = 60000.0\n# Basis: 1 mol\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,",
         "detail": "exercise",
         "documentation": {}
     },
@@ -103,7 +103,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "DG0_R2 = 60000.0\n# Basis: 1 mol initial mixture\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}",
+        "peekOfCode": "DG0_R2 = 60000.0\n# Basis: 1 mol\nN0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}",
         "detail": "exercise",
         "documentation": {}
     },
@@ -112,7 +112,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "N0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}\ndef ka_from_dg0(delta_g0: float, temperature: float) -> float:\n\treturn math.exp(-delta_g0 / (R * temperature))",
+        "peekOfCode": "N0 = {\n\t\"N2\": 0.30,\n\t\"H2\": 0.50,\n\t\"CH4\": 0.10,\n\t\"H2O\": 0.10,\n\t\"NH3\": 0.00,\n\t\"CO\": 0.00,\n}\n# Функция для вычисления константы равновесия из стандартной энергии Гибbsа реакции\ndef ka_from_dg0(delta_g0: float, temperature: float) -> float:",
         "detail": "exercise",
         "documentation": {}
     },
@@ -130,7 +130,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\tn[\"NT\"] = sum(n.values())\n\treturn n\ndef ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (\n\t\t2.0 * math.log(y[\"NH3\"])",
+        "peekOfCode": "\tn[\"NT\"] = sum(n.values())\n\treturn n\n# Функция для вычисления логарифмов уравнений равновесия на основе текущих степеней конверсии и констант равновесия\ndef ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:\n\tn = composition_from_extents(xi1, xi2)\n\tif min(n.values()) <= 0.0:\n\t\treturn None\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp_ratio = P / P0\n\tf1 = (",
         "detail": "exercise",
         "documentation": {}
     },
@@ -184,7 +184,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2",
+        "peekOfCode": "\txi1 = 0.10\n\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Неверные начальные приближения для степеней конверсии\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2",
         "detail": "exercise",
         "documentation": {}
     },
@@ -193,7 +193,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2\n\t\th = 1e-8",
+        "peekOfCode": "\txi2 = 1e-4\n\tfor _ in range(60):\n\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Неверные начальные приближения для степеней конверсии\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2\n\t\th = 1e-8",
         "detail": "exercise",
         "documentation": {}
     },
@@ -202,7 +202,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Invalid initial guess for solver\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2\n\t\th = 1e-8\n\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)",
+        "peekOfCode": "\t\tcurrent = ln_equations(xi1, xi2, ka1, ka2)\n\t\tif current is None:\n\t\t\traise ValueError(\"Неверные начальные приближения для степеней конверсии\")\n\t\tf1, f2 = current\n\t\tnorm = abs(f1) + abs(f2)\n\t\tif norm < 1e-13:\n\t\t\treturn xi1, xi2\n\t\th = 1e-8\n\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)",
         "detail": "exercise",
         "documentation": {}
     },
@@ -247,7 +247,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")",
+        "peekOfCode": "\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Невозможно оценить якобиан вблизи текущей точки\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -256,7 +256,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)",
+        "peekOfCode": "\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Невозможно оценить якобиан вблизи текущей точки\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)",
         "detail": "exercise",
         "documentation": {}
     },
@@ -265,7 +265,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)",
+        "peekOfCode": "\t\t\th = 1e-10\n\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Невозможно оценить якобиан вблизи текущей точки\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)",
         "detail": "exercise",
         "documentation": {}
     },
@@ -274,7 +274,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)",
+        "peekOfCode": "\t\t\tp1 = ln_equations(xi1 + h, xi2, ka1, ka2)\n\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Невозможно оценить якобиан вблизи текущей точки\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)",
         "detail": "exercise",
         "documentation": {}
     },
@@ -283,7 +283,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1",
+        "peekOfCode": "\t\t\tm1 = ln_equations(xi1 - h, xi2, ka1, ka2)\n\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Невозможно оценить якобиан вблизи текущей точки\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1",
         "detail": "exercise",
         "documentation": {}
     },
@@ -292,7 +292,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:",
+        "peekOfCode": "\t\t\tp2 = ln_equations(xi1, xi2 + h, ka1, ka2)\n\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Невозможно оценить якобиан вблизи текущей точки\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:",
         "detail": "exercise",
         "documentation": {}
     },
@@ -301,7 +301,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Cannot estimate Jacobian near current point\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")",
+        "peekOfCode": "\t\t\tm2 = ln_equations(xi1, xi2 - h, ka1, ka2)\n\t\t\tif p1 is None or m1 is None or p2 is None or m2 is None:\n\t\t\t\traise ValueError(\"Невозможно оценить якобиан вблизи текущей точки\")\n\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Якобиан сингулярен\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -310,7 +310,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0",
+        "peekOfCode": "\t\tdf1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)\n\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Якобиан сингулярен\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0",
         "detail": "exercise",
         "documentation": {}
     },
@@ -319,7 +319,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False",
+        "peekOfCode": "\t\tdf2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)\n\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Якобиан сингулярен\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False",
         "detail": "exercise",
         "documentation": {}
     },
@@ -328,7 +328,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):",
+        "peekOfCode": "\t\tdf1_dxi2 = (p2[0] - m2[0]) / (2.0 * h)\n\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Якобиан сингулярен\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):",
         "detail": "exercise",
         "documentation": {}
     },
@@ -337,7 +337,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1",
+        "peekOfCode": "\t\tdf2_dxi2 = (p2[1] - m2[1]) / (2.0 * h)\n\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Якобиан сингулярен\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1",
         "detail": "exercise",
         "documentation": {}
     },
@@ -346,7 +346,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Jacobian is singular\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2",
+        "peekOfCode": "\t\tdet = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1\n\t\tif abs(det) < 1e-18:\n\t\t\traise ValueError(\"Якобиан сингулярен\")\n\t\tdxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det\n\t\tdxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det\n\t\tlam = 1.0\n\t\timproved = False\n\t\tfor _ in range(30):\n\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2",
         "detail": "exercise",
         "documentation": {}
     },
@@ -391,7 +391,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")",
+        "peekOfCode": "\t\t\tcand_xi1 = xi1 + lam * dxi1\n\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Метод Ньютона не смог улучшить остаток\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -400,7 +400,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")\n\traise ValueError(\"Solver did not converge\")",
+        "peekOfCode": "\t\t\tcand_xi2 = xi2 + lam * dxi2\n\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Метод Ньютона не смог улучшить остаток\")\n\traise ValueError(\"Солвер не сошелся\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -409,7 +409,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")\n\traise ValueError(\"Solver did not converge\")\ndef main() -> None:",
+        "peekOfCode": "\t\t\tcand = ln_equations(cand_xi1, cand_xi2, ka1, ka2)\n\t\t\tif cand is not None and abs(cand[0]) + abs(cand[1]) < norm:\n\t\t\t\txi1, xi2 = cand_xi1, cand_xi2\n\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Метод Ньютона не смог улучшить остаток\")\n\traise ValueError(\"Солвер не сошелся\")\ndef main() -> None:",
         "detail": "exercise",
         "documentation": {}
     },
@@ -418,7 +418,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Newton step failed to improve residual\")\n\traise ValueError(\"Solver did not converge\")\ndef main() -> None:\n\tka1 = ka_from_dg0(DG0_R1, T)\n\tka2 = ka_from_dg0(DG0_R2, T)\n\txi1, xi2 = solve_extents(ka1, ka2)",
+        "peekOfCode": "\t\t\t\timproved = True\n\t\t\t\tbreak\n\t\t\tlam *= 0.5\n\t\tif not improved:\n\t\t\traise ValueError(\"Метод Ньютона не смог улучшить остаток\")\n\traise ValueError(\"Солвер не сошелся\")\ndef main() -> None:\n\tka1 = ka_from_dg0(DG0_R1, T)\n\tka2 = ka_from_dg0(DG0_R2, T)\n\txi1, xi2 = solve_extents(ka1, ka2)",
         "detail": "exercise",
         "documentation": {}
     },
@@ -445,7 +445,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\tn = composition_from_extents(xi1, xi2)\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):",
+        "peekOfCode": "\tn = composition_from_extents(xi1, xi2)\n\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nРавновесное количество молей (на основе исходного количества 1 моль):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):",
         "detail": "exercise",
         "documentation": {}
     },
@@ -454,7 +454,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")",
+        "peekOfCode": "\ty = {name: n[name] / n[\"NT\"] for name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\")}\n\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nРавновесное количество молей (на основе исходного количества 1 моль):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -463,7 +463,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")",
+        "peekOfCode": "\tp = {name: y[name] * P for name in y}\n\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nРавновесное количество молей (на основе исходного количества 1 моль):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nРавновесные концентрации:\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -472,7 +472,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):",
+        "peekOfCode": "\tc = {name: p[name] / (R * T) for name in p}\n\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nРавновесное количество молей (на основе исходного количества 1 моль):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nРавновесные концентрации:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):",
         "detail": "exercise",
         "documentation": {}
     },
@@ -481,7 +481,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")",
+        "peekOfCode": "\talpha_n2 = xi1 / N0[\"N2\"]\n\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nРавновесное количество молей (на основе исходного количества 1 моль):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nРавновесные концентрации:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -490,7 +490,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nEquilibrium mole numbers (basis 1 mol initial):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")",
+        "peekOfCode": "\tprint(\"T = 700 K, P = 300000 Pa\")\n\tprint(f\"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}\")\n\tprint(f\"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}\")\n\tprint(\"\\nРавновесное количество молей (на основе исходного количества 1 моль):\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nРавновесные концентрации:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nСтепень равновесной конверсии первого реагента в реакции 1 (N2):\")",
         "detail": "exercise",
         "documentation": {}
     },
@@ -499,7 +499,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nEquilibrium concentrations:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nmain()",
+        "peekOfCode": "\t\tprint(f\"n_{name} = {n[name]:.9e} mol\")\n\tprint(\"\\nРавновесные концентрации:\")\n\tfor name in (\"N2\", \"H2\", \"NH3\", \"CH4\", \"H2O\", \"CO\"):\n\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nСтепень равновесной конверсии первого реагента в реакции 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nmain()",
         "detail": "exercise",
         "documentation": {}
     },
@@ -508,7 +508,7 @@
         "kind": 5,
         "importPath": "exercise",
         "description": "exercise",
-        "peekOfCode": "\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nEquilibrium conversion degree of first reactant in reaction 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nmain()",
+        "peekOfCode": "\t\tprint(f\"c_{name} = {c[name]:.9e} mol/m^3\")\n\tprint(\"\\nСтепень равновесной конверсии первого реагента в реакции 1 (N2):\")\n\tprint(f\"alpha_N2 = {alpha_n2:.6f}\")\nmain()",
         "detail": "exercise",
         "documentation": {}
     },

@@ -6,11 +6,11 @@ T = 700.0  # K
 P = 300000.0  # Pa
 P0 = 100000.0  # Pa
 
-# Standard Gibbs energies of reactions, J/mol
+# Стандартные энергии Гибbsа реакций, J/mol
 DG0_R1 = -30000.0
 DG0_R2 = 60000.0
 
-# Basis: 1 mol initial mixture
+# Basis: 1 mol
 N0 = {
 	"N2": 0.30,
 	"H2": 0.50,
@@ -20,11 +20,11 @@ N0 = {
 	"CO": 0.00,
 }
 
-
+# Функция для вычисления константы равновесия из стандартной энергии Гибbsа реакции
 def ka_from_dg0(delta_g0: float, temperature: float) -> float:
 	return math.exp(-delta_g0 / (R * temperature))
 
-
+# Функция для вычисления состава смеси на основе степеней конверсии xi1 и xi2
 def composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:
 	n = {
 		"N2": N0["N2"] - xi1,
@@ -37,7 +37,7 @@ def composition_from_extents(xi1: float, xi2: float) -> dict[str, float]:
 	n["NT"] = sum(n.values())
 	return n
 
-
+# Функция для вычисления логарифмов уравнений равновесия на основе текущих степеней конверсии и констант равновесия
 def ln_equations(xi1: float, xi2: float, ka1: float, ka2: float) -> tuple[float, float] | None:
 	n = composition_from_extents(xi1, xi2)
 	if min(n.values()) <= 0.0:
@@ -71,7 +71,7 @@ def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:
 	for _ in range(60):
 		current = ln_equations(xi1, xi2, ka1, ka2)
 		if current is None:
-			raise ValueError("Invalid initial guess for solver")
+			raise ValueError("Неверные начальные приближения для степеней конверсии")
 		f1, f2 = current
 		norm = abs(f1) + abs(f2)
 		if norm < 1e-13:
@@ -89,7 +89,7 @@ def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:
 			p2 = ln_equations(xi1, xi2 + h, ka1, ka2)
 			m2 = ln_equations(xi1, xi2 - h, ka1, ka2)
 			if p1 is None or m1 is None or p2 is None or m2 is None:
-				raise ValueError("Cannot estimate Jacobian near current point")
+				raise ValueError("Невозможно оценить якобиан вблизи текущей точки")
 
 		df1_dxi1 = (p1[0] - m1[0]) / (2.0 * h)
 		df2_dxi1 = (p1[1] - m1[1]) / (2.0 * h)
@@ -98,7 +98,7 @@ def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:
 
 		det = df1_dxi1 * df2_dxi2 - df1_dxi2 * df2_dxi1
 		if abs(det) < 1e-18:
-			raise ValueError("Jacobian is singular")
+			raise ValueError("Якобиан сингулярен")
 
 		dxi1 = (-f1 * df2_dxi2 + f2 * df1_dxi2) / det
 		dxi2 = (-df1_dxi1 * f2 + df2_dxi1 * f1) / det
@@ -115,9 +115,9 @@ def solve_extents(ka1: float, ka2: float) -> tuple[float, float]:
 				break
 			lam *= 0.5
 		if not improved:
-			raise ValueError("Newton step failed to improve residual")
+			raise ValueError("Метод Ньютона не смог улучшить остаток")
 
-	raise ValueError("Solver did not converge")
+	raise ValueError("Солвер не сошелся")
 
 
 def main() -> None:
@@ -136,15 +136,15 @@ def main() -> None:
 	print(f"Ka1 (N2 + 3H2 <-> 2NH3) = {ka1:.6g}")
 	print(f"Ka2 (CH4 + H2O <-> CO + 3H2) = {ka2:.6g}")
 
-	print("\nEquilibrium mole numbers (basis 1 mol initial):")
+	print("\nРавновесное количество молей (на основе исходного количества 1 моль):")
 	for name in ("N2", "H2", "NH3", "CH4", "H2O", "CO"):
 		print(f"n_{name} = {n[name]:.9e} mol")
 
-	print("\nEquilibrium concentrations:")
+	print("\nРавновесные концентрации:")
 	for name in ("N2", "H2", "NH3", "CH4", "H2O", "CO"):
 		print(f"c_{name} = {c[name]:.9e} mol/m^3")
 
-	print("\nEquilibrium conversion degree of first reactant in reaction 1 (N2):")
+	print("\nСтепень равновесной конверсии первого реагента в реакции 1 (N2):")
 	print(f"alpha_N2 = {alpha_n2:.6f}")
 
 main()

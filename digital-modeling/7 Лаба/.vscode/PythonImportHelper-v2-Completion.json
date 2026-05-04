@@ -1,0 +1,503 @@
+[
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "stats",
+        "importPath": "scipy",
+        "description": "scipy",
+        "isExtraImport": true,
+        "detail": "scipy",
+        "documentation": {}
+    },
+    {
+        "label": "odeint",
+        "importPath": "scipy.integrate",
+        "description": "scipy.integrate",
+        "isExtraImport": true,
+        "detail": "scipy.integrate",
+        "documentation": {}
+    },
+    {
+        "label": "fsolve",
+        "importPath": "scipy.optimize",
+        "description": "scipy.optimize",
+        "isExtraImport": true,
+        "detail": "scipy.optimize",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "T = 835  # K\nt = np.array([0, 80, 160, 240, 420, 500, 600])  # s\np_total = np.array([43.2, 53.0, 61.6, 69.3, 83.6, 88.8, 94.5])  # kPa\nt1 = 500  # s\n# Определение стехиометрического коэффициента m\n# Исходим из того, что при t → ∞ давление стремится к m*P0\nP0 = p_total[0]\nm_candidates = [2, 3, 4]\nfor m in m_candidates:\n    pA_final = (m * P0 - p_total[-1]) / (m - 1) if m != 1 else p_total[-1] - p_total[-1]",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "t",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "t = np.array([0, 80, 160, 240, 420, 500, 600])  # s\np_total = np.array([43.2, 53.0, 61.6, 69.3, 83.6, 88.8, 94.5])  # kPa\nt1 = 500  # s\n# Определение стехиометрического коэффициента m\n# Исходим из того, что при t → ∞ давление стремится к m*P0\nP0 = p_total[0]\nm_candidates = [2, 3, 4]\nfor m in m_candidates:\n    pA_final = (m * P0 - p_total[-1]) / (m - 1) if m != 1 else p_total[-1] - p_total[-1]\n    if pA_final >= 0:",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "p_total",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "p_total = np.array([43.2, 53.0, 61.6, 69.3, 83.6, 88.8, 94.5])  # kPa\nt1 = 500  # s\n# Определение стехиометрического коэффициента m\n# Исходим из того, что при t → ∞ давление стремится к m*P0\nP0 = p_total[0]\nm_candidates = [2, 3, 4]\nfor m in m_candidates:\n    pA_final = (m * P0 - p_total[-1]) / (m - 1) if m != 1 else p_total[-1] - p_total[-1]\n    if pA_final >= 0:\n        m_final = m",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "t1",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "t1 = 500  # s\n# Определение стехиометрического коэффициента m\n# Исходим из того, что при t → ∞ давление стремится к m*P0\nP0 = p_total[0]\nm_candidates = [2, 3, 4]\nfor m in m_candidates:\n    pA_final = (m * P0 - p_total[-1]) / (m - 1) if m != 1 else p_total[-1] - p_total[-1]\n    if pA_final >= 0:\n        m_final = m\n        break",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "P0",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "P0 = p_total[0]\nm_candidates = [2, 3, 4]\nfor m in m_candidates:\n    pA_final = (m * P0 - p_total[-1]) / (m - 1) if m != 1 else p_total[-1] - p_total[-1]\n    if pA_final >= 0:\n        m_final = m\n        break\nprint(f\"Стехиометрический коэффициент m = {m_final}\")\n# Расчёт парциального давления реагента A\npA = (m_final * P0 - p_total) / (m_final - 1)",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "m_candidates",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "m_candidates = [2, 3, 4]\nfor m in m_candidates:\n    pA_final = (m * P0 - p_total[-1]) / (m - 1) if m != 1 else p_total[-1] - p_total[-1]\n    if pA_final >= 0:\n        m_final = m\n        break\nprint(f\"Стехиометрический коэффициент m = {m_final}\")\n# Расчёт парциального давления реагента A\npA = (m_final * P0 - p_total) / (m_final - 1)\n# Пересчёт давления в концентрацию (моль/л)",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "pA",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "pA = (m_final * P0 - p_total) / (m_final - 1)\n# Пересчёт давления в концентрацию (моль/л)\nR = 8.314  # Дж/(моль·К)\nRT_kPa_L_mol = R * T / 1000  # кПа·л/моль\nC_A = pA / RT_kPa_L_mol\nprint(\"\\nПарциальное давление A в разные моменты времени:\")\nprint(\"t, с\\tp_total, кПа\\tpA, кПа\\tC_A, моль/л\")\nfor i in range(len(t)):\n    print(f\"{t[i]}\\t\\t{p_total[i]:.1f}\\t\\t\\t{pA[i]:.2f}\\t{C_A[i]:.3f}\")\n# Проверка кинетических моделей",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "R",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "R = 8.314  # Дж/(моль·К)\nRT_kPa_L_mol = R * T / 1000  # кПа·л/моль\nC_A = pA / RT_kPa_L_mol\nprint(\"\\nПарциальное давление A в разные моменты времени:\")\nprint(\"t, с\\tp_total, кПа\\tpA, кПа\\tC_A, моль/л\")\nfor i in range(len(t)):\n    print(f\"{t[i]}\\t\\t{p_total[i]:.1f}\\t\\t\\t{pA[i]:.2f}\\t{C_A[i]:.3f}\")\n# Проверка кинетических моделей\nln_pA = np.log(pA)\ninv_pA = 1 / pA",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "RT_kPa_L_mol",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "RT_kPa_L_mol = R * T / 1000  # кПа·л/моль\nC_A = pA / RT_kPa_L_mol\nprint(\"\\nПарциальное давление A в разные моменты времени:\")\nprint(\"t, с\\tp_total, кПа\\tpA, кПа\\tC_A, моль/л\")\nfor i in range(len(t)):\n    print(f\"{t[i]}\\t\\t{p_total[i]:.1f}\\t\\t\\t{pA[i]:.2f}\\t{C_A[i]:.3f}\")\n# Проверка кинетических моделей\nln_pA = np.log(pA)\ninv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "C_A",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "C_A = pA / RT_kPa_L_mol\nprint(\"\\nПарциальное давление A в разные моменты времени:\")\nprint(\"t, с\\tp_total, кПа\\tpA, кПа\\tC_A, моль/л\")\nfor i in range(len(t)):\n    print(f\"{t[i]}\\t\\t{p_total[i]:.1f}\\t\\t\\t{pA[i]:.2f}\\t{C_A[i]:.3f}\")\n# Проверка кинетических моделей\nln_pA = np.log(pA)\ninv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка\nslope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "ln_pA",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "ln_pA = np.log(pA)\ninv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка\nslope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)\n# Линейная регрессия для 2-го порядка\nslope2, intercept2, r2, _, _ = stats.linregress(t, inv_pA)\n# Выбор порядка реакции по коэффициенту корреляции\nif abs(r1) > abs(r2): # pyright: ignore[reportArgumentType]\n    order = 1\n    k = -slope1  # pyright: ignore[reportOperatorIssue] # для 1-го порядка k = -slope",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "inv_pA",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "inv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка\nslope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)\n# Линейная регрессия для 2-го порядка\nslope2, intercept2, r2, _, _ = stats.linregress(t, inv_pA)\n# Выбор порядка реакции по коэффициенту корреляции\nif abs(r1) > abs(r2): # pyright: ignore[reportArgumentType]\n    order = 1\n    k = -slope1  # pyright: ignore[reportOperatorIssue] # для 1-го порядка k = -slope\n    print(f\"\\nПорядок реакции: 1 (R^2 = {r1**2:.4f})\") # pyright: ignore[reportOperatorIssue]",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "alpha_t1",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "alpha_t1 = (P0 - pA_t1) / P0\nprint(f\"\\nВ момент времени t1 = {t1} с:\")\nprint(f\"Парциальное давление A: {pA_t1:.2f} кПа\")\nprint(f\"Степень превращения a = {alpha_t1:.4f} ({alpha_t1*100:.2f}%)\")\n# Расчёт концентрации в моль/л\nC0 = P0 / RT_kPa_L_mol\nC_t1 = pA_t1 / RT_kPa_L_mol\nprint(f\"Начальная концентрация C0 = {C0:.3f} моль/л\")\nprint(f\"Концентрация в момент t1 = {C_t1:.3f} моль/л\")\n# Построение графиков",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "C0",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "C0 = P0 / RT_kPa_L_mol\nC_t1 = pA_t1 / RT_kPa_L_mol\nprint(f\"Начальная концентрация C0 = {C0:.3f} моль/л\")\nprint(f\"Концентрация в момент t1 = {C_t1:.3f} моль/л\")\n# Построение графиков\nfig, axes = plt.subplots(2, 2, figsize=(12, 10))\n# 1. Кинетическая кривая: C_A(t)\naxes[0, 0].plot(t, C_A, 'bo-', linewidth=2, markersize=8)\naxes[0, 0].set_xlabel('Время, с', fontsize=12)\naxes[0, 0].set_ylabel('Концентрация A, моль/л', fontsize=12)",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "C_t1",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "C_t1 = pA_t1 / RT_kPa_L_mol\nprint(f\"Начальная концентрация C0 = {C0:.3f} моль/л\")\nprint(f\"Концентрация в момент t1 = {C_t1:.3f} моль/л\")\n# Построение графиков\nfig, axes = plt.subplots(2, 2, figsize=(12, 10))\n# 1. Кинетическая кривая: C_A(t)\naxes[0, 0].plot(t, C_A, 'bo-', linewidth=2, markersize=8)\naxes[0, 0].set_xlabel('Время, с', fontsize=12)\naxes[0, 0].set_ylabel('Концентрация A, моль/л', fontsize=12)\naxes[0, 0].set_title('Кинетическая кривая C_A(t)', fontsize=14)",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "alpha_all",
+        "kind": 5,
+        "importPath": "exercise 1",
+        "description": "exercise 1",
+        "peekOfCode": "alpha_all = (P0 - pA) / P0\naxes[1, 1].plot(t, p_total, 'purple', 'o-', linewidth=2, markersize=8, label='Общее давление')\naxes[1, 1].plot(t, alpha_all * 100, 'orange', 's-', linewidth=2, markersize=8, label='Степень превращения, %')\naxes[1, 1].set_xlabel('Время, с', fontsize=12)\naxes[1, 1].set_ylabel('Давление (кПа) / Степень превращения (%)', fontsize=12)\naxes[1, 1].set_title('Изменение общего давления и степени превращения', fontsize=14)\naxes[1, 1].grid(True, alpha=0.3)\naxes[1, 1].legend()\nplt.tight_layout()\nplt.show()",
+        "detail": "exercise 1",
+        "documentation": {}
+    },
+    {
+        "label": "cstr_equations",
+        "kind": 2,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "def cstr_equations(y, t, k1, k2, Q, V, C_A_in):\n    \"\"\"\n    y = [C_A, C_B, C_C, C_D] - концентрации в реакторе\n    Возвращает dC/dt\n    \"\"\"\n    C_A, C_B, C_C, C_D = y\n    # Концентрация на входе\n    C_A_in = C_A0_in\n    C_B_in = 0\n    C_C_in = 0",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "steady_state",
+        "kind": 2,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "def steady_state(y, k1, k2, Q, V, C_A_in):\n    \"\"\"Система уравнений для стационарного состояния\"\"\"\n    C_A, C_B, C_C, C_D = y\n    C_A_in = C_A0_in\n    C_B_in = 0\n    C_C_in = 0\n    C_D_in = 0\n    r1 = k1 * C_A\n    r2 = k2 * C_B\n    eq1 = (Q/V) * (C_A_in - C_A) - r1",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "k1",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "k1 = 0.12   # с⁻¹ для реакции A -> B\nk2 = 0.80   # с⁻¹ для реакции B -> C + D\n# Энергии активации (кДж/моль)\nE1 = 94.2   # для реакции A -> B\nE2 = 81.2   # для реакции B -> C + D\nR_gas = 8.314  # Дж/(моль·К) - универсальная газовая постоянная\n# Температура\nT = 620  # K\n# Параметры реактора\nV = 1.0  # объем реактора, м³",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "k2",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "k2 = 0.80   # с⁻¹ для реакции B -> C + D\n# Энергии активации (кДж/моль)\nE1 = 94.2   # для реакции A -> B\nE2 = 81.2   # для реакции B -> C + D\nR_gas = 8.314  # Дж/(моль·К) - универсальная газовая постоянная\n# Температура\nT = 620  # K\n# Параметры реактора\nV = 1.0  # объем реактора, м³\ntau = 100  # время пребывания, с",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "E1",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "E1 = 94.2   # для реакции A -> B\nE2 = 81.2   # для реакции B -> C + D\nR_gas = 8.314  # Дж/(моль·К) - универсальная газовая постоянная\n# Температура\nT = 620  # K\n# Параметры реактора\nV = 1.0  # объем реактора, м³\ntau = 100  # время пребывания, с\nQ = V / tau  # объемный расход, м³/с\n# Начальная концентрация A на входе",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "E2",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "E2 = 81.2   # для реакции B -> C + D\nR_gas = 8.314  # Дж/(моль·К) - универсальная газовая постоянная\n# Температура\nT = 620  # K\n# Параметры реактора\nV = 1.0  # объем реактора, м³\ntau = 100  # время пребывания, с\nQ = V / tau  # объемный расход, м³/с\n# Начальная концентрация A на входе\nC_A0_in = 0.0328  # моль/м³",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "R_gas",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "R_gas = 8.314  # Дж/(моль·К) - универсальная газовая постоянная\n# Температура\nT = 620  # K\n# Параметры реактора\nV = 1.0  # объем реактора, м³\ntau = 100  # время пребывания, с\nQ = V / tau  # объемный расход, м³/с\n# Начальная концентрация A на входе\nC_A0_in = 0.0328  # моль/м³\n# Система дифференциальных уравнений для реактора идеального смешения (CSTR)",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "T",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "T = 620  # K\n# Параметры реактора\nV = 1.0  # объем реактора, м³\ntau = 100  # время пребывания, с\nQ = V / tau  # объемный расход, м³/с\n# Начальная концентрация A на входе\nC_A0_in = 0.0328  # моль/м³\n# Система дифференциальных уравнений для реактора идеального смешения (CSTR)\ndef cstr_equations(y, t, k1, k2, Q, V, C_A_in):\n    \"\"\"",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "V",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "V = 1.0  # объем реактора, м³\ntau = 100  # время пребывания, с\nQ = V / tau  # объемный расход, м³/с\n# Начальная концентрация A на входе\nC_A0_in = 0.0328  # моль/м³\n# Система дифференциальных уравнений для реактора идеального смешения (CSTR)\ndef cstr_equations(y, t, k1, k2, Q, V, C_A_in):\n    \"\"\"\n    y = [C_A, C_B, C_C, C_D] - концентрации в реакторе\n    Возвращает dC/dt",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "tau",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "tau = 100  # время пребывания, с\nQ = V / tau  # объемный расход, м³/с\n# Начальная концентрация A на входе\nC_A0_in = 0.0328  # моль/м³\n# Система дифференциальных уравнений для реактора идеального смешения (CSTR)\ndef cstr_equations(y, t, k1, k2, Q, V, C_A_in):\n    \"\"\"\n    y = [C_A, C_B, C_C, C_D] - концентрации в реакторе\n    Возвращает dC/dt\n    \"\"\"",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "Q",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "Q = V / tau  # объемный расход, м³/с\n# Начальная концентрация A на входе\nC_A0_in = 0.0328  # моль/м³\n# Система дифференциальных уравнений для реактора идеального смешения (CSTR)\ndef cstr_equations(y, t, k1, k2, Q, V, C_A_in):\n    \"\"\"\n    y = [C_A, C_B, C_C, C_D] - концентрации в реакторе\n    Возвращает dC/dt\n    \"\"\"\n    C_A, C_B, C_C, C_D = y",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_A0_in",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_A0_in = 0.0328  # моль/м³\n# Система дифференциальных уравнений для реактора идеального смешения (CSTR)\ndef cstr_equations(y, t, k1, k2, Q, V, C_A_in):\n    \"\"\"\n    y = [C_A, C_B, C_C, C_D] - концентрации в реакторе\n    Возвращает dC/dt\n    \"\"\"\n    C_A, C_B, C_C, C_D = y\n    # Концентрация на входе\n    C_A_in = C_A0_in",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "t_max",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "t_max = 500  # максимальное время, с\nt = np.linspace(0, t_max, 1000)\n# Начальные условия: в начале в реакторе чистые компоненты\ny0 = [0, 0, 0, 0]  # начальные концентрации в реакторе\n# Решение системы ОДУ\nprint(\"Интегрирование системы дифференциальных уравнений...\")\nsolution = odeint(cstr_equations, y0, t, args=(k1, k2, Q, V, C_A0_in))\n# Извлечение концентраций\nC_A = solution[:, 0]\nC_B = solution[:, 1]",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "t",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "t = np.linspace(0, t_max, 1000)\n# Начальные условия: в начале в реакторе чистые компоненты\ny0 = [0, 0, 0, 0]  # начальные концентрации в реакторе\n# Решение системы ОДУ\nprint(\"Интегрирование системы дифференциальных уравнений...\")\nsolution = odeint(cstr_equations, y0, t, args=(k1, k2, Q, V, C_A0_in))\n# Извлечение концентраций\nC_A = solution[:, 0]\nC_B = solution[:, 1]\nC_C = solution[:, 2]",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "y0",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "y0 = [0, 0, 0, 0]  # начальные концентрации в реакторе\n# Решение системы ОДУ\nprint(\"Интегрирование системы дифференциальных уравнений...\")\nsolution = odeint(cstr_equations, y0, t, args=(k1, k2, Q, V, C_A0_in))\n# Извлечение концентраций\nC_A = solution[:, 0]\nC_B = solution[:, 1]\nC_C = solution[:, 2]\nC_D = solution[:, 3]\n# Поиск стационарного состояния",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "solution",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "solution = odeint(cstr_equations, y0, t, args=(k1, k2, Q, V, C_A0_in))\n# Извлечение концентраций\nC_A = solution[:, 0]\nC_B = solution[:, 1]\nC_C = solution[:, 2]\nC_D = solution[:, 3]\n# Поиск стационарного состояния\nprint(\"Поиск стационарного состояния...\")\ny_guess = [C_A[-1], C_B[-1], C_C[-1], C_D[-1]]  # начальное приближение - последние значения\nsteady_state_solution = fsolve(steady_state, y_guess, args=(k1, k2, Q, V, C_A0_in))",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_A",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_A = solution[:, 0]\nC_B = solution[:, 1]\nC_C = solution[:, 2]\nC_D = solution[:, 3]\n# Поиск стационарного состояния\nprint(\"Поиск стационарного состояния...\")\ny_guess = [C_A[-1], C_B[-1], C_C[-1], C_D[-1]]  # начальное приближение - последние значения\nsteady_state_solution = fsolve(steady_state, y_guess, args=(k1, k2, Q, V, C_A0_in))\nC_A_ss, C_B_ss, C_C_ss, C_D_ss = steady_state_solution\n# Определение времени достижения стационарного состояния (когда изменение < 1%)",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_B",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_B = solution[:, 1]\nC_C = solution[:, 2]\nC_D = solution[:, 3]\n# Поиск стационарного состояния\nprint(\"Поиск стационарного состояния...\")\ny_guess = [C_A[-1], C_B[-1], C_C[-1], C_D[-1]]  # начальное приближение - последние значения\nsteady_state_solution = fsolve(steady_state, y_guess, args=(k1, k2, Q, V, C_A0_in))\nC_A_ss, C_B_ss, C_C_ss, C_D_ss = steady_state_solution\n# Определение времени достижения стационарного состояния (когда изменение < 1%)\ntolerance = 0.01  # 1% от стационарного значения",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_C",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_C = solution[:, 2]\nC_D = solution[:, 3]\n# Поиск стационарного состояния\nprint(\"Поиск стационарного состояния...\")\ny_guess = [C_A[-1], C_B[-1], C_C[-1], C_D[-1]]  # начальное приближение - последние значения\nsteady_state_solution = fsolve(steady_state, y_guess, args=(k1, k2, Q, V, C_A0_in))\nC_A_ss, C_B_ss, C_C_ss, C_D_ss = steady_state_solution\n# Определение времени достижения стационарного состояния (когда изменение < 1%)\ntolerance = 0.01  # 1% от стационарного значения\nt_steady_state = t_max",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_D",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_D = solution[:, 3]\n# Поиск стационарного состояния\nprint(\"Поиск стационарного состояния...\")\ny_guess = [C_A[-1], C_B[-1], C_C[-1], C_D[-1]]  # начальное приближение - последние значения\nsteady_state_solution = fsolve(steady_state, y_guess, args=(k1, k2, Q, V, C_A0_in))\nC_A_ss, C_B_ss, C_C_ss, C_D_ss = steady_state_solution\n# Определение времени достижения стационарного состояния (когда изменение < 1%)\ntolerance = 0.01  # 1% от стационарного значения\nt_steady_state = t_max\n# Исправленная часть: проверяем сначала, что стационарные концентрации определены и не равны нулю",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "y_guess",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "y_guess = [C_A[-1], C_B[-1], C_C[-1], C_D[-1]]  # начальное приближение - последние значения\nsteady_state_solution = fsolve(steady_state, y_guess, args=(k1, k2, Q, V, C_A0_in))\nC_A_ss, C_B_ss, C_C_ss, C_D_ss = steady_state_solution\n# Определение времени достижения стационарного состояния (когда изменение < 1%)\ntolerance = 0.01  # 1% от стационарного значения\nt_steady_state = t_max\n# Исправленная часть: проверяем сначала, что стационарные концентрации определены и не равны нулю\nfor i in range(len(t)):\n    # Проверяем условие только для положительных стационарных концентраций\n    condition_A = abs(C_A[i] - C_A_ss) / C_A_ss < tolerance if C_A_ss > 0 else True",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "steady_state_solution",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "steady_state_solution = fsolve(steady_state, y_guess, args=(k1, k2, Q, V, C_A0_in))\nC_A_ss, C_B_ss, C_C_ss, C_D_ss = steady_state_solution\n# Определение времени достижения стационарного состояния (когда изменение < 1%)\ntolerance = 0.01  # 1% от стационарного значения\nt_steady_state = t_max\n# Исправленная часть: проверяем сначала, что стационарные концентрации определены и не равны нулю\nfor i in range(len(t)):\n    # Проверяем условие только для положительных стационарных концентраций\n    condition_A = abs(C_A[i] - C_A_ss) / C_A_ss < tolerance if C_A_ss > 0 else True\n    condition_B = abs(C_B[i] - C_B_ss) / C_B_ss < tolerance if C_B_ss > 0 else True # type: ignore",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "tolerance",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "tolerance = 0.01  # 1% от стационарного значения\nt_steady_state = t_max\n# Исправленная часть: проверяем сначала, что стационарные концентрации определены и не равны нулю\nfor i in range(len(t)):\n    # Проверяем условие только для положительных стационарных концентраций\n    condition_A = abs(C_A[i] - C_A_ss) / C_A_ss < tolerance if C_A_ss > 0 else True\n    condition_B = abs(C_B[i] - C_B_ss) / C_B_ss < tolerance if C_B_ss > 0 else True # type: ignore\n    condition_C = abs(C_C[i] - C_C_ss) / C_C_ss < tolerance if C_C_ss > 0 else True\n    condition_D = abs(C_D[i] - C_D_ss) / C_D_ss < tolerance if C_D_ss > 0 else True\n    if condition_A and condition_B and condition_C and condition_D:",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "t_steady_state",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "t_steady_state = t_max\n# Исправленная часть: проверяем сначала, что стационарные концентрации определены и не равны нулю\nfor i in range(len(t)):\n    # Проверяем условие только для положительных стационарных концентраций\n    condition_A = abs(C_A[i] - C_A_ss) / C_A_ss < tolerance if C_A_ss > 0 else True\n    condition_B = abs(C_B[i] - C_B_ss) / C_B_ss < tolerance if C_B_ss > 0 else True # type: ignore\n    condition_C = abs(C_C[i] - C_C_ss) / C_C_ss < tolerance if C_C_ss > 0 else True\n    condition_D = abs(C_D[i] - C_D_ss) / C_D_ss < tolerance if C_D_ss > 0 else True\n    if condition_A and condition_B and condition_C and condition_D:\n        t_steady_state = t[i]",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "ax1",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "ax1 = axes[0, 0]\nax1.plot(t, C_A, 'b-', linewidth=2, label='C8H18 (A)')\nax1.plot(t, C_B, 'r-', linewidth=2, label='i-C8H18 (B)')\nax1.plot(t, C_C, 'g-', linewidth=2, label='C4H10 (C)')\nax1.plot(t, C_D, 'm-', linewidth=2, label='C4H8 (D)')\nax1.axhline(y=C_A_ss, color='b', linestyle='--', alpha=0.5, label=f'C_A стац. = {C_A_ss:.4f}')\nax1.axhline(y=C_B_ss, color='r', linestyle='--', alpha=0.5, label=f'C_B стац. = {C_B_ss:.4f}')\nax1.set_xlabel('Время, с', fontsize=12)\nax1.set_ylabel('Концентрация, моль/м³', fontsize=12)\nax1.set_title('Изменение концентраций компонентов', fontsize=14)",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "ax2",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "ax2 = axes[0, 1]\n# Добавляем небольшое смещение для избежания log(0)\neps = 1e-10\nax2.semilogy(t, C_A + eps, 'b-', linewidth=2, label='C8H18')\nax2.semilogy(t, C_B + eps, 'r-', linewidth=2, label='i-C8H18')\nax2.semilogy(t, C_C + eps, 'g-', linewidth=2, label='C4H10')\nax2.semilogy(t, C_D + eps, 'm-', linewidth=2, label='C4H8')\nax2.set_xlabel('Время, с', fontsize=12)\nax2.set_ylabel('Концентрация (логарифм), моль/м³', fontsize=12)\nax2.set_title('Изменение концентраций (логарифмический масштаб)', fontsize=14)",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "eps",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "eps = 1e-10\nax2.semilogy(t, C_A + eps, 'b-', linewidth=2, label='C8H18')\nax2.semilogy(t, C_B + eps, 'r-', linewidth=2, label='i-C8H18')\nax2.semilogy(t, C_C + eps, 'g-', linewidth=2, label='C4H10')\nax2.semilogy(t, C_D + eps, 'm-', linewidth=2, label='C4H8')\nax2.set_xlabel('Время, с', fontsize=12)\nax2.set_ylabel('Концентрация (логарифм), моль/м³', fontsize=12)\nax2.set_title('Изменение концентраций (логарифмический масштаб)', fontsize=14)\nax2.legend(loc='best', fontsize=10)\nax2.grid(True, alpha=0.3)",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "ax3",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "ax3 = axes[1, 0]\nif C_A0_in > 0:\n    ax3.plot(t, C_A/C_A0_in, 'b-', linewidth=2, label='C8H18/C0')\n    ax3.plot(t, C_B/C_A0_in, 'r-', linewidth=2, label='i-C8H18/C0')\n    ax3.plot(t, C_C/C_A0_in, 'g-', linewidth=2, label='C4H10/C0')\n    ax3.plot(t, C_D/C_A0_in, 'm-', linewidth=2, label='C4H8/C0')\nelse:\n    ax3.plot(t, C_A, 'b-', linewidth=2, label='C8H18')\n    ax3.plot(t, C_B, 'r-', linewidth=2, label='i-C8H18')\n    ax3.plot(t, C_C, 'g-', linewidth=2, label='C4H10')",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "ax4",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "ax4 = axes[1, 1]\nif C_A0_in > 0:\n    conversion = (C_A0_in - C_A) / C_A0_in * 100\n    # Избегаем деления на ноль\n    denominator = (C_A0_in - C_A)\n    denominator[denominator < 1e-10] = 1e-10\n    selectivity_to_C = C_C / denominator * 100\n    yield_of_C = C_C / C_A0_in * 100\n    ax4.plot(t, conversion, 'b-', linewidth=2, label='Конверсия A, %')\n    ax4.plot(t, selectivity_to_C, 'g-', linewidth=2, label='Селективность по C4H10, %')",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "tau_values",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "tau_values = np.linspace(1, 200, 50)\nC_A_ss_tau = []\nC_B_ss_tau = []\nC_C_ss_tau = []\nC_D_ss_tau = []\nfor tau_val in tau_values:\n    Q_val = V / tau_val\n    # Решение стационарного состояния для каждого tau\n    try:\n        # Начальное приближение: предполагаем, что концентрации положительные",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_A_ss_tau",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_A_ss_tau = []\nC_B_ss_tau = []\nC_C_ss_tau = []\nC_D_ss_tau = []\nfor tau_val in tau_values:\n    Q_val = V / tau_val\n    # Решение стационарного состояния для каждого tau\n    try:\n        # Начальное приближение: предполагаем, что концентрации положительные\n        initial_guess = [C_A0_in/2, C_A0_in/2, C_A0_in/4, C_A0_in/4]",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_B_ss_tau",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_B_ss_tau = []\nC_C_ss_tau = []\nC_D_ss_tau = []\nfor tau_val in tau_values:\n    Q_val = V / tau_val\n    # Решение стационарного состояния для каждого tau\n    try:\n        # Начальное приближение: предполагаем, что концентрации положительные\n        initial_guess = [C_A0_in/2, C_A0_in/2, C_A0_in/4, C_A0_in/4]\n        ss = fsolve(steady_state, initial_guess, args=(k1, k2, Q_val, V, C_A0_in))",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_C_ss_tau",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_C_ss_tau = []\nC_D_ss_tau = []\nfor tau_val in tau_values:\n    Q_val = V / tau_val\n    # Решение стационарного состояния для каждого tau\n    try:\n        # Начальное приближение: предполагаем, что концентрации положительные\n        initial_guess = [C_A0_in/2, C_A0_in/2, C_A0_in/4, C_A0_in/4]\n        ss = fsolve(steady_state, initial_guess, args=(k1, k2, Q_val, V, C_A0_in))\n        # Проверяем, что концентрации неотрицательные",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "C_D_ss_tau",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "C_D_ss_tau = []\nfor tau_val in tau_values:\n    Q_val = V / tau_val\n    # Решение стационарного состояния для каждого tau\n    try:\n        # Начальное приближение: предполагаем, что концентрации положительные\n        initial_guess = [C_A0_in/2, C_A0_in/2, C_A0_in/4, C_A0_in/4]\n        ss = fsolve(steady_state, initial_guess, args=(k1, k2, Q_val, V, C_A0_in))\n        # Проверяем, что концентрации неотрицательные\n        ss = np.maximum(ss, 0) # type: ignore",
+        "detail": "exercise 2",
+        "documentation": {}
+    },
+    {
+        "label": "mask",
+        "kind": 5,
+        "importPath": "exercise 2",
+        "description": "exercise 2",
+        "peekOfCode": "mask = ~np.isnan(C_A_ss_tau)\nif np.any(mask):\n    ax.plot(tau_values[mask], np.array(C_A_ss_tau)[mask], 'b-', linewidth=2, label='C8H18')\n    ax.plot(tau_values[mask], np.array(C_B_ss_tau)[mask], 'r-', linewidth=2, label='i-C8H18')\n    ax.plot(tau_values[mask], np.array(C_C_ss_tau)[mask], 'g-', linewidth=2, label='C4H10')\n    ax.plot(tau_values[mask], np.array(C_D_ss_tau)[mask], 'm-', linewidth=2, label='C4H8')\n    ax.axvline(x=tau, color='k', linestyle='--', alpha=0.5, label=f'τ = {tau} с (исходный)')\nelse:\n    ax.text(0.5, 0.5, 'Не удалось рассчитать\\nзависимость от τ', \n            ha='center', va='center', transform=ax.transAxes)",
+        "detail": "exercise 2",
+        "documentation": {}
+    }
+]
