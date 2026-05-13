@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE HTML>
 <html lang="ru">
 <head>
-    <title>Фамилия Имя</title>
-    <meta name="description" content="Группа КС-2X, контрольная работа">
+    <title>Сапунков Александр</title>
+    <meta name="description" content="Группа КС-23, контрольная работа">
     <meta charset="utf-8">
     <link href="img/favicon.svg" rel="shortcut icon">
     <link rel="stylesheet" href="css/main.css">
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="tel:88002009775">8 800 200-97-75</a>
         <a href="mailto:info@makeshop.pro">info@makeshop.pro</a>
         <hr>
-        <div id="user">Работу выполнил: Фамилия Имя, группа КС-2Х</div>
+        <div id="user">Работу выполнил: Сапунков Александр, группа КС-23</div>
         <div id="copy">© makeshop.pro</div>
     </div>
 </footer>
