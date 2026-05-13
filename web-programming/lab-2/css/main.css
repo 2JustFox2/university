@@ -1,0 +1,272 @@
+@import "reset.css";
+
+.container {
+    box-sizing: border-box;
+    width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+header {
+    box-sizing: border-box;
+    width: 100%;
+    height: 112px;
+    padding: 24px 0;
+    background: #080808;
+}
+
+header > div > a#logo {
+    display: block;
+    width: 236px;
+    height: 64px;
+    float: left;
+}
+
+header > div > form {
+    display: block;
+    box-sizing: border-box;
+    float: left;
+    width: 660px;
+    height: 48px;
+    margin: 8px 0 0 100px;
+}
+
+header > div > form > input {
+    display: block;
+    box-sizing: border-box;
+    height: 48px;
+    width: 660px;
+    padding: 0 72px 0 20px;
+    font-size: 16px;
+    color: #636567;
+    background: #1D1E20;
+    border: none;
+}
+
+header > div > form > input:focus {
+    color: #FFF;
+}
+
+header > div > form > button {
+    display: block;
+    box-sizing: border-box;
+    width: 32px;
+    height: 32px;
+    background: url("../img/search.png") no-repeat;
+    position: relative;
+    top: -40px;
+    right: -608px;
+}
+
+header > div > a.icon {
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 16px 0 0 40px;
+    float: right;
+}
+
+main h2 {
+    font-size: 56px;
+    color: #000;
+    margin-top: 24px;
+}
+
+main div.container > ul {
+    margin-bottom: 36px;
+}
+
+main div.container > ul > li {
+    display: block;
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+main div.container > p {
+    font-size: 16px;
+    margin-top: 24px;
+}
+
+main p a {
+    text-decoration: underline;
+    color: #999999;
+}
+
+main p a:hover {
+    text-decoration: none;
+    color: #666666;
+}
+
+main div.container > ul > li > div > h3 {
+    font-size: 24px;
+    line-height: 30px;
+    margin-top: 24px;
+}
+
+main div.container > ul > li > div > p {
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 24px;
+}
+
+main a.button, main button {
+    box-sizing: border-box;
+    display: block;
+    height: 48px;
+    font-size: 16px;
+    line-height: 44px;
+    border: 2px solid #BBBBBB;
+    border-radius: 8px;
+    width: 130px;
+    text-align: center;
+    color: #000;
+    margin-top: 30px;
+    background: transparent;
+}
+
+main a.button:hover, main button:hover {
+    color: #333333;
+}
+
+main > div#main {
+    background: url("../img/back.jpg") no-repeat left center;
+    background-size: cover;
+}
+
+main > div#main > div > h1 {
+    width: 50%;
+    color: #F4F4F4;
+    font-size: 72px;
+    line-height: 80px;
+    margin-top: 64px;
+}
+
+main > div#main > div > p {
+    width: 50%;
+    color: #F4F4F4;
+    font-size: 20px;
+    line-height: 28px;
+    margin: 24px 0 64px 0;
+}
+
+main > div#services > ul > li > img {
+    display: block;
+    width: 216px;
+    height: 188px;
+    float: left;
+}
+
+main > div#services > ul > li > div > h3 {
+    margin-top: 48px;
+}
+
+main > div#services > ul > li > div {
+    float: left;
+    margin-left: 24px;
+}
+
+main > div#news {
+    background: #F6F9FF;
+}
+
+main > div#news > div > ul > li {
+    border-top: 1px solid #BBBBBB;
+    padding-top: 24px;
+}
+
+main > div#news > div > ul > li:first-child {
+    border-top: none;
+    padding-top: 0;
+}
+
+main > div#news ul > li > div {
+    box-sizing: border-box;
+    float: left;
+    width: 50%;
+    padding-right: 24px;
+}
+
+main > div#news ul > li > div > span {
+    color: #F4F4F4;
+    background: #148BFF;
+    font-size: 14px;
+    line-height: 24px;
+    padding: 4px 18px;
+    border-radius: 16px;
+}
+
+main > div#news ul > li > img {
+    float: right;
+    width: 50%;
+    height: auto;
+}
+
+main > div#news ul > li > div > ul > li {
+    font-size: 16px;
+    line-height: 22px;
+}
+
+main > div#form form {
+    display: block;
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+main > div#form > form > input {
+    box-sizing: border-box;
+    width: 45%;
+    float: left;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #BBBBBB;
+    height: 48px;
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+main > div#form > form > input:last-of-type{
+    float: right;
+}
+
+footer {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 24px 0;
+    background: #080808;
+    margin-top: 24px;
+}
+
+footer > div {
+    text-align: center;
+}
+
+footer * {
+    color: #D0D9DF;
+    font-size: 16px;
+}
+
+footer > div > div#label {
+    color: #A4C8FF;
+    display: inline;
+}
+
+footer > div > a {
+    margin-left: 40px;
+}
+
+footer > div > hr {
+    clear: both;
+    height: 1px;
+    background: #1E1E1E;
+    margin-top: 24px;
+}
+
+footer > div > div#user {
+    margin-top: 24px;
+    float: left;
+}
+
+footer > div > div#copy {
+    margin-top: 24px;
+    float: right;
+}
