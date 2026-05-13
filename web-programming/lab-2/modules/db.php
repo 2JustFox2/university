@@ -3,7 +3,7 @@
 class DataBase {
     private $host = '127.0.0.1';
     private $user = 'root';
-    private $pass = 'root';
+    private $pass = '';
     private $db = 'web';
     private $port = 3306;
     private $mysqli = null;
