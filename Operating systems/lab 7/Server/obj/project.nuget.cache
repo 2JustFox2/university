@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "IPKDHa4EMVk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\alexv\\OneDrive\\projects\\labs\\Operating systems\\lab 7\\Server\\ChatServer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\alexv\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\alexv\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\alexv\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\alexv\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.36\\microsoft.netcore.app.host.win-x64.6.0.36.nupkg.sha512"
+  ],
+  "logs": []
+}
