@@ -73,23 +73,29 @@ title('Интерполяция каноническим полиномом');
 legend('Полином P_n(t)', 'Узловые точки', 'Интерполируемые точки', 'Location', 'best');
 grid on;
 
-%% 4. Оценка погрешности по формуле Рунге
+%% 4. Оценка погрешности по формуле с конечными разностями
 fprintf('4. Оценка погрешности\n');
 
-% Аппроксимация максимальной производной через конечные разности
-% Используем 9-ю производную (n+1 = 9)
-h_step = mean(diff(t));
-% Для оценки используем центральные разности
-f_n1_max = max(abs(diff(h, n+1))) / (h_step^(n+1));
+n = length(t) - 1;
 
-% Функция для вычисления произведения (x - x_i)
-prod_term = @(x) prod(x - t);
+h_avg = (t(end) - t(1)) / n;
+fprintf('Средний шаг сетки: %.4f\n', h_avg);
 
-% Оценка погрешности для каждой точки
-fprintf('Точка\t\tЗначение\tПогрешность (верхняя граница)\n');
-for i = 1:length(t_interp)
-    error_bound = (f_n1_max / factorial(n+1)) * abs(prod_term(t_interp(i)));
-    fprintf('t=%.1f\t\t%.4f\t\t%.6e\n', t_interp(i), h_interp_poly(i), error_bound);
+error_interp = [4, 10, 17];
+
+delta_n = diff(h, n);
+delta_estimate = max(abs(delta_n));
+
+% Оценка (n+1)-й производной
+f_n1_approx = delta_estimate / (h_avg^n);
+
+
+% Вычисление погрешности
+fprintf('\nОценка погрешности интерполяции:\n');
+for i = 1:length(error_interp)
+    prod_terms = abs(prod(error_interp(i) - t));
+    error_bound = (f_n1_approx / factorial(n+1)) * prod_terms;
+    fprintf('t=%.1f: |R_n(t)| < %.6e\n', error_interp(i), error_bound);
 end
 
 %% 5. Таблица конечных разностей
