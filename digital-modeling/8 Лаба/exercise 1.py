@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
-# C2H3OCH3 -> CH4 + H2 + CO
+# Исходные данные
 T = 835  # K
 t = np.array([0, 80, 160, 240, 420, 500, 600])  # s
 p_total = np.array([43.2, 53.0, 61.6, 69.3, 83.6, 88.8, 94.5])  # kPa
@@ -45,17 +45,17 @@ slope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)
 slope2, intercept2, r2, _, _ = stats.linregress(t, inv_pA)
 
 # Выбор порядка реакции по коэффициенту корреляции
-if abs(r1) > abs(r2):
+if abs(r1) > abs(r2): # pyright: ignore[reportArgumentType]
     order = 1
-    k = -slope1 # для 1-го порядка k = -slope
-    print(f"\nПорядок реакции: 1 (R^2 = {r1**2:.4f})")
+    k = -slope1  # pyright: ignore[reportOperatorIssue] # для 1-го порядка k = -slope
+    print(f"\nПорядок реакции: 1 (R^2 = {r1**2:.4f})") # pyright: ignore[reportOperatorIssue]
     print(f"Константа скорости k = {k:.4e} с⁻¹")
     # Время полупревращения для 1-го порядка
     t_half = np.log(2) / k
 else:
     order = 2
     k = slope2  # для 2-го порядка k = slope
-    print(f"\nПорядок реакции: 2 (R^2 = {r2**2:.4f})")
+    print(f"\nПорядок реакции: 2 (R^2 = {r2**2:.4f})") # pyright: ignore[reportOperatorIssue]
     print(f"Константа скорости k = {k:.4e} кПа⁻¹·с⁻¹")
     # Время полупревращения для 2-го порядка
     t_half = 1 / (k * P0)
@@ -117,8 +117,8 @@ axes[1, 0].legend()
 
 # 4. Общее давление и степень превращения
 alpha_all = (P0 - pA) / P0
-axes[1, 1].plot(t, p_total, 'o-', color='purple', linewidth=2, markersize=8, label='Общее давление')
-axes[1, 1].plot(t, alpha_all * 100, 's-', color='orange', linewidth=2, markersize=8, label='Степень превращения, %')
+axes[1, 1].plot(t, p_total, 'purple', 'o-', linewidth=2, markersize=8, label='Общее давление')
+axes[1, 1].plot(t, alpha_all * 100, 'orange', 's-', linewidth=2, markersize=8, label='Степень превращения, %')
 axes[1, 1].set_xlabel('Время, с', fontsize=12)
 axes[1, 1].set_ylabel('Давление (кПа) / Степень превращения (%)', fontsize=12)
 axes[1, 1].set_title('Изменение общего давления и степени превращения', fontsize=14)
@@ -130,13 +130,13 @@ plt.show()
 
 # Дополнительный вывод результатов регрессии
 print("\n")
-print("результаты регрессионного анализа:")
+print("РЕЗУЛЬТАТЫ РЕГРЕССИОННОГО АНАЛИЗА:")
 print(f"Для 1-го порядка: ln(pA) = {intercept1:.4f} + ({slope1:.4f})·t")
-print(f"Коэффициент корреляции R = {r1:.6f}, R^2 = {r1**2:.6f}")
+print(f"Коэффициент корреляции R = {r1:.6f}, R^2 = {r1**2:.6f}") # pyright: ignore[reportOperatorIssue]
 print(f"\nДля 2-го порядка: 1/pA = {intercept2:.4f} + ({slope2:.4f})·t")
-print(f"Коэффициент корреляции R = {r2:.6f}, R^2 = {r2**2:.6f}")
+print(f"Коэффициент корреляции R = {r2:.6f}, R^2 = {r2**2:.6f}") # pyright: ignore[reportOperatorIssue]
 
 if order == 2:
-    print("\nВывод: реакция имеет 1 порядок (лучшая линейность 1/pA от t)")
+    print("\nВывод: реакция имеет ВТОРОЙ порядок (лучшая линейность 1/pA от t)")
 else:
-    print("\nВывод: реакция имеет 2 порядок (лучшая линейность ln(pA) от t)")
+    print("\nВывод: реакция имеет ПЕРВЫЙ порядок (лучшая линейность ln(pA) от t)")

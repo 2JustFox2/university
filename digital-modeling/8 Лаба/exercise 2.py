@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from scipy.optimize import fsolve
 
+# Данные задачи
 # Реакция: C8H18 --k1--> i-C8H18 --k2--> C4H10 + C4H8
+# Обозначим:
 # A = C8H18 (н-октан)
 # B = i-C8H18 (изооктан)
 # C = C4H10 (бутан)
@@ -117,7 +119,9 @@ for i in range(len(t)):
         break
 
 # Вывод результатов
-print("результаты моделирования:")
+print("\n" + "="*70)
+print("РЕЗУЛЬТАТЫ МОДЕЛИРОВАНИЯ РЕАКТОРА ИДЕАЛЬНОГО СМЕШЕНИЯ (CSTR)")
+print("="*70)
 print(f"\nПараметры реактора:")
 print(f"  Объем реактора V = {V} м³")
 print(f"  Расход Q = {Q:.4f} м³/с")
@@ -134,6 +138,7 @@ print(f"  C_D (C4H8)   = {C_D_ss:.6f} моль/м³")
 print(f"\nВремя достижения стационарного состояния: ~{t_steady_state:.1f} с")
 if C_A0_in > 0:
     print(f"Конверсия A в стационарном состоянии: {(C_A0_in - C_A_ss)/C_A0_in*100:.2f}%")
+print("="*70)
 
 # Визуализация
 fig, axes = plt.subplots(2, 2, figsize=(14, 10))
@@ -202,7 +207,7 @@ if C_A0_in > 0:
     ax4.legend(loc='best', fontsize=10)
 else:
     ax4.text(0.5, 0.5, 'Невозможно рассчитать\nконверсию (C_A0_in = 0)', 
-            ha='center', va='center', transform=ax4.transAxes)
+             ha='center', va='center', transform=ax4.transAxes)
 ax4.set_xlabel('Время, с', fontsize=12)
 ax4.set_title('Конверсия, селективность и выход', fontsize=14)
 ax4.grid(True, alpha=0.3)
@@ -211,7 +216,9 @@ plt.tight_layout()
 plt.show()
 
 # Дополнительный анализ: влияние времени пребывания
-print("анализ влияния времени пребывания")
+print("\n" + "="*70)
+print("АНАЛИЗ ВЛИЯНИЯ ВРЕМЕНИ ПРЕБЫВАНИЯ НА СТАЦИОНАРНЫЕ КОНЦЕНТРАЦИИ")
+print("="*70)
 
 tau_values = np.linspace(1, 200, 50)
 C_A_ss_tau = []
@@ -264,7 +271,7 @@ print("\nПрограмма завершена успешно!")
 
 # Дополнительная информация о достижении стационарного состояния
 print("\n")
-print("дополнительная информация:")
+print("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ О КИНЕТИКЕ")
 print(f"Максимальная концентрация промежуточного продукта B: {np.max(C_B):.6f} моль/м³")
 print(f"Время достижения максимума B: {t[np.argmax(C_B)]:.1f} с")
 print(f"Конечная концентрация C4H10: {C_C[-1]:.6f} моль/м³")

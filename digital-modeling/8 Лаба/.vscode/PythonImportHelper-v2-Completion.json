@@ -136,7 +136,7 @@
         "kind": 5,
         "importPath": "exercise 1",
         "description": "exercise 1",
-        "peekOfCode": "ln_pA = np.log(pA)\ninv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка\nslope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)\n# Линейная регрессия для 2-го порядка\nslope2, intercept2, r2, _, _ = stats.linregress(t, inv_pA)\n# Выбор порядка реакции по коэффициенту корреляции\nif abs(r1) > abs(r2):\n    order = 1\n    k = -slope1 # для 1-го порядка k = -slope",
+        "peekOfCode": "ln_pA = np.log(pA)\ninv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка\nslope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)\n# Линейная регрессия для 2-го порядка\nslope2, intercept2, r2, _, _ = stats.linregress(t, inv_pA)\n# Выбор порядка реакции по коэффициенту корреляции\nif abs(r1) > abs(r2): # pyright: ignore[reportArgumentType]\n    order = 1\n    k = -slope1  # pyright: ignore[reportOperatorIssue] # для 1-го порядка k = -slope",
         "detail": "exercise 1",
         "documentation": {}
     },
@@ -145,7 +145,7 @@
         "kind": 5,
         "importPath": "exercise 1",
         "description": "exercise 1",
-        "peekOfCode": "inv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка\nslope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)\n# Линейная регрессия для 2-го порядка\nslope2, intercept2, r2, _, _ = stats.linregress(t, inv_pA)\n# Выбор порядка реакции по коэффициенту корреляции\nif abs(r1) > abs(r2):\n    order = 1\n    k = -slope1 # для 1-го порядка k = -slope\n    print(f\"\\nПорядок реакции: 1 (R^2 = {r1**2:.4f})\")",
+        "peekOfCode": "inv_pA = 1 / pA\n# Линейная регрессия для 1-го порядка\nslope1, intercept1, r1, _, _ = stats.linregress(t, ln_pA)\n# Линейная регрессия для 2-го порядка\nslope2, intercept2, r2, _, _ = stats.linregress(t, inv_pA)\n# Выбор порядка реакции по коэффициенту корреляции\nif abs(r1) > abs(r2): # pyright: ignore[reportArgumentType]\n    order = 1\n    k = -slope1  # pyright: ignore[reportOperatorIssue] # для 1-го порядка k = -slope\n    print(f\"\\nПорядок реакции: 1 (R^2 = {r1**2:.4f})\") # pyright: ignore[reportOperatorIssue]",
         "detail": "exercise 1",
         "documentation": {}
     },
@@ -181,7 +181,7 @@
         "kind": 5,
         "importPath": "exercise 1",
         "description": "exercise 1",
-        "peekOfCode": "alpha_all = (P0 - pA) / P0\naxes[1, 1].plot(t, p_total, 'o-', color='purple', linewidth=2, markersize=8, label='Общее давление')\naxes[1, 1].plot(t, alpha_all * 100, 's-', color='orange', linewidth=2, markersize=8, label='Степень превращения, %')\naxes[1, 1].set_xlabel('Время, с', fontsize=12)\naxes[1, 1].set_ylabel('Давление (кПа) / Степень превращения (%)', fontsize=12)\naxes[1, 1].set_title('Изменение общего давления и степени превращения', fontsize=14)\naxes[1, 1].grid(True, alpha=0.3)\naxes[1, 1].legend()\nplt.tight_layout()\nplt.show()",
+        "peekOfCode": "alpha_all = (P0 - pA) / P0\naxes[1, 1].plot(t, p_total, 'purple', 'o-', linewidth=2, markersize=8, label='Общее давление')\naxes[1, 1].plot(t, alpha_all * 100, 'orange', 's-', linewidth=2, markersize=8, label='Степень превращения, %')\naxes[1, 1].set_xlabel('Время, с', fontsize=12)\naxes[1, 1].set_ylabel('Давление (кПа) / Степень превращения (%)', fontsize=12)\naxes[1, 1].set_title('Изменение общего давления и степени превращения', fontsize=14)\naxes[1, 1].grid(True, alpha=0.3)\naxes[1, 1].legend()\nplt.tight_layout()\nplt.show()",
         "detail": "exercise 1",
         "documentation": {}
     },
