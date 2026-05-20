@@ -1,15 +1,16 @@
-<?php
-declare(strict_types=1);
-
-$year = (int)date('Y');
-?>
-      </div>
-    </main>
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div>© <?= $year ?> AlexV — Web Programming Lab</div>
-        <div class="muted">Локальный сервер: PHP built-in / Apache / Nginx</div>
-      </div>
-    </footer>
-  </body>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="footer-contact">
+                    <strong>Контакты</strong>
+                    <p>Email: sapunkov.alexandr.a@gmail.com</p>
+                    <p>Телефон: +7 (926) 386-36-32</p>
+                </div>
+                <div class="footer-copy">
+                    <p>&copy; <?php echo date('Y'); ?> Университет, группа КС-23. Все права защищены.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
 </html>
