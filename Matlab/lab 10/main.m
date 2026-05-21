@@ -3,8 +3,8 @@ clc
 close all
 
 %% Параметры
-a = -5;
-b = 5;
+a = -1;
+b = 1.5;
 
 %% Исходная функция
 syms x
@@ -46,7 +46,7 @@ y_plot = fun_handle(x_plot);
 plot(x_plot, y_plot, 'b', 'LineWidth', 2);
 xlabel('x');
 ylabel('f(x)');
-title(sprintf('График f(x) = x^3 + e^x на [%d, %d]', a, b));
+title(sprintf('График f = tan(x) + x^2 на [%d, %d]', a, b));
 grid on;
 
 
@@ -179,22 +179,17 @@ disp(T_summary)
 % writetable(T_summary, 'summary_results.csv');
 
 %% Задание 2: Неопределённый интеграл (аналитически)
-syms x a
-f2 = a^x * exp(-x);
+syms x a_sym
+f2 = a_sym^x * exp(-x);
 F2 = int(f2, x);
 disp('Задание 2. Неопределённый интеграл:')
-
-syms x
-f = x^3 + exp(x);
-I = int(f, x, -Inf, Inf);
-disp('Значение интеграла из задачи 9 от -беск до + беск');
-disp(I); %почему эта функция не подходит.
+disp(F2)
 
 %% Задание 3: Несобственный интеграл (аналитически)
-syms x a p 
-assume(a > 0)
-assume(p > 1)
-f3 = (1 + x) / (x + a)^(p + 1);
+syms x a_sym p_sym 
+assume(a_sym > 0)
+assume(p_sym > 1)
+f3 = (1 + x) / (x + a_sym)^(p_sym + 1);
 I3_sym = int(f3, x, 0, Inf);
 disp('Задание 3. Несобственный интеграл (аналитически):')
 
@@ -210,7 +205,7 @@ p_val = 2;
 f_num = @(x) (1 + x) ./ (x + a_val).^(p_val + 1);
 
 % Точное значение (для сравнения)
-I_exact = double(subs(I3_sym, [a, p], [a_val, p_val]));
+I_exact = double(subs(I3_sym, [a_sym, p_sym], [a_val, p_val]));
 fprintf('Точное значение (аналитически): %.8f\n', I_exact);
 
 % Итерационный подбор пределов [A, B] по методичке
@@ -241,36 +236,30 @@ fprintf('\nПриближённое значение по (14): %.8f\n', I_curr);
 fprintf('Абсолютная погрешность: %.2e\n', abs(I_curr - I_exact));
 fprintf('Относительная погрешность: %.6f%%\n', abs(I_curr - I_exact) / abs(I_exact) * 100);
 %% Шаг 1: Подбор пределов [a, b], где хвосты пренебрежимо малы
-f_num = @(x) 1 ./ (1 + x.^2);
-syms x; f = 1/(1+x^2);
-I_numeric = double(int(f, x, -Inf, Inf));
+f_improper = @(x) (1 + x) ./ (x + a_val).^(p_val + 1);
 
-tol_tail = 1e-4;  % ослабляем до разумного
-a = -1;
-b = 1;
+% Метод последовательного расширения пределов (формула 14)
+tol = 1e-8;
+B = 10;
+step = 10;
+I_prev = 0;
+fprintf('\nИтерации подбора верхнего предела B:\n');
 
-fprintf('шаг 1: Поиск пределов, где хвосты малы\n');
-
-for iter = 1:50
-    % Вычисляем хвосты
-    left_tail = integral(f_num, -Inf, a);
-    right_tail = integral(f_num, b, Inf);
+for iter = 1:100
+    I_curr = integral(f_improper, 0, B);
+    fprintf('B = %6.1f, I = %.10f, изменение = %.2e\n', B, I_curr, abs(I_curr - I_prev));
     
-    fprintf('a = %10.1f, b = %10.1f, левый хвост = %.2e, правый хвост = %.2e\n', ...
-            a, b, left_tail, right_tail);
-    
-    % Проверяем: оба хвоста меньше tol_tail?
-    if abs(left_tail) < tol_tail && abs(right_tail) < tol_tail
-        fprintf('\nНайдены пределы: a = %.1f, b = %.1f\n', a, b);
-        fprintf('Левый хвост = %.2e, правый хвост = %.2e (оба < %.0e)\n', ...
-                left_tail, right_tail, tol_tail);
+    if abs(I_curr - I_prev) < tol
+        fprintf('\nСходимость достигнута за %d итераций\n', iter);
         break;
     end
-    
-    % Расширяем пределы
-    a = a * 2;
-    b = b * 2;
+    I_prev = I_curr;
+    B = B + step;
 end
+
+fprintf('\nПриближённое значение по формуле (14): %.10f\n', I_curr);
+fprintf('Абсолютная погрешность: %.2e\n', abs(I_curr - I_exact));
+fprintf('Относительная погрешность: %.6f%%\n', abs(I_curr - I_exact) / abs(I_exact) * 100);
 
 %% Шаг 2: Вычисление интеграла методом Симпсона
 fprintf('\nШАГ 2: Вычисление интеграла методом Симпсона (формула 9)\n');
@@ -279,7 +268,7 @@ f4 = diff(f, x, 4);
 
 f4_num = matlabFunction(f4); % в числовую функцию
 x_test = linspace(-10, 10, 10000);
-M4 = max(abs(f4_num(x_test))); % максимум модуля
+M4 = double(vpa(max(abs(f4_num(x_test))))); % максимум модуля
 
 M4 = 24;  % max|f?(x)| для 1/(1+x?)
 eps_target = 1e-8;  % требуемая точность
@@ -295,7 +284,7 @@ h = (b - a) / n;
 fprintf('M? = max|f?(x)| = %.1f\n', M4);
 fprintf('Требуемая точность ? = %.2e\n', eps_target);
 fprintf('Длина отрезка: %.2e\n', b - a);
-fprintf('Максимальный шаг h_max = %.4f\n', h_max);
+fprintf('Максимальный шаг h_max = %.4f\n', double(h_max));
 fprintf('Фактический шаг h = %.4f\n', h);
 fprintf('Число разбиений n = %d\n', n);
 
@@ -324,27 +313,24 @@ R_theor = (b - a) * h^4 / 180 * M4;
 
 fprintf('\nрезльтаты\n');
 fprintf('Метод Симпсона (численно)          : %.15f\n', I_simpson);
-fprintf('Точное значение (аналитически)     : %.15f\n', I_numeric);
-fprintf('Фактическая погрешность            : %.2e\n', abs(I_simpson - I_numeric));
+fprintf('Точное значение (аналитически)     : %.15f\n', I_exact);
+fprintf('Фактическая погрешность            : %.2e\n', abs(I_simpson - I_exact));
 fprintf('Теоретическая оценка погрешности   : %.2e\n', R_theor);
-fprintf('Относительная погрешность          : %.6f%%\n', abs(I_simpson - I_numeric) / I_numeric * 100);
+fprintf('Относительная погрешность          : %.6f%%\n', abs(I_simpson - I_exact) / abs(I_exact) * 100);
 
 
+%% Исследование влияния шага h на точность для основной функции
+disp('=== ИССЛЕДОВАНИЕ ВЛИЯНИЯ ШАГА h НА ТОЧНОСТЬ ===')
+disp('Для функции f(x) = tan(x) + x^2 на интервале [-0.9, 0.9]')
 
-%% шаг точность
-disp('анализ влияния шага на точность интегрирования')
-disp('шаг вычисляется по формулам из методички для разных точностей')
-
-f_num = @(x) x.^2 + exp(x + 3);
-a_int = -5;
-b_int = 5;
-
+a_int = a;
+b_int = b;
 syms x
-f_sym = x^2 + exp(x + 3);
+f_sym = tan(x) + x^2;
 I_exact = double(int(f_sym, x, a_int, b_int));
-fprintf('Точное значение интеграла: %.8f\n', I_exact);
+fprintf('Точное значение интеграла: %.10f\n\n', I_exact);
 
-% Вычисляем максимумы производных
+% Вычисляем максимумы производных для основной функции
 f2_sym = diff(f_sym, x, 2);
 f4_sym = diff(f_sym, x, 4);
 f2_num = matlabFunction(f2_sym);
@@ -353,11 +339,11 @@ f4_num = matlabFunction(f4_sym);
 x_check = linspace(a_int, b_int, 10000);
 M2 = max(abs(f2_num(x_check)));
 M4 = max(abs(f4_num(x_check)));
-fprintf('M2 = %.4f, M4 = %.4f\n', M4);
-fprintf('Длина отрезка: %.4f\n', b_int - a_int);
+fprintf('M2 = %.6f, M4 = %.6f\n', M2, M4);
+fprintf('Длина отрезка: %.4f\n\n', b_int - a_int);
 
 % Перебираем разные точности (как в методичке)
-eps_vec = logspace(-2, -7, 20);  % меньше точек для читаемой таблицы
+eps_vec = logspace(-2, -7, 10);
 
 err_trap = zeros(size(eps_vec));
 err_runge = zeros(size(eps_vec));
@@ -366,6 +352,8 @@ h_vec = zeros(size(eps_vec));
 h_simp_vec = zeros(size(eps_vec));
 n_vec = zeros(size(eps_vec));
 n_simp_vec = zeros(size(eps_vec));
+
+f_num_main = matlabFunction(f_sym);
 
 for i = 1:length(eps_vec)
     eps_target = eps_vec(i);
@@ -378,7 +366,7 @@ for i = 1:length(eps_vec)
     n_vec(i) = n;
     
     x_trap = linspace(a_int, b_int, n+1);
-    y_trap = f_num(x_trap);
+    y_trap = f_num_main(x_trap);
     
     % Трапеции
     I_tr = h/2 * (y_trap(1) + y_trap(end) + 2*sum(y_trap(2:end-1)));
@@ -388,7 +376,7 @@ for i = 1:length(eps_vec)
     n_half = 2*n;
     h_half = h/2;
     x_half = linspace(a_int, b_int, n_half+1);
-    y_half = f_num(x_half);
+    y_half = f_num_main(x_half);
     I_tr2 = h_half/2 * (y_half(1) + y_half(end) + 2*sum(y_half(2:end-1)));
     I_r = I_tr2 + (I_tr2 - I_tr)/3;
     err_runge(i) = abs(I_r - I_exact);
@@ -404,27 +392,33 @@ for i = 1:length(eps_vec)
     n_simp_vec(i) = n_s;
     
     x_simp = linspace(a_int, b_int, n_s+1);
-    y_simp = f_num(x_simp);
+    y_simp = f_num_main(x_simp);
     I_s = h_s/3 * (y_simp(1) + y_simp(end) + ...
                    4*sum(y_simp(2:2:end-1)) + ...
                    2*sum(y_simp(3:2:end-2)));
     err_simp(i) = abs(I_s - I_exact);
 end
 
-    % Table for eps sweep results
-    T_eps = table(eps_vec(:), h_vec(:), h_simp_vec(:), n_vec(:), n_simp_vec(:), err_trap(:), err_runge(:), err_simp(:), ...
-        'VariableNames', {'Eps','h_trap','h_simp','n_trap','n_simp','err_trap','err_runge','err_simp'});
-    disp(T_eps)
-    % writetable(T_eps, 'eps_sweep.csv');
+% Таблица результатов
+T_eps = table(eps_vec(:), h_vec(:), h_simp_vec(:), n_vec(:), n_simp_vec(:), ...
+              err_trap(:), err_runge(:), err_simp(:), ...
+              'VariableNames', {'Eps','h_trap','h_simp','n_trap','n_simp',...
+                                'err_trap','err_runge','err_simp'});
+disp(T_eps)
 
 
 
-
-%%  перебор шагов h
+%% Прямой перебор шагов h для основной функции
 disp(' ')
 disp('Исследование влияния шага h на точность (h — независимая переменная)')
+fprintf('Для функции f(x) = tan(x) + x^2 на интервале [%.2f, %.2f]\n', a, b);
 
-n_direct = [4, 6, 10, 20, 40, 60, 100, 200, 400, 600, 1000, 2000, 4000, 6000, 10000,20000,35000,70000,100000];
+f_num_main = matlabFunction(tan(x) + x^2);
+a_int = a;
+b_int = b;
+I_exact = double(int(tan(x) + x^2, x, a_int, b_int));
+
+n_direct = [10, 20, 40, 60, 100, 200, 400, 600, 1000, 2000];
 
 err_trap_direct = zeros(size(n_direct));
 err_runge_direct = zeros(size(n_direct));
@@ -446,13 +440,13 @@ for i = 1:length(n_direct)
     
     % Трапеции
     x_trap = linspace(a_int, b_int, n+1);
-    y_trap = f_num(x_trap);
+    y_trap = f_num_main(x_trap);
     I_tr = h/2 * (y_trap(1) + y_trap(end) + 2*sum(y_trap(2:end-1)));
     err_trap_direct(i) = abs(I_tr - I_exact);
     
     % Рунге
     x_half = linspace(a_int, b_int, 2*n+1);
-    y_half = f_num(x_half);
+    y_half = f_num_main(x_half);
     I_tr2 = (h/2)/2 * (y_half(1) + y_half(end) + 2*sum(y_half(2:end-1)));
     I_r = I_tr2 + (I_tr2 - I_tr)/3;
     err_runge_direct(i) = abs(I_r - I_exact);
@@ -463,7 +457,7 @@ for i = 1:length(n_direct)
     h_s = (b_int - a_int) / n_h;
     
     x_simp_h = linspace(a_int, b_int, n_h+1);
-    y_simp_h = f_num(x_simp_h);
+    y_simp_h = f_num_main(x_simp_h);
     I_simp_h = (h_s/3) * (y_simp_h(1) + y_simp_h(end) + ...
                           4*sum(y_simp_h(2:2:end-1)) + ...
                           2*sum(y_simp_h(3:2:end-2)));
@@ -473,7 +467,7 @@ for i = 1:length(n_direct)
     h_half = h_s / 2;
     
     x_simp_half = linspace(a_int, b_int, n_half+1);
-    y_simp_half = f_num(x_simp_half);
+    y_simp_half = f_num_main(x_simp_half);
     I_simp_half = (h_half/3) * (y_simp_half(1) + y_simp_half(end) + ...
                                 4*sum(y_simp_half(2:2:end-1)) + ...
                                 2*sum(y_simp_half(3:2:end-2)));
@@ -491,7 +485,7 @@ figure;
 % Основные методы
 loglog(h_direct, err_trap_direct, 'o-', 'LineWidth', 1.5, 'MarkerSize', 6); hold on;
 loglog(h_direct, err_runge_direct, 's-', 'LineWidth', 1.5, 'MarkerSize', 6);
-loglog(h_direct, err_simp_direct, 'd-', 'LineWidth', 1.5, 'MarkerSize', 6);
+loglog(h_direct, err_simp_direct, 'd-', 'LineWidth', 1.5, 'MarkerSize',     6);
 loglog(h_direct, err_simp_runge_direct, 'p-', 'LineWidth', 1.5, 'MarkerSize', 6); % Симпсон+Рунге
 
 % Теоретические наклоны для визуального сравнения порядка
