@@ -1,580 +1,464 @@
+%очищаем рабочую область
 clear
 clc
 close all
 
-%% Параметры
-a = -5;  % левая граница
-b = 5;   % правая граница
+%задаем формат вывода
+format long g
 
-%% Исходная функция
-syms x;
-f = tan(x) + x^2;
+%задаем данные из седьмой лабораторной работы
+x_tab = [0, 2, 5, 9, 11, 16, 18, 21, 24];
+y_tab = [10.00, 918.4, 2222.5, 3448.9, 3550.9, 1736.4, 984.174, 436.146, 807.6];
 
-%% 1. Интеграл аналитически
-disp('Интеграл:')
-F = int(f, x);
+%находим степень интерполяционного полинома
+n_tab = length(x_tab) - 1;
 
-I = int(f, x, a, b); % интеграл по границам
-fprintf('Значение интеграла от %d до %d: %.8f\n\n', a, b, double(I));
+%центрирование и масштабирование для устойчивости
+x_mean = mean(x_tab);
+x_std = std(x_tab);
+x_norm = (x_tab - x_mean) / x_std;
 
-%% 2. Вторая производная и её максимум
-f2 = diff(f, x, 2);
-disp('Вторая производная:')
-pretty(f2)
-
-f2_num = matlabFunction(f2); % делаем обычную F
-x_vals = linspace(a, b, 1000);
-y2 = f2_num(x_vals); % считаем значение производной и берем максимум
-[max2, idx2] = max(y2);
-fprintf('Максимум второй производной на [%d, %d]: %.4f в точке x = %.4f\n\n', a, b, max2, x_vals(idx2));
-
-%% 3. Четвёртая производная и её максимум
-f4 = diff(f, x, 4);
-disp('Четвёртая производная:')
-pretty(f4)
-
-f4_num = matlabFunction(f4);
-y4 = f4_num(x_vals);
-[max4, idx4] = max(y4);
-fprintf('Максимум четвёртой производной на [%d, %d]: %.4f в точке x = %.4f\n\n', a, b, max4, x_vals(idx4));
-
-%% График функции
-figure;
-f_plot = @(t) tan(t) + t.^2;
-try
-    h = fplot(f_plot, [a, b]);
-    if ~isgraphics(h)
-        error('NoGraphicsHandle');
-    end
-    set(h, 'Color', 'b', 'LineWidth', 2);
-catch
-    % fplot can fail for functions with singularities (tan). Fall back to sampled plot
-    xs = linspace(a, b, 2000);
-    ys = f_plot(xs);
-    bad = ~isfinite(ys) | abs(ys) > 1e6;
-    xs(bad) = [];
-    ys(bad) = [];
-    h = plot(xs, ys, 'b-', 'LineWidth', 2);
-end
-xlabel('x');
-ylabel('f(x)');
-title(sprintf('График f(x) = x^3 + e^x на [%d, %d]', a, b));
-grid on;
-
-
-%% метод трапеций
-% Задаём требуемую точность для метода трапеций
-eps_trap = 1e-2;
-
-% Берём максимум второй производной, вычисленный ранее
-M2 = max2;
-
-% Вычисляем максимально допустимый шаг по формуле (5)
-h_trap_max = sqrt(12 * eps_trap / ((b - a) * M2));
-
-% Определяем число разбиений
-n_trap = ceil((b - a) / h_trap_max);
-
-% Фактический шаг интегрирования
-h_trap = (b - a) / n_trap;
-fprintf(' шаг от %d\n\n', h_trap);
-fprintf(' кол разбиений от %d\n\n', n_trap);
-
-
-% Переводим символьную функцию в числовую для быстрых вычислений
-f_num = matlabFunction(f);
-
-% Формируем сетку узлов с шагом h
-x_trap = a:h_trap:b;
-
-% Вычисляем значения функции в узлах сетки
-y_trap = f_num(x_trap);
-
-% Вычисляем интеграл по формуле трапеций (3) на всём отрезке [a, b]
-I_trap_h = h_trap/2 * (y_trap(1) + y_trap(end) + 2*sum(y_trap(2:end-1)));
-
-% Уменьшаем шаг вдвое для процедуры Рунге
-h_half = h_trap / 2;
-
-% Число разбиений с половинным шагом
-n_half = 2 * n_trap;
-
-% Формируем сетку узлов с шагом h/2
-x_half = a:h_half:b;
-
-% Значения функции на удвоенной сетке
-y_half = f_num(x_half);
-
-% Вычисляем интеграл с шагом h/2
-I_trap_half = h_half/2 * (y_half(1) + y_half(end) + 2*sum(y_half(2:end-1)));
-
-% Порядок метода трапеций
-p = 2;
-
-% оценка погрешности по Рунге (формула 12)
-R_runge = (I_trap_half - I_trap_h) / (2^p - 1);
-
-% Уточнённое значение интеграла по Рунге – повышение порядка до p+1 (формула 13)
-I_trap_runge = I_trap_half + R_runge;
-
-% Теоретическая оценка погрешности метода трапеций (формула 4)
-R_trap_theor = -(b - a) * h_trap^2 / 12 * M2;
-
-fprintf('\nМетод трапеций (шаг h):     %.8f\n', I_trap_h);
-fprintf('Метод трапеций (шаг h/2):   %.8f\n', I_trap_half);
-fprintf('Уточнённое по Рунге:        %.8f\n', I_trap_runge);
-fprintf('Точное значение:            %.8f\n', double(I));
-fprintf('Погрешность трапеций:       %.6f%%\n', abs(I_trap_h - double(I)) / abs(double(I)) * 100);
-fprintf('Погрешность после Рунге:    %.6f%%\n', abs(I_trap_runge - double(I)) / abs(double(I)) * 100);
-
-% Метод Симпсона
-eps_simp = 1e-4;
-
-% Аналитически находим четвёртую производную
-M4 = max4;  % максимум модуля четвёртой производной на [a, b]
-
-% Вычисляем максимально допустимый шаг по формуле (9) из лекции
-h_simp_max = (180 * eps_simp / ((b - a) * M4))^(1/4);
-
-% Число разбиений должно быть чётным (n = 2m)
-n_simp = ceil((b - a) / h_simp_max);
-if mod(n_simp, 2) ~= 0
-    n_simp = n_simp + 1;
-end
-h_simp = (b - a) / n_simp;
-m = n_simp / 2;  % число пар отрезков
-
-% Формируем сеточную функцию
-x_simp = a:h_simp:b;
-y_simp = f_num(x_simp);
-
-% Суммы для формулы Симпсона (7):
-% 4 * сумма нечётных y (индексы 2,4,...,2m в MATLAB, т.е. i=1..m для y_{2i-1})
-sum_odd = sum(y_simp(2:2:end-1));
-% 2 * сумма чётных y (индексы 3,5,...,2m-1 в MATLAB, т.е. i=1..m-1 для y_{2i})
-sum_even = sum(y_simp(3:2:end-2));
-
-% Формула Симпсона (7)
-I_simp = h_simp/3 * (y_simp(1) + y_simp(end) + 4*sum_odd + 2*sum_even);
-
-% Теоретическая погрешность по формуле (8)
-R_simp_theor = -(b - a) * h_simp^4 / 180 * M4;
-
-fprintf('\nМетод Симпсона:            %.8f\n', I_simp);
-fprintf('Точное значение:           %.8f\n', double(I));
-fprintf('Погрешность Симпсона:      %.6f%%\n', abs(I_simp - double(I)) / abs(double(I)) * 100);
-
-
-
-%% Сравнение со стандартными функциями MATLAB
-f_num = matlabFunction(f);
-
-I_trapz = trapz(x_trap, y_trap);
-% Numerical integration avoiding singularities of tan(x)
-eps_pole = 1e-3; % exclude a small neighborhood around each pole
-min_seg_len = 1e-6; % skip segments shorter than this
-kmin = ceil((a - pi/2)/pi);
-kmax = floor((b - pi/2)/pi);
-if kmin <= kmax
-    poles = (pi/2) + (kmin:kmax)*pi;
-else
-    poles = [];
-end
-cuts = [a];
-for p = poles
-    % only add cuts that lie inside [a,b]
-    left = p - eps_pole;
-    right = p + eps_pole;
-    if left > a && left < b
-        cuts = [cuts, left];
-    end
-    if right > a && right < b
-        cuts = [cuts, right];
+%создаем матрицу вандермонда на нормированных данных
+A = zeros(length(x_norm));
+for i = 1:length(x_norm)
+    for j = 1:length(x_norm)
+        A(i,j) = x_norm(i)^(j - 1);
     end
 end
-cuts = [cuts, b];
-cuts = sort(cuts);
 
-I_quad = 0;
-I_integral = 0;
-for i = 1:length(cuts)-1
-    s = cuts(i);
-    e = cuts(i+1);
-    seg_len = e - s;
-    if seg_len < min_seg_len
-        continue; % skip tiny segments
+%проверяем число обусловленности
+cond_A = cond(A);
+disp(['число обусловленности матрицы Вандермонда = ' num2str(cond_A)])
+if cond_A > 1e10
+    disp('внимание: матрица плохо обусловлена, возможны погрешности')
+end
+
+%проверяем определитель матрицы
+det_A = det(A);
+if abs(det_A) < 1e-12
+    error('определитель матрицы близок к нулю')
+end
+
+%находим коэффициенты интерполяционного полинома
+coef_tab_norm = A \ y_tab(:);
+
+%коэффициенты от старшей степени к младшей для polyval/polyder
+coef_poly = flipud(coef_tab_norm)';
+
+%находим коэффициенты первой производной полинома через polyder
+coef_d1_poly = polyder(coef_poly);
+
+%находим коэффициенты второй производной полинома через polyder
+coef_d2_poly = polyder(coef_d1_poly);
+
+%задаем точки между узлами один два и восемь девять
+x_mid = [(x_tab(1) + x_tab(2)) / 2; (x_tab(8) + x_tab(9)) / 2];
+%нормируем межузловые точки
+x_mid_norm = (x_mid - x_mean) / x_std;
+
+%вычисляем значения полинома в межузловых точках (напрямую через polyval)
+y_mid = polyval(coef_poly, x_mid_norm);
+
+%вычисляем первую производную в межузловых точках (с учетом нормировки)
+d1_mid = polyval(coef_d1_poly, x_mid_norm) / x_std;
+
+%вычисляем вторую производную в межузловых точках (с учетом нормировки)
+d2_mid = polyval(coef_d2_poly, x_mid_norm) / (x_std^2);
+
+%ищем самый большой промежуток между узлами
+[~, gap_index] = max(diff(x_tab));
+
+%добавляем точку внутри самого большого промежутка
+x_add = (x_tab(gap_index) + x_tab(gap_index + 1)) / 2;
+x_add_norm = (x_add - x_mean) / x_std;
+
+%вычисляем значение добавленной точки через полином
+y_add = polyval(coef_poly, x_add_norm);
+
+%формируем расширенный набор узлов
+x_aug = [x_tab(:); x_add];
+y_aug = [y_tab(:); y_add];
+
+%сортируем расширенный набор узлов
+[x_aug, ind_aug] = sort(x_aug);
+y_aug = y_aug(ind_aug);
+
+%находим разделенную разность максимального порядка
+c_aug = y_aug(:);
+m_aug = length(x_aug);
+for j = 2:m_aug
+    for i = m_aug:-1:j
+        c_aug(i) = (c_aug(i) - c_aug(i - 1)) / (x_aug(i) - x_aug(i - j + 1));
     end
-    % prefer quadgk for difficult integrands
-    Iq = NaN;
-    try
-        Iq = quadgk(f_num, s, e, 'AbsTol', 1e-9, 'RelTol', 1e-6, 'MaxIntervalCount', 2000);
-    catch
-        Iq = NaN;
-    end
-    if ~isnan(Iq)
-        I_quad = I_quad + Iq;
-    else
-        % fallback to integral with relaxed tolerances
-        try
-            Iseg = integral(f_num, s, e, 'RelTol', 1e-6, 'AbsTol', 1e-9);
-        catch
-            Iseg = NaN;
-        end
-        if ~isnan(Iseg)
-            I_integral = I_integral + Iseg;
+end
+dd_n1 = c_aug(m_aug);
+
+%вычисляем средний шаг для неравномерной сетки
+h_avg = (x_tab(end) - x_tab(1)) / n_tab;
+
+%вычисляем f^(n+1) через разделенную разность
+f_n1 = abs(dd_n1) * factorial(n_tab + 1);
+
+%оцениваем погрешность первой производной по формуле
+err_d1_mid = zeros(size(x_mid));
+for idx = 1:length(x_mid)
+    %текущая точка для оценки погрешности
+    x_eval = x_mid(idx);
+    
+    %находим индекс i ближайшего левого узла (нумерация с 0)
+    i_node = find(x_tab <= x_eval, 1, 'last') - 1;
+    
+    %вычисляем произведение pi(x_eval - x_k) для всех k кроме i_node
+    prod_term = 1;
+    for k = 1:length(x_tab)
+        if k ~= (i_node + 1)
+            prod_term = prod_term * (x_eval - x_tab(k));
         end
     end
+    
+    %вычисляем факториальный коэффициент i!*(n-i)!/(n+1)!
+    fact_term = factorial(i_node) * factorial(n_tab - i_node) / factorial(n_tab + 1);
+    
+    %вычисляем знак (-1)^(n-i)
+    sign_term = (-1)^(n_tab - i_node);
+    
+    %погрешность по формуле (13.25)
+    err_d1_mid(idx) = abs(sign_term * fact_term * h_avg^n_tab * f_n1 * prod_term);
 end
 
-fprintf('\nРезультаты:\n');
-fprintf('Аналитически:               %.6f\n', double(I));
-fprintf('Трапеции:                   %.6f  (%.10e%%)\n', I_trap_h, abs(I_trap_h - double(I)) / abs(double(I)) * 100);
-fprintf('Трапеции + Рунге:           %.6f  (%.10e%%)\n', I_trap_runge, abs(I_trap_runge - double(I)) / abs(double(I)) * 100);
-fprintf('Симпсон:                    %.6f  (%.10e%%)\n', I_simp, abs(I_simp - double(I)) / abs(double(I)) * 100);
-fprintf('MATLAB trapz:               %.6f  (%.10e%%)\n', I_trapz, abs(I_trapz - double(I)) / abs(double(I)) * 100);
-fprintf('MATLAB quad (Симпсон):      %.6f  (%.10e%%)\n', I_quad, abs(I_quad - double(I)) / abs(double(I)) * 100);
-fprintf('MATLAB integral:            %.6f  (%.10e%%)\n', I_integral, abs(I_integral - double(I)) / abs(double(I)) * 100);
+%собираем таблицу результатов для табличной функции
+table_tab = table(x_mid, y_mid, d1_mid, d2_mid, err_d1_mid, ...
+    'VariableNames', {'x', 'y_interp', 'd1_interp', 'd2_interp', 'err_d1_est'});
 
-%% Задание 2: Неопределённый интеграл (аналитически)
-syms x a
-f2 = a^x * exp(-x);
-F2 = int(f2, x);
-disp('Задание 2. Неопределённый интеграл:')
-pretty(F2)
+%выводим результаты для табличной функции
+disp('результаты для табличной функции')
+disp(table_tab)
 
-syms x
-f = x^3 + exp(x);
-I = int(f, x, -Inf, Inf);
-disp('Значение интеграла из задачи 9 от -беск до + беск');
-disp(I); %почему эта функция не подходит.
+%выводим параметры для оценки погрешности
+disp('параметры оценки погрешности первой производной')
+disp(['степень полинома n = ' num2str(n_tab)])
+disp(['самый большой промежуток между узлами: от x(' num2str(gap_index) ') до x(' num2str(gap_index+1) ')'])
+disp(['координата добавленной точки x_add = ' num2str(x_add)])
+disp(['значение полинома в добавленной точке y_add = ' num2str(y_add)])
+disp(['средний шаг сетки h_avg = ' num2str(h_avg)])
 
-%% Задание 3: Несобственный интеграл (аналитически)
-syms x a p 
-assume(a > 0)
-assume(p > 1)
-f3 = (1 + x) / (x + a)^(p + 1);
-I3_sym = int(f3, x, 0, Inf);
-disp('Задание 3. Несобственный интеграл (аналитически):')
-pretty(I3_sym)
+%строим сетку для графика интерполяции
+x_plot = linspace(min(x_tab), max(x_tab), 1000)';
+x_plot_norm = (x_plot - x_mean) / x_std;
+%вычисляем значения полинома на сетке
+y_plot = polyval(coef_poly, x_plot_norm);
 
-%% приближённое вычисление по формуле 14
+%строим график интерполяционного полинома
+figure
+plot(x_plot, y_plot, 'LineWidth', 1.5)
+hold on
+plot(x_tab, y_tab, 'o', 'MarkerFaceColor', 'k', 'MarkerSize', 6)
+plot(x_mid, y_mid, 's', 'MarkerFaceColor', 'y', 'MarkerSize', 8)
+plot(x_add, y_add, 'p', 'MarkerFaceColor', 'c', 'MarkerSize', 10)
+grid on
+xlabel('x')
+ylabel('y')
+title('интерполяционный полином для табличной функции')
+legend('полином', 'узлы', 'точки производных', 'добавленная точка', 'Location', 'best')
 
-disp('---------------------------------------------');
-disp('Приближённое вычисление по формуле (14)');
+%задаем функцию из задания
+f = @(x) x.^2 + tan(x);
 
-% Выберем конкретные числовые параметры для демонстрации
-a_val = 2;
-p_val = 2;
+% Задаем точную первую производную
+df = @(x) 2*x + tan(x).^2 + 1;
 
-% Подынтегральная функция (числовая)
-f_num = @(x) (1 + x) ./ (x + a_val).^(p_val + 1);
+% Задаем точную вторую производную
+d2f = @(x) 2*tan(x) .*(tan(x).^2 + 1) + 2;
 
-% Точное значение (для сравнения)
-I_exact = double(subs(I3_sym, [a, p], [a_val, p_val]));
-fprintf('Точное значение (аналитически): %.8f\n', I_exact);
+%задаем точку вычисления
+x0 = -3.2;
 
-% Итерационный подбор пределов [A, B] по методичке
-% Внимание: интеграл от 0 до Inf, поэтому нижний предел фиксирован = 0,
-% а верхний B расширяем.
-% Формула (14) здесь используется как идея: отрезаем хвост от B до Inf.
+%задаем основной шаг
+h0 = 0.1;
 
-tol = 1e-4;
-B = 5;
-step = 10;
-I_prev = 0;
-fprintf('\nИтерации подбора верхнего предела B (интеграл от 0 до B):\n');
+%вычисляем значение функции в точке
+y0 = f(x0);
 
-for iter = 1:10000
-    % Численно интегрируем от 0 до B
-    I_curr = integral(f_num, 0, B);
-    %fprintf('B = %5.1f, I = %.8f\n', B, I_curr);
-    
-    if abs(I_curr - I_prev) < tol
-        fprintf('\nСходимость достигнута.\n');
-        break;
-    end
-    I_prev = I_curr;
-    B = B + step;
-end
-disp(iter);
-fprintf('\nПриближённое значение по (14): %.8f\n', I_curr);
-fprintf('Абсолютная погрешность: %.2e\n', abs(I_curr - I_exact));
-fprintf('Относительная погрешность: %.6f%%\n', abs(I_curr - I_exact) / abs(I_exact) * 100);
-disp('__________________');
-%% Шаг 1: Подбор пределов [a, b], где хвосты пренебрежимо малы
-f_num = @(x) 1 ./ (1 + x.^2);
-syms x; f = 1/(1+x^2);
-I_numeric = double(int(f, x, -Inf, Inf));
+%вычисляем точную первую производную в точке
+d1_exact = df(x0);
 
-tol_tail = 1e-4;  % ослабляем до разумного
-a = -1;
-b = 1;
+%вычисляем точную вторую производную в точке
+d2_exact = d2f(x0);
 
-fprintf('шаг 1: Поиск пределов, где хвосты малы\n');
+%вычисляем правую разность первой производной
+d1_right = (f(x0 + h0) - f(x0)) / h0;
 
-for iter = 1:50
-    % Вычисляем хвосты
-    left_tail = integral(f_num, -Inf, a);
-    right_tail = integral(f_num, b, Inf);
-    
-    fprintf('a = %10.1f, b = %10.1f, левый хвост = %.2e, правый хвост = %.2e\n', ...
-            a, b, left_tail, right_tail);
-    
-    % Проверяем: оба хвоста меньше tol_tail?
-    if abs(left_tail) < tol_tail && abs(right_tail) < tol_tail
-        fprintf('\nНайдены пределы: a = %.1f, b = %.1f\n', a, b);
-        fprintf('Левый хвост = %.2e, правый хвост = %.2e (оба < %.0e)\n', ...
-                left_tail, right_tail, tol_tail);
-        break;
-    end
-    
-    % Расширяем пределы
-    a = a * 2;
-    b = b * 2;
-end
+%вычисляем левую разность первой производной
+d1_left = (f(x0) - f(x0 - h0)) / h0;
 
-%% Шаг 2: Вычисление интеграла методом Симпсона
-fprintf('\nШАГ 2: Вычисление интеграла методом Симпсона (формула 9)\n');
+%вычисляем центральную разность первой производной
+d1_center = (f(x0 + h0) - f(x0 - h0)) / (2*h0);
 
-f4 = diff(f, x, 4);         % четвёртая производная
-pretty(f4)                   % вывод формулы
+%вычисляем пятиточечную формулу первой производной
+d1_five = (f(x0 - 2*h0) - 8*f(x0 - h0) + 8*f(x0 + h0) - f(x0 + 2*h0)) / (12*h0);
 
-f4_num = matlabFunction(f4); % в числовую функцию
-x_test = linspace(-10, 10, 10000);
-M4 = max(abs(f4_num(x_test))); % максимум модуля
+%вычисляем метод рунге первой производной
+h_half = h0 / 2;
+d1_right_h = (f(x0 + h0) - f(x0)) / h0;
+d1_right_h2 = (f(x0 + h_half) - f(x0)) / h_half;
+d1_runge = 2*d1_right_h2 - d1_right_h;
 
-M4 = 24;  % max|f?(x)| для 1/(1+x?)
-eps_target = 1e-8;  % требуемая точность
+%вычисляем трехточечную формулу второй производной
+d2_simple = (f(x0 + h0) - 2*f(x0) + f(x0 - h0)) / h0^2;
 
-% Формула (9) из методички
-h_max = (180 * eps_target / ((b - a) * M4))^(1/4);
-n = ceil((b - a) / h_max);
-if mod(n, 2) ~= 0
-    n = n + 1;  % n должно быть чётным для Симпсона
-end
-h = (b - a) / n;
+%вычисляем пятиточечную формулу второй производной
+d2_five = (-f(x0 + 2*h0) + 16*f(x0 + h0) - 30*f(x0) + 16*f(x0 - h0) - f(x0 - 2*h0)) / (12*h0^2);
 
-fprintf('M? = max|f?(x)| = %.1f\n', M4);
-fprintf('Требуемая точность ? = %.2e\n', eps_target);
-fprintf('Длина отрезка: %.2e\n', b - a);
-fprintf('Максимальный шаг h_max = %.4f\n', h_max);
-fprintf('Фактический шаг h = %.4f\n', h);
-fprintf('Число разбиений n = %d\n', n);
+%вычисляем метод рунге второй производной
+d2_simple_h = (f(x0 + h0) - 2*f(x0) + f(x0 - h0)) / h0^2;
+d2_simple_h2 = (f(x0 + h_half) - 2*f(x0) + f(x0 - h_half)) / (h_half^2);
+d2_runge = (4*d2_simple_h2 - d2_simple_h) / 3;
 
-% Вычисляем суммы без создания полного массива
-sum_odd = 0;   % сум y_нечёт
-sum_even = 0;  % сум y_чёт
+%собираем таблицу первой производной
+method_d1 = {'right_simple'; 'left_simple'; 'center_simple'; 'five_point'; 'runge_right'};
+value_d1 = [d1_right; d1_left; d1_center; d1_five; d1_runge];
+error_d1 = abs(value_d1 - d1_exact);
+table_d1 = table(method_d1, value_d1, error_d1, 'VariableNames', {'method', 'value', 'error'});
 
-for i = 1:n-1
-    x_i = a + i * h;
-    y_i = f_num(x_i);
-    if mod(i, 2) == 1
-        sum_odd = sum_odd + y_i;
-    else
-        sum_even = sum_even + y_i;
-    end
+%собираем таблицу второй производной
+method_d2 = {'simple_three_point'; 'five_point'; 'runge'};
+value_d2 = [d2_simple; d2_five; d2_runge];
+error_d2 = abs(value_d2 - d2_exact);
+table_d2 = table(method_d2, value_d2, error_d2, 'VariableNames', {'method', 'value', 'error'});
+
+%выводим точные значения функции и её производных в исследуемой точке
+disp('точные значения функции и производных в исследуемой точке')
+disp(['x0 = ' num2str(x0)])
+disp(['f(x0) = ' num2str(y0)])
+disp(['точная первая производная f''(x0) = ' num2str(d1_exact)])
+disp(['точная вторая производная f''''(x0) = ' num2str(d2_exact)])
+
+%выводим результаты первой производной
+disp('первая производная в точке x0')
+disp(table_d1)
+
+%выводим результаты второй производной
+disp('вторая производная в точке x0')
+disp(table_d2)
+
+%задаем сетку для графиков погрешностей
+x_grid = (x0-1:h0:x0+4)';
+
+%создаем массивы ошибок первой производной
+er_d1_right = NaN(size(x_grid));
+er_d1_left = NaN(size(x_grid));
+er_d1_center = NaN(size(x_grid));
+er_d1_five = NaN(size(x_grid));
+er_d1_runge = NaN(size(x_grid));
+
+%вычисляем ошибки правой разности на сетке
+for i = 1:length(x_grid) - 1
+    val = (f(x_grid(i) + h0) - f(x_grid(i))) / h0;
+    er_d1_right(i) = abs(df(x_grid(i)) - val);
 end
 
-y0 = f_num(a);
-yn = f_num(b);
-
-% Формула Симпсона (7)
-I_simpson = h/3 * (y0 + yn + 4 * sum_odd + 2 * sum_even);
-
-% Теоретическая погрешность по формуле (8)
-R_theor = (b - a) * h^4 / 180 * M4;
-
-fprintf('\n=== РЕЗУЛЬТАТЫ ===\n');
-fprintf('Метод Симпсона (численно)          : %.15f\n', I_simpson);
-fprintf('Точное значение (аналитически)     : %.15f\n', I_numeric);
-fprintf('Фактическая погрешность            : %.2e\n', abs(I_simpson - I_numeric));
-fprintf('Теоретическая оценка погрешности   : %.2e\n', R_theor);
-fprintf('Относительная погрешность          : %.6f%%\n', abs(I_simpson - I_numeric) / I_numeric * 100);
-
-
-
-%% шаг точность
-disp('анализ влияния шага на точность интегрирования')
-disp('шаг вычисляется по формулам из методички для разных точностей')
-
-f_num = @(x) x.^2 + exp(x + 3);
-a_int = -5;
-b_int = 5;
-
-syms x
-f_sym = x^2 + exp(x + 3);
-I_exact = double(int(f_sym, x, a_int, b_int));
-fprintf('Точное значение интеграла: %.8f\n', I_exact);
-
-% Вычисляем максимумы производных
-f2_sym = diff(f_sym, x, 2);
-f4_sym = diff(f_sym, x, 4);
-f2_num = matlabFunction(f2_sym);
-f4_num = matlabFunction(f4_sym);
-
-x_check = linspace(a_int, b_int, 10000);
-M2 = max(abs(f2_num(x_check)));
-M4 = max(abs(f4_num(x_check)));
-fprintf('M2 = %.4f, M4 = %.4f\n', M4);
-fprintf('Длина отрезка: %.4f\n', b_int - a_int);
-
-% Перебираем разные точности (как в методичке)
-eps_vec = logspace(-2, -7, 20);  % меньше точек для читаемой таблицы
-
-err_trap = zeros(size(eps_vec));
-err_runge = zeros(size(eps_vec));
-err_simp = zeros(size(eps_vec));
-h_vec = zeros(size(eps_vec));
-h_simp_vec = zeros(size(eps_vec));
-n_vec = zeros(size(eps_vec));
-n_simp_vec = zeros(size(eps_vec));
-
-for i = 1:length(eps_vec)
-    eps_target = eps_vec(i);
-    
-    % Вычисляем шаг по формуле (5) для трапеций
-    h_trap = sqrt(12 * eps_target / ((b_int - a_int) * M2));
-    n = ceil((b_int - a_int) / h_trap);
-    h = (b_int - a_int) / n;
-    h_vec(i) = h;
-    n_vec(i) = n;
-    
-    x_trap = linspace(a_int, b_int, n+1);
-    y_trap = f_num(x_trap);
-    
-    % Трапеции
-    I_tr = h/2 * (y_trap(1) + y_trap(end) + 2*sum(y_trap(2:end-1)));
-    err_trap(i) = abs(I_tr - I_exact);
-    
-    % Рунге (шаг h/2)
-    n_half = 2*n;
-    h_half = h/2;
-    x_half = linspace(a_int, b_int, n_half+1);
-    y_half = f_num(x_half);
-    I_tr2 = h_half/2 * (y_half(1) + y_half(end) + 2*sum(y_half(2:end-1)));
-    I_r = I_tr2 + (I_tr2 - I_tr)/3;
-    err_runge(i) = abs(I_r - I_exact);
-    
-    % Симпсон (шаг по формуле (9))
-    h_simp = (180 * eps_target / ((b_int - a_int) * M4))^(1/4);
-    n_s = ceil((b_int - a_int) / h_simp);
-    if mod(n_s, 2) ~= 0
-        n_s = n_s + 1;
-    end
-    h_s = (b_int - a_int) / n_s;
-    h_simp_vec(i) = h_s;
-    n_simp_vec(i) = n_s;
-    
-    x_simp = linspace(a_int, b_int, n_s+1);
-    y_simp = f_num(x_simp);
-    I_s = h_s/3 * (y_simp(1) + y_simp(end) + ...
-                   4*sum(y_simp(2:2:end-1)) + ...
-                   2*sum(y_simp(3:2:end-2)));
-    err_simp(i) = abs(I_s - I_exact);
+%вычисляем ошибки левой разности на сетке
+for i = 2:length(x_grid)
+    val = (f(x_grid(i)) - f(x_grid(i) - h0)) / h0;
+    er_d1_left(i) = abs(df(x_grid(i)) - val);
 end
 
-
-
-
-%%  перебор шагов h
-disp(' ')
-disp('=Исследование влияния шага h на точность (h — независимая переменная)')
-
-n_direct = [4, 6, 10, 20, 40, 60, 100, 200, 400, 600, 1000, 2000, 4000, 6000, 10000,20000,35000,70000,100000];
-
-err_trap_direct = zeros(size(n_direct));
-err_runge_direct = zeros(size(n_direct));
-err_simp_direct = zeros(size(n_direct));
-err_simp_runge_direct = zeros(size(n_direct));
-h_direct = zeros(size(n_direct));
-
-for i = 1:length(n_direct)
-    n = n_direct(i);
-    
-    % для Симпсона нужно чётное n
-    n_s = n;
-    if mod(n_s, 2) ~= 0
-        n_s = n_s + 1;
-    end
-    
-    h = (b_int - a_int) / n;
-    h_direct(i) = h;
-    
-    % Трапеции
-    x_trap = linspace(a_int, b_int, n+1);
-    y_trap = f_num(x_trap);
-    I_tr = h/2 * (y_trap(1) + y_trap(end) + 2*sum(y_trap(2:end-1)));
-    err_trap_direct(i) = abs(I_tr - I_exact);
-    
-    % Рунге
-    x_half = linspace(a_int, b_int, 2*n+1);
-    y_half = f_num(x_half);
-    I_tr2 = (h/2)/2 * (y_half(1) + y_half(end) + 2*sum(y_half(2:end-1)));
-    I_r = I_tr2 + (I_tr2 - I_tr)/3;
-    err_runge_direct(i) = abs(I_r - I_exact);
-    
-%  Симпсон с шагом h
-    n_h = n*2;
-    if mod(n_h, 2) ~= 0, n_h = n_h + 1; end % делаем чётным
-    h_s = (b_int - a_int) / n_h;
-    
-    x_simp_h = linspace(a_int, b_int, n_h+1);
-    y_simp_h = f_num(x_simp_h);
-    I_simp_h = (h_s/3) * (y_simp_h(1) + y_simp_h(end) + ...
-                          4*sum(y_simp_h(2:2:end-1)) + ...
-                          2*sum(y_simp_h(3:2:end-2))); % <-- обрати внимание на end-2
-
-    % Симпсон с шагом h/2 (удваиваем число интервалов) 
-    n_half = n_h * 2; 
-    h_half = h_s / 2;
-    
-    x_simp_half = linspace(a_int, b_int, n_half+1);
-    y_simp_half = f_num(x_simp_half);
-    I_simp_half = (h_half/3) * (y_simp_half(1) + y_simp_half(end) + ...
-                                4*sum(y_simp_half(2:2:end-1)) + ...
-                                2*sum(y_simp_half(3:2:end-2)));
-
-    % --- 3. Уточнение по Рунге (для Симпсона делим на 15) ---
-    I_simp_runge = I_simp_half + (I_simp_half - I_simp_h) / 15;
-
-    % Сохраняем ошибки
-    err_simp_direct(i) = abs(I_simp_h - I_exact);           % Обычный Симпсон
-    err_simp_runge_direct(i) = abs(I_simp_runge - I_exact);
-end 
-
-%% График зависимости ошибки от шага (прямой перебор h)
-figure;
-% Основные методы
-loglog(h_direct, err_trap_direct, 'o-', 'LineWidth', 1.5, 'MarkerSize', 6); hold on;
-loglog(h_direct, err_runge_direct, 's-', 'LineWidth', 1.5, 'MarkerSize', 6);
-loglog(h_direct, err_simp_direct, 'd-', 'LineWidth', 1.5, 'MarkerSize', 6);
-loglog(h_direct, err_simp_runge_direct, 'p-', 'LineWidth', 1.5, 'MarkerSize', 6); % Симпсон+Рунге
-
-% Теоретические наклоны для визуального сравнения порядка
-h_ref = h_direct;
-loglog(h_ref, 0.1*h_ref.^2, 'k:', 'LineWidth', 1);   % Ожидаемый наклон h^2
-loglog(h_ref, 0.01*h_ref.^4, 'k-.', 'LineWidth', 1); % Ожидаемый наклон h^4
-% Примечание: Симпсон+Рунге должен иметь наклон h^6
-
-grid on;
-xlabel('Шаг h');
-ylabel('Абсолютная ошибка');
-title('Зависимость ошибки от шага h (сравнение всех методов)');
-legend('Трапеции (O(h^2))', 'Трапеции+Рунге (O(h^4))', ...
-       'Симпсон (O(h^4))', 'Симпсон+Рунге (O(h^6))', ...
-       '~h^2', '~h^4', 'Location', 'southeast');
-set(gca, 'FontSize', 12);
-
-%% Вывод таблицы
-fprintf('\n%-8s %-12s %-14s %-14s %-14s %-14s\n', ...
-        'n', 'h', 'err_trap', 'err_runge', 'err_simp', 'err_simp_R');
-fprintf('%s\n', repmat('-', 1, 80));
-
-for i = 1:length(n_direct)
-    fprintf('%-8d %-12.6f %-14.4e %-14.4e %-14.4e %-14.4e\n', ...
-        n_direct(i), h_direct(i), ...
-        err_trap_direct(i), ...
-        err_runge_direct(i), ...
-        err_simp_direct(i), ...
-        err_simp_runge_direct(i));
+%вычисляем ошибки центральной разности на сетке
+for i = 2:length(x_grid) - 1
+    val = (f(x_grid(i) + h0) - f(x_grid(i) - h0)) / (2*h0);
+    er_d1_center(i) = abs(df(x_grid(i)) - val);
 end
+
+%вычисляем ошибки пятиточечной формулы на сетке
+for i = 3:length(x_grid) - 2
+    val = (f(x_grid(i) - 2*h0) - 8*f(x_grid(i) - h0) + 8*f(x_grid(i) + h0) - f(x_grid(i) + 2*h0)) / (12*h0);
+    er_d1_five(i) = abs(df(x_grid(i)) - val);
+end
+
+%вычисляем ошибки метода рунге для первой производной на сетке
+for i = 1:length(x_grid) - 1
+    val_h = (f(x_grid(i) + h0) - f(x_grid(i))) / h0;
+    val_h2 = (f(x_grid(i) + h0/2) - f(x_grid(i))) / (h0/2);
+    val = 2*val_h2 - val_h;
+    er_d1_runge(i) = abs(df(x_grid(i)) - val);
+end
+
+%строим графики ошибок первой производной
+figure
+plot(x_grid, er_d1_right, '-o')
+hold on
+plot(x_grid, er_d1_left, '-s')
+plot(x_grid, er_d1_center, '-d')
+plot(x_grid, er_d1_five, '-^')
+plot(x_grid, er_d1_runge, '-p')
+grid on
+xlabel('x')
+ylabel('абсолютная погрешность')
+title('погрешность первой производной')
+legend('правая', 'левая', 'центральная', 'пятиточечная', 'рунге', 'Location', 'best')
+
+%создаем массивы ошибок второй производной
+er_d2_simple = NaN(size(x_grid));
+er_d2_five = NaN(size(x_grid));
+er_d2_runge = NaN(size(x_grid));
+
+%вычисляем ошибки трехточечной формулы второй производной
+for i = 2:length(x_grid) - 1
+    val = (f(x_grid(i) + h0) - 2*f(x_grid(i)) + f(x_grid(i) - h0)) / h0^2;
+    er_d2_simple(i) = abs(d2f(x_grid(i)) - val);
+end
+
+%вычисляем ошибки пятиточечной формулы второй производной
+for i = 3:length(x_grid) - 2
+    val = (-f(x_grid(i) + 2*h0) + 16*f(x_grid(i) + h0) - 30*f(x_grid(i)) + 16*f(x_grid(i) - h0) - f(x_grid(i) - 2*h0)) / (12*h0^2);
+    er_d2_five(i) = abs(d2f(x_grid(i)) - val);
+end
+
+%вычисляем ошибки метода рунге для второй производной на сетке
+for i = 2:length(x_grid) - 1
+    val_h = (f(x_grid(i) + h0) - 2*f(x_grid(i)) + f(x_grid(i) - h0)) / h0^2;
+    val_h2 = (f(x_grid(i) + h0/2) - 2*f(x_grid(i)) + f(x_grid(i) - h0/2)) / ((h0/2)^2);
+    val = (4*val_h2 - val_h) / 3;
+    er_d2_runge(i) = abs(d2f(x_grid(i)) - val);
+end
+
+%строим графики ошибок второй производной
+figure
+plot(x_grid, er_d2_simple, '-o')
+hold on
+plot(x_grid, er_d2_five, '-s')
+plot(x_grid, er_d2_runge, '-d')
+grid on
+xlabel('x')
+ylabel('абсолютная погрешность')
+title('погрешность второй производной')
+legend('трехточечная', 'пятиточечная', 'рунге', 'Location', 'best')
+
+%задаем количество шагов для анализа
+n_h = 30;
+
+%создаем массив шагов
+h_vec = zeros(1, n_h);
+h_vec(1) = 1.0;
+for i = 2:n_h
+    h_vec(i) = h_vec(i - 1) / 2;
+end
+
+%создаем массивы ошибок по шагу
+er_step_d1_right = zeros(size(h_vec));
+er_step_d1_center = zeros(size(h_vec));
+er_step_d1_five = zeros(size(h_vec));
+er_step_d1_runge = zeros(size(h_vec));
+er_step_d2_simple = zeros(size(h_vec));
+er_step_d2_five = zeros(size(h_vec));
+er_step_d2_runge = zeros(size(h_vec));
+
+%считаем ошибки при разных шагах
+for i = 1:length(h_vec)
+    h = h_vec(i);
+    
+    val_d1_right = (f(x0 + h) - f(x0)) / h;
+    er_step_d1_right(i) = abs(d1_exact - val_d1_right);
+    
+    val_d1_center = (f(x0 + h) - f(x0 - h)) / (2*h);
+    er_step_d1_center(i) = abs(d1_exact - val_d1_center);
+    
+    val_d1_five = (f(x0 - 2*h) - 8*f(x0 - h) + 8*f(x0 + h) - f(x0 + 2*h)) / (12*h);
+    er_step_d1_five(i) = abs(d1_exact - val_d1_five);
+    
+    val_d1_right_h2 = (f(x0 + h/2) - f(x0)) / (h/2);
+    val_d1_runge = 2*val_d1_right_h2 - val_d1_right;
+    er_step_d1_runge(i) = abs(d1_exact - val_d1_runge);
+    
+    val_d2_simple = (f(x0 + h) - 2*f(x0) + f(x0 - h)) / h^2;
+    er_step_d2_simple(i) = abs(d2_exact - val_d2_simple);
+    
+    val_d2_five = (-f(x0 + 2*h) + 16*f(x0 + h) - 30*f(x0) + 16*f(x0 - h) - f(x0 - 2*h)) / (12*h^2);
+    er_step_d2_five(i) = abs(d2_exact - val_d2_five);
+    
+    val_d2_simple_h = (f(x0 + h) - 2*f(x0) + f(x0 - h)) / h^2;
+    val_d2_simple_h2 = (f(x0 + h/2) - 2*f(x0) + f(x0 - h/2)) / ((h/2)^2);
+    val_d2_runge = (4*val_d2_simple_h2 - val_d2_simple_h) / 3;
+    er_step_d2_runge(i) = abs(d2_exact - val_d2_runge);
+end
+
+%строим влияние шага на первую производную
+figure
+loglog(h_vec, er_step_d1_right, '-o')
+hold on
+loglog(h_vec, er_step_d1_center, '-s')
+loglog(h_vec, er_step_d1_five, '-d')
+loglog(h_vec, er_step_d1_runge, '-^')
+grid on
+xlabel('h')
+ylabel('абсолютная погрешность')
+title('влияние шага на первую производную')
+legend('правая', 'центральная', 'пятиточечная', 'рунге', 'Location', 'best')
+
+%строим влияние шага на вторую производную
+figure
+loglog(h_vec, er_step_d2_simple, '-o')
+hold on
+loglog(h_vec, er_step_d2_five, '-s')
+loglog(h_vec, er_step_d2_runge, '-d')
+grid on
+xlabel('h')
+ylabel('абсолютная погрешность')
+title('влияние шага на вторую производную')
+legend('трехточечная', 'пятиточечная', 'рунге', 'Location', 'best')
+
+%собираем таблицу влияния шага на первую производную
+table_step_d1 = table(h_vec', er_step_d1_right', er_step_d1_center', er_step_d1_five', er_step_d1_runge', ...
+    'VariableNames', {'h', 'right', 'center', 'five_point', 'runge'});
+
+%собираем таблицу влияния шага на вторую производную
+table_step_d2 = table(h_vec', er_step_d2_simple', er_step_d2_five', er_step_d2_runge', ...
+    'VariableNames', {'h', 'simple', 'five_point', 'runge'});
+
+%выводим таблицу влияния шага на первую производную
+disp('влияние шага на первую производную')
+disp(table_step_d1)
+
+%выводим таблицу влияния шага на вторую производную
+disp('влияние шага на вторую производную')
+disp(table_step_d2)
+
+%строим график функции и двух производных
+%задаем расширенную сетку вокруг точки x0
+x_range = 10; %диапазон в обе стороны от x0
+x_plot_func = linspace(x0 - x_range, x0 + x_range, 500)';
+
+%вычисляем значения функции и производных на сетке
+y_plot_func = f(x_plot_func);
+dy_plot_func = df(x_plot_func);
+d2y_plot_func = d2f(x_plot_func);
+
+%создаем график
+figure
+plot(x_plot_func, y_plot_func, 'b-', 'LineWidth', 1.5)
+hold on
+plot(x_plot_func, dy_plot_func, 'g-', 'LineWidth', 1.5)
+plot(x_plot_func, d2y_plot_func, 'r-', 'LineWidth', 1.5)
+
+%отмечаем точку x0 на всех кривых
+plot(x0, y0, 'bo', 'MarkerFaceColor', 'b', 'MarkerSize', 8)
+plot(x0, d1_exact, 'go', 'MarkerFaceColor', 'g', 'MarkerSize', 8)
+plot(x0, d2_exact, 'ro', 'MarkerFaceColor', 'r', 'MarkerSize', 8)
+
+%добавляем вертикальную линию в точке x0
+yl = ylim;
+plot([x0 x0], yl, 'k--', 'LineWidth', 0.5)
+
+grid on
+xlabel('x')
+ylabel('значения')
+title(['Функция f(x) = x^3 + e^x и её производные, x_0 = ' num2str(x0)])
+legend('f(x)', 'f''(x)', 'f''''(x)', ['f(x_0) = ' num2str(y0, '%.4f')], ...
+    ['f''(x_0) = ' num2str(d1_exact, '%.4f')], ...
+    ['f''''(x_0) = ' num2str(d2_exact, '%.4f')], ...
+    'x_0', 'Location', 'best')
+
+%подписываем значения в точке x0
+text(x0 + 0.2, y0, ['f(x_0) = ' num2str(y0, '%.4f')], 'FontSize', 9)
+text(x0 + 0.2, d1_exact, ['f''(x_0) = ' num2str(d1_exact, '%.4f')], 'FontSize', 9)
+text(x0 + 0.2, d2_exact, ['f''''(x_0) = ' num2str(d2_exact, '%.4f')], 'FontSize', 9)

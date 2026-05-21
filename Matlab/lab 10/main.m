@@ -3,12 +3,12 @@ clc
 close all
 
 %% Параметры
-a = -5;  % левая граница
-b = 5;   % правая граница
+a = -5;
+b = 5;
 
 %% Исходная функция
 syms x
-f = x^2 + exp(x+3);
+f = tan(x) + x^2;
 
 %% 1. Интеграл аналитически
 disp('Интеграл:')
@@ -41,7 +41,6 @@ fprintf('Максимум четвёртой производной на [%d, %d]: %.4f в точке x = %.4f\n\n',
 %% График функции
 figure;
 fun_handle = matlabFunction(f, 'Vars', x);
-% sample and plot numerically to avoid fplot handle/platform issues
 x_plot = linspace(a, b, 1000);
 y_plot = fun_handle(x_plot);
 plot(x_plot, y_plot, 'b', 'LineWidth', 2);
@@ -159,7 +158,7 @@ fprintf('Погрешность Симпсона:      %.6f%%\n', abs(I_simp - double(I)) / abs(dou
 f_num = matlabFunction(f);
 
 I_trapz = trapz(x_trap, y_trap);
-I_quad = quad(f_num, a, b);
+I_quad = integral(f_num, a, b);
 I_integral = integral(f_num, a, b);
 
 fprintf('\nРезультаты:\n');

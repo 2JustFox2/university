@@ -121,8 +121,6 @@ model = @(k,xx) k(1)*exp(k(2)*xx) + k(3);
 
 fun_exp = @(k) sum(p .* (y - model(k,x)).^2);
 
-% Более устойчивый старт: подбираем c по нижней границе данных,
-% а a и b оцениваем по линейной регрессии для log(y - c).
 c0 = min(y) - 1;
 y_shift = y - c0;
 y_shift(y_shift <= 0) = eps;
@@ -194,22 +192,6 @@ fprintf('При x = %.2f  y = %.6f\n\n', xq(2), yq(2));
 errors = [Q1 Q2 Q3 Q4 Q5 Q6];
 names = {'polyfit','vandermonde','spap2','fminsearch','exp_model','chebyshev'};
 [min_error, ~] = min(errors);
-
-%% Сравнение методов по разнице погрешностей
-
-disp('Сравнение методов по разнице погрешностей');
-
-error_diff = errors - min_error;
-
-for i = 1:length(errors)
-    fprintf('%s: ошибка = %.8f\n', names{i}, error_diff(i));
-end
-
-[~, order] = sort(error_diff);
-disp('Ранжирование по возрастанию разницы погрешностей:');
-for i = 1:length(order)
-    fprintf('%d. %s\n', i, names{order(i)});
-end
 
 %% Построение общего графика
 
