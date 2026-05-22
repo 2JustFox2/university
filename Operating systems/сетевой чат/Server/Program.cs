@@ -1,6 +1,8 @@
 using System;
 using System;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
@@ -19,6 +21,7 @@ namespace ChatServerApp {
         ListBox lbClients = new ListBox() { Top = 10, Left = 10, Width = 460, Height = 180 };
         TextBox tbLog = new TextBox() { Top = 200, Left = 10, Width = 460, Height = 220, Multiline = true, ReadOnly = true, ScrollBars = ScrollBars.Vertical };
         TextBox tbPort = new TextBox() { Top = 10, Left = 480, Width = 80, Text = "5000" };
+        TextBox tbLocalIp = new TextBox() { Top = 160, Left = 480, Width = 120, Height = 120, Multiline = true, ReadOnly = true, Text = "Local IP\r\nloading..." };
         Button btnStart = new Button() { Top = 40, Left = 480, Width = 80, Text = "Старт" };
         Button btnStop = new Button() { Top = 400, Left = 480, Width = 80, Text = "Стоп" };
         Button btnDisconnect = new Button() { Top = 80, Left = 480, Width = 120, Text = "Отключить выбранного" };
@@ -29,9 +32,10 @@ namespace ChatServerApp {
     Task? listenTask;
 
         public ServerForm() {
-            Width = 620; Height = 480; Text = "Chat Server";
+            Width = 620; Height = 480; Text = $"Chat Server - {GetLocalIPv4Summary()}";
+            tbLocalIp.Text = $"Local IP:\r\n{GetLocalIPv4Summary()}";
             btnStop.Enabled = false;
-            Controls.AddRange(new Control[]{ lbClients, tbLog, tbPort, btnStart, btnStop, btnDisconnect, btnKickAll });
+            Controls.AddRange(new Control[]{ lbClients, tbLog, tbPort, tbLocalIp, btnStart, btnStop, btnDisconnect, btnKickAll });
             btnStart.Click += async (_,__) => {
                 if (server != null) return;
                 if (!int.TryParse(tbPort.Text, out int port)) return;
@@ -88,6 +92,17 @@ namespace ChatServerApp {
         string FormatClientLabel(ClientObject client) {
             string name = string.IsNullOrWhiteSpace(client.UserName) ? "без имени" : client.UserName;
             return $"{name} | {client.Id} | {client.RemoteEndPoint}";
+        }
+
+        string GetLocalIPv4Summary() {
+            var addresses = Dns.GetHostEntry(Dns.GetHostName())
+                .AddressList
+                .Where(address => address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                .Select(address => address.ToString())
+                .Distinct()
+                .ToArray();
+
+            return addresses.Length == 0 ? "127.0.0.1" : string.Join(", ", addresses);
         }
 
         async Task StopServerAsync() {
