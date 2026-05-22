@@ -75,21 +75,45 @@ namespace ChatClientApp {
 
         private async void Connect(object? sender, EventArgs e)
         {
-            await ConnectAsync();
+            try {
+                await ConnectAsync();
+            }
+            catch (Exception ex) {
+                Append($"Connection failed: {ex.Message}");
+                client?.Close();
+                client = null;
+            }
         }
 
         private async Task ConnectAsync()
         {
             if (client != null) return;
 
+            string serverAddress = tbServer.Text.Trim();
+            string portText = tbPort.Text.Trim();
+            if (!int.TryParse(portText, out int port)) {
+                Append("Connection failed: invalid port number.");
+                return;
+            }
+
+            Append($"Connecting to {serverAddress}:{port}...");
+
             client = new TcpClient();
-            await client.ConnectAsync(tbServer.Text, int.Parse(tbPort.Text));
+            try {
+                await client.ConnectAsync(serverAddress, port);
+            }
+            catch {
+                client?.Close();
+                client = null;
+                throw;
+            }
 
             var ns = client.GetStream();
             reader = new StreamReader(ns);
             writer = new StreamWriter(ns) { AutoFlush = true };
 
-            Append($"Connected to {tbServer.Text}:{tbPort.Text}");
+            Append($"Connected to {serverAddress}:{port}");
+            Append("First message you send will be used as your user name.");
             _ = ReceiveLoop();
         }
     }
