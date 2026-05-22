@@ -21,7 +21,7 @@ namespace ChatClientApp {
         TextBox tbChat = new TextBox() { Top=40, Left=10, Width=460, Height=300, Multiline=true, ReadOnly=true, ScrollBars=ScrollBars.Vertical };
         TextBox tbMessage = new TextBox() { Top=350, Left=10, Width=360 };
         Button btnSend = new Button() { Top=350, Left=380, Width=90, Text="Send" };
-        Button btnDisconnect = new Button() { Top=390, Left=10, Width=120, Text="Disconnect" };
+        Button btnDisconnect = new Button() { Top=10, Left=320, Width=120, Text="Disconnect" };
 
         TcpClient client;
         StreamReader reader;
@@ -29,7 +29,7 @@ namespace ChatClientApp {
         string? userName;
 
         public ClientForm() {
-            Width=500; Height=470; Text="Chat Client";
+            Width=500; Height=418; Text="Chat Client";
             Controls.AddRange(new Control[]{ tbServer, tbPort, btnConnect, tbChat, tbMessage, btnSend, btnDisconnect });
             btnConnect.Click += Connect;
             btnDisconnect.Click += async (_,__) => await DisconnectAsync();

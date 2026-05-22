@@ -135,7 +135,7 @@ namespace ChatServerApp {
                     try
                     {
                         message = await Reader.ReadLineAsync();
-                        if (message == null) continue;
+                        if (message == null) break;
                         message = $"{userName}: {message}";
                         server.RaiseLog(message);
                         server.RaiseMessageReceived(message, Id);

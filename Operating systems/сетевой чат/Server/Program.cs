@@ -24,7 +24,7 @@ namespace ChatServerApp {
         TextBox tbLocalIp = new TextBox() { Top = 160, Left = 480, Width = 120, Height = 120, Multiline = true, ReadOnly = true, Text = "Local IP\r\nloading..." };
         Button btnStart = new Button() { Top = 40, Left = 480, Width = 80, Text = "Старт" };
         Button btnStop = new Button() { Top = 400, Left = 480, Width = 80, Text = "Стоп" };
-        Button btnDisconnect = new Button() { Top = 80, Left = 480, Width = 120, Text = "Отключить выбранного" };
+        Button btnDisconnect = new Button() { Top = 80, Left = 480, Width = 120, Text = "Выкинуть выбранного" };
         Button btnKickAll = new Button() { Top = 120, Left = 480, Width = 120, Text = "Выкинуть всех" };
 
         ServerObject? server;
@@ -67,7 +67,9 @@ namespace ChatServerApp {
 
             btnDisconnect.Click += (_,__) => {
                 if (lbClients.SelectedItem is string s) {
-                    var id = s.Split(':')[0];
+                    var parts = s.Split('|');
+                    var id = parts.Length >= 2 ? parts[1].Trim() : string.Empty;
+                    if (string.IsNullOrWhiteSpace(id)) return;
                     try { server?.RemoveConnection(id); Log($"Отключен {id}"); RefreshClientsList(); } catch {}
                 }
             };
