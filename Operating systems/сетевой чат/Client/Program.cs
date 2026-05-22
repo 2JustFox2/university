@@ -25,6 +25,7 @@ namespace ChatClientApp {
         TcpClient client;
         StreamReader reader;
         StreamWriter writer;
+        string? userName;
 
         public ClientForm() {
             Width=500; Height=430; Text="Chat Client";
@@ -48,11 +49,11 @@ namespace ChatClientApp {
                     Append(line);
                 }
             } catch (Exception ex) {
-                    Append("Receive error: " + ex.Message);
+                    Append("Ошибки получения: " + ex.Message);
                     client = null;
             }
             finally {
-                Append("Disconnected from server");
+                Append("Отключиться от сервера");
                 client?.Close(); client = null;
             }
         }
@@ -65,10 +66,16 @@ namespace ChatClientApp {
         private void Send(object? sender, EventArgs e)
         {
             if (writer != null && !string.IsNullOrWhiteSpace(tbMessage.Text)) {
+                string messageText = tbMessage.Text;
                 try { writer.WriteLine(tbMessage.Text); } catch (Exception ex) {
-                     Append("Send error: " + ex.Message);
+                     Append("Ошибки отправки: " + ex.Message);
                 }
-                Append("Me: " + tbMessage.Text + Environment.NewLine);
+                if (string.IsNullOrWhiteSpace(userName)) {
+                    userName = messageText.Trim();
+                    Append($"Имя пользователя установлено на: {userName}");
+                } else {
+                    Append($"{userName}: {messageText}");
+                }
                 tbMessage.Clear();
             }
         }
@@ -79,7 +86,7 @@ namespace ChatClientApp {
                 await ConnectAsync();
             }
             catch (Exception ex) {
-                Append($"Connection failed: {ex.Message}");
+                Append($"Ошибки подключения: {ex.Message}");
                 client?.Close();
                 client = null;
             }
@@ -92,11 +99,11 @@ namespace ChatClientApp {
             string serverAddress = tbServer.Text.Trim();
             string portText = tbPort.Text.Trim();
             if (!int.TryParse(portText, out int port)) {
-                Append("Connection failed: invalid port number.");
+                Append("Ошибки подключения: недопустимый номер порта.");
                 return;
             }
 
-            Append($"Connecting to {serverAddress}:{port}...");
+            Append($"Подключение к {serverAddress}:{port}...");
 
             client = new TcpClient();
             try {
@@ -112,8 +119,8 @@ namespace ChatClientApp {
             reader = new StreamReader(ns);
             writer = new StreamWriter(ns) { AutoFlush = true };
 
-            Append($"Connected to {serverAddress}:{port}");
-            Append("First message you send will be used as your user name.");
+            Append($"Подключен к {serverAddress}:{port}");
+            Append("Первое сообщение, которое вы отправите, будет использоваться как ваше имя пользователя.");
             _ = ReceiveLoop();
         }
     }
