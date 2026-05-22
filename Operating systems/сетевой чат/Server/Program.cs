@@ -39,12 +39,11 @@ namespace ChatServerApp {
                 server = new ServerObject(port);
                 server.OnLog += (s) => Log(s);
                 server.ClientConnected += (c) => {
-                    if (InvokeRequired) { BeginInvoke(new Action(() => lbClients.Items.Add($"{c.Id}: {c.RemoteEndPoint}"))); }
-                    else lbClients.Items.Add($"{c.Id}: {c.RemoteEndPoint}");
+                    RefreshClientsList();
                 };
+                server.ClientInfoChanged += (c) => RefreshClientsList();
                 server.ClientDisconnected += (c) => {
-                    if (InvokeRequired) { BeginInvoke(new Action(() => { var item = lbClients.Items.Cast<string>().FirstOrDefault(x => x.StartsWith(c.Id)); if (item != null) lbClients.Items.Remove(item); })); }
-                    else { var item = lbClients.Items.Cast<string>().FirstOrDefault(x => x.StartsWith(c.Id)); if (item != null) lbClients.Items.Remove(item); }
+                    RefreshClientsList();
                 };
 
                 Log($"Listening on port {port}");
@@ -83,7 +82,12 @@ namespace ChatServerApp {
             if (InvokeRequired) { BeginInvoke(new Action(RefreshClientsList)); return; }
             lbClients.Items.Clear();
             if (server == null) return;
-            foreach (var c in server.Clients) lbClients.Items.Add($"{c.Id}: {c.RemoteEndPoint}");
+            foreach (var c in server.Clients) lbClients.Items.Add(FormatClientLabel(c));
+        }
+
+        string FormatClientLabel(ClientObject client) {
+            string name = string.IsNullOrWhiteSpace(client.UserName) ? "без имени" : client.UserName;
+            return $"{name} | {client.Id} | {client.RemoteEndPoint}";
         }
 
         async Task StopServerAsync() {

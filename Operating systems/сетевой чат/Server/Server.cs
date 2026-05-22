@@ -15,6 +15,7 @@ namespace ChatServerApp {
         public event Action<string>? OnLog;
         public event Action<ClientObject>? ClientConnected;
         public event Action<ClientObject>? ClientDisconnected;
+        public event Action<ClientObject>? ClientInfoChanged;
         public event Action<string, string>? MessageReceived; // message, senderId
 
         public ServerObject(int port)
@@ -88,6 +89,7 @@ namespace ChatServerApp {
         }
 
         internal void RaiseLog(string s) => OnLog?.Invoke(s);
+        internal void RaiseClientInfoChanged(ClientObject client) => ClientInfoChanged?.Invoke(client);
         internal void RaiseMessageReceived(string message, string id) => MessageReceived?.Invoke(message, id);
     }
 
@@ -122,6 +124,7 @@ namespace ChatServerApp {
             {
                 string? userName = await Reader.ReadLineAsync();
                 UserName = userName;
+                server.RaiseClientInfoChanged(this);
                 string? message = $"{userName} вошел в чат";
                 await server.BroadcastMessageAsync(message, Id);
                 server.RaiseLog(message);

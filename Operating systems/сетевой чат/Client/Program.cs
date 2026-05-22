@@ -21,6 +21,7 @@ namespace ChatClientApp {
         TextBox tbChat = new TextBox() { Top=40, Left=10, Width=460, Height=300, Multiline=true, ReadOnly=true, ScrollBars=ScrollBars.Vertical };
         TextBox tbMessage = new TextBox() { Top=350, Left=10, Width=360 };
         Button btnSend = new Button() { Top=350, Left=380, Width=90, Text="Send" };
+        Button btnDisconnect = new Button() { Top=390, Left=10, Width=120, Text="Disconnect" };
 
         TcpClient client;
         StreamReader reader;
@@ -28,9 +29,10 @@ namespace ChatClientApp {
         string? userName;
 
         public ClientForm() {
-            Width=500; Height=430; Text="Chat Client";
-            Controls.AddRange(new Control[]{ tbServer, tbPort, btnConnect, tbChat, tbMessage, btnSend });
+            Width=500; Height=470; Text="Chat Client";
+            Controls.AddRange(new Control[]{ tbServer, tbPort, btnConnect, tbChat, tbMessage, btnSend, btnDisconnect });
             btnConnect.Click += Connect;
+            btnDisconnect.Click += async (_,__) => await DisconnectAsync();
             tbMessage.KeyDown += (s,e) => {
                 if (e.KeyCode == Keys.Enter) {
                     e.SuppressKeyPress = true;
@@ -96,6 +98,7 @@ namespace ChatClientApp {
         {
             if (client != null) return;
 
+            userName = null;
             string serverAddress = tbServer.Text.Trim();
             string portText = tbPort.Text.Trim();
             if (!int.TryParse(portText, out int port)) {
@@ -122,6 +125,22 @@ namespace ChatClientApp {
             Append($"Подключен к {serverAddress}:{port}");
             Append("Первое сообщение, которое вы отправите, будет использоваться как ваше имя пользователя.");
             _ = ReceiveLoop();
+        }
+
+        private async Task DisconnectAsync()
+        {
+            if (client == null) return;
+
+            Append("Отключение от сервера...");
+            try { writer?.Dispose(); } catch {}
+            try { reader?.Dispose(); } catch {}
+            try { client.Close(); } catch {}
+
+            await Task.Yield();
+            client = null;
+            reader = null;
+            writer = null;
+            userName = null;
         }
     }
 }
