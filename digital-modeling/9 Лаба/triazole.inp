@@ -1,0 +1,28 @@
+! BLYP DEF2-TZVP D3BJ OPT FREQ CPCM(WATER)
+
+%maxcore 2000
+
+%cpcm
+  SMD true
+  SMDsolvent "water"
+  end
+
+%geom
+  MaxIter 200
+  Calc_Hess true
+  end
+
+%freq
+  Temp 298.15
+  end
+
+* xyz 0 1
+N     0.0000    1.2000    0.0000
+N     1.1000    0.6000    0.0000
+N    -1.1000    0.6000    0.0000
+C     0.0000   -0.6000    0.0000
+C     1.2000   -1.2000    0.0000
+H     0.0000    2.2000    0.0000
+H     2.1000    1.1000    0.0000
+H    -2.1000    1.1000    0.0000
+*

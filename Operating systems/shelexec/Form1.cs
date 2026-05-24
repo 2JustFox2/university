@@ -43,7 +43,7 @@ namespace _08_04_shelexec
 
                 if (checkBoxAdmin.Checked)
                 {
-                    info.Verb = "runas"; //только дял исполняемых
+                    info.Verb = "runas"; //только для исполняемых
                 }
 
                 Process.Start(info);
