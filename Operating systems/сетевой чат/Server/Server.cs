@@ -118,6 +118,12 @@ namespace ChatServerApp {
             Writer = new StreamWriter(stream);
         }
 
+        public override string ToString()
+        {
+            string name = string.IsNullOrWhiteSpace(UserName) ? "без имени" : UserName;
+            return $"{name} | {Id} | {RemoteEndPoint}";
+        }
+
         public async Task ProcessAsync()
         {
             try

@@ -66,11 +66,8 @@ namespace ChatServerApp {
             };
 
             btnDisconnect.Click += (_,__) => {
-                if (lbClients.SelectedItem is string s) {
-                    var parts = s.Split('|');
-                    var id = parts.Length >= 2 ? parts[1].Trim() : string.Empty;
-                    if (string.IsNullOrWhiteSpace(id)) return;
-                    try { server?.RemoveConnection(id); Log($"Отключен {id}"); RefreshClientsList(); } catch {}
+                if (lbClients.SelectedItem is ClientObject client) {
+                    try { server?.RemoveConnection(client.Id); Log($"Отключен {client.UserName ?? client.Id}"); RefreshClientsList(); } catch {}
                 }
             };
 
@@ -88,12 +85,7 @@ namespace ChatServerApp {
             if (InvokeRequired) { BeginInvoke(new Action(RefreshClientsList)); return; }
             lbClients.Items.Clear();
             if (server == null) return;
-            foreach (var c in server.Clients) lbClients.Items.Add(FormatClientLabel(c));
-        }
-
-        string FormatClientLabel(ClientObject client) {
-            string name = string.IsNullOrWhiteSpace(client.UserName) ? "без имени" : client.UserName;
-            return $"{name} | {client.Id} | {client.RemoteEndPoint}";
+            foreach (var c in server.Clients) lbClients.Items.Add(c);
         }
 
         string GetLocalIPv4Summary() {
