@@ -56,9 +56,7 @@ def cstr_equations(y, t, k1, k2, Q, V, C_A_in):
     
     return [dC_A_dt, dC_B_dt, dC_C_dt, dC_D_dt]
 
-# Функция для нахождения стационарного состояния (решение системы алгебраических уравнений)
 def steady_state(y, k1, k2, Q, V, C_A_in):
-    """Система уравнений для стационарного состояния"""
     C_A, C_B, C_C, C_D = y
     
     C_A_in = C_A0_in

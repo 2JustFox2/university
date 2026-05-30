@@ -3,7 +3,7 @@ class Database {
     private $host = '127.0.0.1';
     private $dbname = 'portfolio_db';
     private $user = 'root';
-    private $pass = 'root';
+    private $pass = '';
     private $port = 3306;
     private $pdo;
 

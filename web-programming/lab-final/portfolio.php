@@ -22,7 +22,7 @@ if(isset($_GET['delete'])) {
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_project'])) {
     $title = trim($_POST['title']);
     $desc = trim($_POST['description']);
-    $image = trim($_POST['image']);
+    // $image = trim($_POST['image']);
     $date = $_POST['created_at'];
     $tech = trim($_POST['technologies']);
     
@@ -60,10 +60,10 @@ include 'includes/header.php';
         <label>Описание *</label>
         <textarea name="description" rows="3" required></textarea>
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
         <label>Изображение (имя файла)</label>
         <input type="text" name="image" placeholder="например: project.jpg">
-    </div>
+    </div> -->
     <div class="form-group">
         <label>Дата создания *</label>
         <input type="date" name="created_at" required>

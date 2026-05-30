@@ -295,7 +295,7 @@ plot(x, e(:,1), '-', 'Color', [0.85 0.33 0.10], 'LineWidth', 2.0); % Эйлер y1
 hold on; % удержание графика
 plot(x, m(:,1), '--', 'Color', [0.00 0.45 0.74], 'LineWidth', 2.0); % мод Эйлер y1
 plot(x, r(:,1), '-.', 'Color', [0.49 0.18 0.56], 'LineWidth', 2.0); % РК4 y1
-plot(xo, o(:,1), ':', 'Color', [0.20 0.20 0.20], 'LineWidth', 2.4); % ode45 y1
+plot(xo, o(:,1), ':', 'Color', [0.10 0.20 0.20], 'LineWidth', 2.4); % ode45 y1
 grid on; % включить сетку
 xlabel('x'); % подпись x
 ylabel('y1'); % подпись y
@@ -308,7 +308,7 @@ plot(x, e(:,2), '-', 'Color', [0.47 0.67 0.19], 'LineWidth', 2.0); % Эйлер y2
 hold on; % удержание графика
 plot(x, m(:,2), '--', 'Color', [0.00 0.60 0.60], 'LineWidth', 2.0); % мод Эйлер y2
 plot(x, r(:,2), '-.', 'Color', [0.64 0.08 0.18], 'LineWidth', 2.0); % РК4 y2
-plot(xo, o(:,2), ':', 'Color', [0.35 0.35 0.35], 'LineWidth', 2.4); % ode45 y2
+plot(xo, o(:,2), ':', 'Color', [0.15 0.35 0.35], 'LineWidth', 2.4); % ode45 y2
 grid on; % включить сетку
 xlabel('x'); % подпись x
 ylabel('y2'); % подпись y
@@ -331,10 +331,10 @@ posY = (screen(4) - height) / 2;  % центр по вертикали
 % Первый график - y1
 figure('Name', 'Задание 2: y1', 'Position', [posX, posY, width, height]);
 % Сначала строим эталон толстой линией
-plot(xo, o(:,1), '-', 'Color', [0.10 0.10 0.50], 'LineWidth', 3.0); hold on;
+plot(xo, o(:,1), '-', 'Color', [0.70 0.10 0.50], 'LineWidth', 3.0); hold on;
 % Затем явный и неявный методы с нужными маркерами
-plot(x, e(:,1), '--', 'Color', [0.80 0.15 0.15], 'LineWidth', 1.8, 'MarkerSize', 6);
-plot(x, i(:,1), '-o', 'Color', [0.00 0.45 0.74], 'LineWidth', 2.0, 'MarkerSize', 6);
+plot(x, e(:,1), '--', 'Color', [0.90 0.15 0.15], 'LineWidth', 1.8, 'MarkerSize', 6);
+plot(x, i(:,1), '-x', 'Color', [0.00 0.10 0.10], 'LineWidth', 2.0, 'MarkerSize', 6);
 grid on; % сетка
 xlabel('x'); 
 ylabel('y_1(x)'); 
@@ -346,9 +346,9 @@ ylim([-2e5 4.5e5]);
 
 % Второй график - y2
 figure('Name', 'Задание 2: y2', 'Position', [posX, posY, width, height]);
-plot(xo, o(:,2), '-', 'Color', [0.10 0.10 0.10], 'LineWidth', 3.0); hold on;
+plot(xo, o(:,2), '-', 'Color', [0.70 0.10 0.10], 'LineWidth', 3.0); hold on;
 plot(x, e(:,2), '--', 'Color', [0.80 0.15 0.15], 'LineWidth', 1.8, 'MarkerSize', 6);
-plot(x, i(:,2), '-o', 'Color', [0.00 0.45 0.74], 'LineWidth', 2.0, 'MarkerSize', 6);
+plot(x, i(:,2), '-x', 'Color', [0.00 0.15 0.14], 'LineWidth', 2.0, 'MarkerSize', 6);
 grid on; % сетка
 xlabel('x'); 
 ylabel('y_2(x)'); 
