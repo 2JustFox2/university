@@ -1,0 +1,23 @@
+! BLYP def2-TZVP def2/J D3BJ Opt Freq CPCM(Water) PAL6
+%maxcore 4000
+%cpcm
+  SMD true
+  SMDsolvent "water"
+  end
+%geom
+  MaxIter 200
+  Calc_Hess true
+  end
+%freq
+  Temp 298.15
+  end
+* xyz 0 1
+  C    4.5317    0.9175    0.0823
+  C    3.7258   -0.0101    0.7667
+  N    2.5283   -0.0592    0.1754
+  N    3.8278    1.4365   -0.9283
+  N    2.6561    0.8176   -0.8164
+  H    5.5510    1.2252    0.2639
+  H    3.9443   -0.6239    1.6283
+  H    1.8973    1.0051   -1.4558
+*
